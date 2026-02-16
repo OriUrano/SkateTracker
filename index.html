@@ -305,6 +305,15 @@ main{padding:8px 0 80px}
 }
 .backdrop.vis{opacity:1;pointer-events:auto}
 
+/* ===== IMPORT BUTTON ===== */
+.import-btn{
+  margin-top:16px;width:100%;padding:10px;border-radius:12px;
+  border:2px solid var(--surface-border);background:var(--surface);
+  color:var(--text1);font-family:inherit;font-size:12.5px;font-weight:600;
+  cursor:pointer;transition:all .2s;
+}
+.import-btn:active{background:var(--surface-hover);transform:scale(.97)}
+
 /* ===== RESET BUTTON ===== */
 .reset-btn{
   margin-top:16px;width:100%;padding:10px;border-radius:10px;
@@ -430,7 +439,7 @@ html{scrollbar-width:none}
 .type-public{background:rgba(33,136,255,.12);color:#2188ff}
 .type-private{background:rgba(139,92,246,.12);color:#8b5cf6}
 .type-freestyle{background:rgba(240,184,0,.12);color:#c89600}
-.type-class{background:rgba(46,160,67,.12);color:#2ea043}
+.type-lesson{background:rgba(46,160,67,.12);color:#2ea043}
 .history-time-right{font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap;margin-left:auto}
 .history-item.rankup{
   border-color:rgba(240,184,0,.3);border-style:dashed;
@@ -615,7 +624,7 @@ html{scrollbar-width:none}
       <button class="type-opt" data-type="public">Public</button>
       <button class="type-opt" data-type="private">Private</button>
       <button class="type-opt" data-type="freestyle">Freestyle</button>
-      <button class="type-opt" data-type="class">Class</button>
+      <button class="type-opt" data-type="lesson">Lesson</button>
     </div>
   </div>
   <div class="modal-field">
@@ -673,6 +682,8 @@ html{scrollbar-width:none}
     <button class="theme-btn" data-t="aurora"><span class="theme-dot" style="background:linear-gradient(135deg,#0c1520,#34d399)"></span>Aurora</button>
     <button class="theme-btn" data-t="competition"><span class="theme-dot" style="background:linear-gradient(135deg,#f5f5f5,#a01414)"></span>Competition</button>
   </div>
+  <input type="file" id="import-file" accept=".csv" style="display:none">
+  <button class="import-btn" id="import-btn">Import Log CSV</button>
   <button class="reset-btn" id="reset-btn">Reset All Progress</button>
 </div>
 
@@ -1425,6 +1436,39 @@ document.getElementById('session-delete').addEventListener('click',()=>{
   saveLog();closeSessionModal();
   if(currentTab==='log')renderLog();
   if(navigator.vibrate)navigator.vibrate(8);
+});
+
+document.getElementById('import-btn').addEventListener('click',()=>document.getElementById('import-file').click());
+document.getElementById('import-file').addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const lines=ev.target.result.trim().split('\n');
+    let added=0;
+    for(let i=1;i<lines.length;i++){
+      const cols=lines[i].split(',').map(c=>c.trim());
+      if(cols.length<4)continue;
+      const rawType=cols[0].toLowerCase();
+      const type=rawType==='lesson'?'lesson':rawType==='public'?'public':rawType==='private'?'private':rawType==='freestyle'?'freestyle':rawType;
+      const parts=cols[1].split('/');
+      const date=parts[2]+'-'+parts[0].padStart(2,'0')+'-'+parts[1].padStart(2,'0');
+      const timeParts=cols[2].match(/(\d+):(\d+)\s*(am|pm)/i);
+      let startTime=null;
+      if(timeParts){
+        let h=parseInt(timeParts[1]);const m=timeParts[2];const ap=timeParts[3].toLowerCase();
+        if(ap==='pm'&&h!==12)h+=12;if(ap==='am'&&h===12)h=0;
+        startTime=String(h).padStart(2,'0')+':'+m;
+      }
+      const duration=parseInt(cols[3]);
+      if(!date||!type||isNaN(duration))continue;
+      sessions.push({date,type,duration,startTime});
+      added++;
+    }
+    if(added){saveLog();if(currentTab==='log')renderLog();}
+    alert(added+' session'+(added!==1?'s':'')+' imported.');
+    e.target.value='';
+  };
+  reader.readAsText(file);
 });
 
 document.getElementById('history-list').addEventListener('click',e=>{
