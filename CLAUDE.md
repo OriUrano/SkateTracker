@@ -10,7 +10,7 @@ Ice Skills Tracker — a single-file PWA for tracking ice skating skill progress
 
 Open `index.html` directly in a browser. No build step, no install, no dev server required.
 
-The service worker (`sw.js`) caches assets with version key `ice-skills-v14` — **bump this version string** whenever `index.html` changes to bust the cache.
+The service worker (`sw.js`) caches assets with version key `ice-skills-v18` — **bump this version string** whenever `index.html` changes to bust the cache.
 
 ## Architecture
 
@@ -26,8 +26,8 @@ The service worker (`sw.js`) caches assets with version key `ice-skills-v14` —
 - `ice-skills-progress` — skill level map (`{skillId: level}`, L/R variants as `skillId-L`)
 - `ice-skills-theme` — theme name string
 - `ice-sessions` — array of `{date, type, duration, startTime}`
-- `ice-rankups` — array of `{date, skillId, side, from, to}`
-- `ice-sharpenings` — array of `{date, iceTimeAtSharpening}`
+- `ice-rankups` — array of `{date, skillId, side, from, to, time}`
+- `ice-sharpenings` — array of `{date, time}` (legacy entries may have `iceTimeAtSharpening`)
 
 **Skill data model** (the `SKILLS` array): each skill has `id`, `n` (name), `p` (phase), `d` (description), `pr` (prerequisite IDs), `lr` (0=single, 1=needs L/R tracking), `ic` (sprite icon key).
 

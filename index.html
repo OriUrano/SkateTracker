@@ -524,8 +524,8 @@ html{scrollbar-width:none}
   text-transform:uppercase;letter-spacing:.5px;
 }
 .modal-delete:active{transform:scale(.98);background:rgba(220,40,40,.15)}
-.history-item.session,.history-item.sharpening{cursor:pointer}
-.history-item.session:active,.history-item.sharpening:active{background:var(--surface-hover)}
+.history-item.session,.history-item.sharpening,.history-item.rankup{cursor:pointer}
+.history-item.session:active,.history-item.sharpening:active,.history-item.rankup:active{background:var(--surface-hover)}
 .history-time-sub{font-size:11px;color:var(--text3);margin-top:1px}
 .history-item.sharpening{
   border-color:rgba(33,136,255,.3);border-style:dashed;
@@ -640,8 +640,27 @@ html{scrollbar-width:none}
     <label class="modal-label">Date</label>
     <input type="date" class="modal-input" id="sharpening-date">
   </div>
+  <div class="modal-field">
+    <label class="modal-label">Time</label>
+    <input type="time" class="modal-input" id="sharpening-time">
+  </div>
   <button class="modal-submit" id="sharpening-submit">Save</button>
   <button class="modal-delete" id="sharpening-delete" style="display:none">Delete Sharpening</button>
+</div>
+
+<div class="sharpening-modal" id="rankup-modal">
+  <div class="modal-title" id="rankup-modal-title">Edit Rank Up</div>
+  <div id="rankup-modal-info" style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:14px"></div>
+  <div class="modal-field">
+    <label class="modal-label">Date</label>
+    <input type="date" class="modal-input" id="rankup-date">
+  </div>
+  <div class="modal-field">
+    <label class="modal-label">Time</label>
+    <input type="time" class="modal-input" id="rankup-time">
+  </div>
+  <button class="modal-submit" id="rankup-submit">Save Changes</button>
+  <button class="modal-delete" id="rankup-delete">Delete Rank Up</button>
 </div>
 
 <div class="backdrop" id="backdrop"></div>
@@ -768,6 +787,7 @@ let modalType=null;
 let modalDur=null;
 let editingIdx=-1;
 let editingShIdx=-1;
+let editingRkIdx=-1;
 
 function load(){
   try{const d=JSON.parse(localStorage.getItem('ice-skills-progress'));if(d)progress=d}catch(e){}
@@ -797,13 +817,16 @@ function setLevel(skillId,side,lv){
   const key=side?`${skillId}-${side}`:skillId;
   const oldLv=progress[key]||0;
   progress[key]=lv;
-  const today=localDS(new Date());
+  const now=new Date();
+  const today=localDS(now);
+  const nowTime=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   const s=side||null;
   const idx=rankups.findIndex(r=>r.date===today&&r.skillId===skillId&&r.side===s);
   if(idx>=0){
     rankups[idx].to=lv;
+    rankups[idx].time=nowTime;
   }else{
-    rankups.push({date:today,skillId,side:s,from:oldLv,to:lv});
+    rankups.push({date:today,skillId,side:s,from:oldLv,to:lv,time:nowTime});
   }
   saveLog();save();
 }
@@ -1167,10 +1190,18 @@ function updateEndTimeDisplay(){
 }
 
 function getTimeSinceSharpening(){
-  const totalMin=sessions.reduce((sum,s)=>sum+s.duration,0);
-  if(!sharpenings.length)return totalMin;
-  const last=sharpenings[sharpenings.length-1];
-  return Math.max(0,totalMin-(last.iceTimeAtSharpening||0));
+  if(!sharpenings.length)return sessions.reduce((sum,s)=>sum+s.duration,0);
+  const sorted=[...sharpenings].sort((a,b)=>{
+    const dc=a.date.localeCompare(b.date);if(dc!==0)return dc;
+    return(a.time||'00:00').localeCompare(b.time||'00:00');
+  });
+  const last=sorted[sorted.length-1];
+  const ld=last.date,lt=last.time||'00:00';
+  return sessions.reduce((sum,s)=>{
+    const sd=s.date,st=s.startTime||'00:00';
+    if(sd>ld||(sd===ld&&st>=lt))return sum+s.duration;
+    return sum;
+  },0);
 }
 
 function renderLog(){updateStats();renderCalendar();renderHistory()}
@@ -1242,11 +1273,28 @@ function renderCalBlock(startDate,endDate,totals,today){
 
 function renderHistory(){
   const list=document.getElementById('history-list');if(!list)return;
+  // Precompute ice time on blades for each sharpening
+  const shSorted=[...sharpenings.map((sh,i)=>({...sh,_i:i}))].sort((a,b)=>{
+    const dc=a.date.localeCompare(b.date);if(dc!==0)return dc;
+    return(a.time||'00:00').localeCompare(b.time||'00:00');
+  });
+  const shIceTime={};
+  shSorted.forEach((sh,pos)=>{
+    const prev=pos>0?shSorted[pos-1]:null;
+    const shDT=sh.date+'T'+(sh.time||'00:00');
+    const prevDT=prev?(prev.date+'T'+(prev.time||'00:00')):null;
+    let total=0;
+    sessions.forEach(s=>{
+      const dt=s.date+'T'+(s.startTime||'00:00');
+      if(dt<shDT&&(!prevDT||dt>=prevDT))total+=s.duration;
+    });
+    shIceTime[sh._i]=total;
+  });
   const items=[];
-  sessions.forEach((s,i)=>items.push({t:'s',date:s.date,d:s,idx:i}));
-  rankups.filter(r=>r.to>r.from).forEach(r=>items.push({t:'r',date:r.date,d:r}));
-  sharpenings.forEach((sh,i)=>items.push({t:'sh',date:sh.date,d:sh,idx:i}));
-  items.sort((a,b)=>b.date.localeCompare(a.date));
+  sessions.forEach((s,i)=>items.push({t:'s',date:s.date,time:s.startTime||'00:00',d:s,idx:i}));
+  rankups.forEach((r,i)=>{if(r.to>r.from)items.push({t:'r',date:r.date,time:r.time||'00:00',d:r,idx:i})});
+  sharpenings.forEach((sh,i)=>items.push({t:'sh',date:sh.date,time:sh.time||'00:00',d:sh,idx:i}));
+  items.sort((a,b)=>{const dc=b.date.localeCompare(a.date);if(dc!==0)return dc;return b.time.localeCompare(a.time)});
   if(!items.length){list.innerHTML='<div class="history-empty">No sessions logged yet.<br>Tap + to add your first session.</div>';return}
   let html='',lastD='';
   const DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -1263,10 +1311,14 @@ function renderHistory(){
       const sk=SMAP[item.d.skillId];const nm=sk?sk.n:item.d.skillId;
       const sd=item.d.side?' ('+item.d.side+')':'';
       const lnm=LEVEL_NAMES[item.d.to]||'';const lc=LEVEL_COLORS[item.d.to]||'';
-      html+=`<div class="history-item rankup"><div class="rankup-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6z"/></svg></div><div class="history-body"><div class="rankup-text">${nm}${sd}</div><div class="rankup-detail">Leveled up to <span class="rankup-level" style="background:${lc}"></span> ${lnm}</div></div></div>`;
+      const timeStr=item.d.time?`<div class="history-time-sub">${fmt12h(item.d.time)}</div>`:'';
+      html+=`<div class="history-item rankup" data-rk-idx="${item.idx}"><div class="rankup-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6z"/></svg></div><div class="history-body"><div class="rankup-text">${nm}${sd}</div><div class="rankup-detail">Leveled up to <span class="rankup-level" style="background:${lc}"></span> ${lnm}</div>${timeStr}</div></div>`;
     }else if(item.t==='sh'){
-      const iceAt=item.d.iceTimeAtSharpening||0;
-      html+=`<div class="history-item sharpening" data-sh-idx="${item.idx}"><div class="sharpening-icon"><svg viewBox="0 0 24 24"><path d="M3 17l2-8h14l2 8H3zm4-8V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg></div><div class="history-body"><div class="rankup-text">Blades Sharpened</div><div class="rankup-detail">${iceAt>0?fmtDur(iceAt)+' total ice time':'First sharpening logged'}</div></div></div>`;
+      const iceMin=shIceTime[item.idx]||0;
+      const iceStr=iceMin>0?fmtDur(iceMin)+' on blades':'';
+      const timeStr=item.d.time?fmt12h(item.d.time):'';
+      const detail=[timeStr,iceStr].filter(Boolean).join(' \u00b7 ')||'Sharpening logged';
+      html+=`<div class="history-item sharpening" data-sh-idx="${item.idx}"><div class="sharpening-icon"><svg viewBox="0 0 24 24"><path d="M3 17l2-8h14l2 8H3zm4-8V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg></div><div class="history-body"><div class="rankup-text">Blades Sharpened</div><div class="rankup-detail">${detail}</div></div></div>`;
     }
   });
   list.innerHTML=html;
@@ -1302,14 +1354,14 @@ function openSessionModal(idx){
 
 function closeSessionModal(){
   document.getElementById('session-modal').classList.remove('open');
-  if(!document.getElementById('theme-panel').classList.contains('open'))
+  if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('sharpening-modal').classList.contains('open')&&!document.getElementById('rankup-modal').classList.contains('open'))
     document.getElementById('backdrop').classList.remove('vis');
   editingIdx=-1;
 }
 
 /* =============== EVENTS =============== */
 document.getElementById('theme-toggle').addEventListener('click',toggleThemePanel);
-document.getElementById('backdrop').addEventListener('click',()=>{closePanel();closeSessionModal();closeSharpeningModal()});
+document.getElementById('backdrop').addEventListener('click',()=>{closePanel();closeSessionModal();closeSharpeningModal();closeRankupModal()});
 
 document.querySelectorAll('.theme-btn').forEach(b=>{
   b.addEventListener('click',()=>{setTheme(b.dataset.t);setTimeout(closePanel,200)});
@@ -1380,7 +1432,9 @@ document.getElementById('history-list').addEventListener('click',e=>{
   const se=e.target.closest('.history-item.session');
   if(se&&se.dataset.idx!=null){openSessionModal(parseInt(se.dataset.idx));return}
   const sh=e.target.closest('.history-item.sharpening');
-  if(sh&&sh.dataset.shIdx!=null)openSharpeningModal(parseInt(sh.dataset.shIdx));
+  if(sh&&sh.dataset.shIdx!=null){openSharpeningModal(parseInt(sh.dataset.shIdx));return}
+  const rk=e.target.closest('.history-item.rankup');
+  if(rk&&rk.dataset.rkIdx!=null)openRankupModal(parseInt(rk.dataset.rkIdx));
 });
 
 function openSharpeningModal(idx){
@@ -1388,6 +1442,8 @@ function openSharpeningModal(idx){
   const isEdit=editingShIdx>=0;
   const sh=isEdit?sharpenings[editingShIdx]:null;
   document.getElementById('sharpening-date').value=sh?sh.date:localDS(new Date());
+  const now=new Date();
+  document.getElementById('sharpening-time').value=isEdit?(sh&&sh.time||''):(String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'));
   document.getElementById('sharpening-modal-title').textContent=isEdit?'Edit Sharpening':'Log Sharpening';
   document.getElementById('sharpening-submit').textContent=isEdit?'Save Changes':'Save';
   document.getElementById('sharpening-delete').style.display=isEdit?'':'none';
@@ -1396,19 +1452,20 @@ function openSharpeningModal(idx){
 }
 function closeSharpeningModal(){
   document.getElementById('sharpening-modal').classList.remove('open');
-  if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('session-modal').classList.contains('open'))
+  if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('session-modal').classList.contains('open')&&!document.getElementById('rankup-modal').classList.contains('open'))
     document.getElementById('backdrop').classList.remove('vis');
   editingShIdx=-1;
 }
 document.getElementById('stat-sharpening-card').addEventListener('click',openSharpeningModal);
 document.getElementById('sharpening-submit').addEventListener('click',()=>{
   const date=document.getElementById('sharpening-date').value;
+  const time=document.getElementById('sharpening-time').value||null;
   if(!date)return;
   if(editingShIdx>=0){
     sharpenings[editingShIdx].date=date;
+    sharpenings[editingShIdx].time=time;
   }else{
-    const totalMin=sessions.reduce((sum,s)=>sum+s.duration,0);
-    sharpenings.push({date,iceTimeAtSharpening:totalMin});
+    sharpenings.push({date,time});
   }
   saveLog();closeSharpeningModal();
   if(currentTab==='log')renderLog();
@@ -1420,6 +1477,44 @@ document.getElementById('sharpening-delete').addEventListener('click',()=>{
   if(!confirm('Delete this sharpening?'))return;
   sharpenings.splice(editingShIdx,1);
   saveLog();closeSharpeningModal();
+  if(currentTab==='log')renderLog();
+  if(navigator.vibrate)navigator.vibrate(8);
+});
+
+function openRankupModal(idx){
+  editingRkIdx=idx;
+  const r=rankups[idx];if(!r)return;
+  const sk=SMAP[r.skillId];const nm=sk?sk.n:r.skillId;
+  const sd=r.side?' ('+r.side+')':'';
+  const lnm=LEVEL_NAMES[r.to]||'';
+  document.getElementById('rankup-modal-info').textContent=nm+sd+' \u2192 '+lnm;
+  document.getElementById('rankup-date').value=r.date;
+  document.getElementById('rankup-time').value=r.time||'';
+  document.getElementById('rankup-modal').classList.add('open');
+  document.getElementById('backdrop').classList.add('vis');
+}
+function closeRankupModal(){
+  document.getElementById('rankup-modal').classList.remove('open');
+  if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('session-modal').classList.contains('open')&&!document.getElementById('sharpening-modal').classList.contains('open'))
+    document.getElementById('backdrop').classList.remove('vis');
+  editingRkIdx=-1;
+}
+document.getElementById('rankup-submit').addEventListener('click',()=>{
+  if(editingRkIdx<0)return;
+  const date=document.getElementById('rankup-date').value;
+  const time=document.getElementById('rankup-time').value||null;
+  if(!date)return;
+  rankups[editingRkIdx].date=date;
+  rankups[editingRkIdx].time=time;
+  saveLog();closeRankupModal();
+  if(currentTab==='log')renderLog();
+  if(navigator.vibrate)navigator.vibrate(8);
+});
+document.getElementById('rankup-delete').addEventListener('click',()=>{
+  if(editingRkIdx<0)return;
+  if(!confirm('Delete this rank up?'))return;
+  rankups.splice(editingRkIdx,1);
+  saveLog();closeRankupModal();
   if(currentTab==='log')renderLog();
   if(navigator.vibrate)navigator.vibrate(8);
 });
