@@ -562,6 +562,176 @@ html{scrollbar-width:none}
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
 }
 .sharpening-modal.open{transform:translateY(0)}
+
+/* ===== LEARN MORE MODAL ===== */
+.lm-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,.55);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+}
+.lm-overlay.open{opacity:1;pointer-events:auto}
+
+.lm-modal{
+  position:fixed;inset:0;z-index:310;
+  background:var(--panel-bg);
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  opacity:0;pointer-events:none;
+  transform:translateY(12px);
+  transition:opacity .3s ease,transform .3s ease;
+}
+.lm-modal.open{
+  opacity:1;pointer-events:auto;
+  transform:translateY(0);
+}
+
+.lm-header{
+  position:sticky;top:0;z-index:2;
+  background:var(--panel-bg);
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--surface-border);
+}
+.lm-back{
+  width:36px;height:36px;border-radius:10px;
+  border:1px solid var(--surface-border);
+  background:var(--surface);color:var(--text2);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.lm-back:active{transform:scale(.92)}
+.lm-back svg{
+  width:18px;height:18px;stroke:currentColor;
+  fill:none;stroke-width:2;stroke-linecap:round;
+}
+.lm-title{
+  font-size:16px;font-weight:700;color:var(--text1);
+  flex:1;min-width:0;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;
+}
+.lm-phase{
+  font-size:9px;font-weight:700;color:var(--phase-text);
+  background:var(--phase-bg);border:1px solid var(--phase-border);
+  border-radius:5px;padding:2px 7px;
+  text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;
+}
+
+.lm-body{padding:16px 16px 80px}
+
+.lm-section{margin-bottom:20px}
+.lm-section-title{
+  font-size:12px;font-weight:700;color:var(--phase-text);
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;
+}
+.lm-section-title svg{
+  width:16px;height:16px;stroke:currentColor;
+  fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+
+.lm-text{font-size:13px;color:var(--text2);line-height:1.6}
+
+.lm-steps{list-style:none;counter-reset:step;padding:0;margin:0}
+.lm-steps li{
+  counter-increment:step;
+  font-size:13px;color:var(--text2);line-height:1.5;
+  padding:8px 12px;margin-bottom:6px;
+  background:var(--surface);border:1px solid var(--surface-border);
+  border-radius:10px;display:flex;gap:10px;align-items:center;
+}
+.lm-steps li::before{
+  content:counter(step);
+  min-width:24px;height:24px;border-radius:50%;flex-shrink:0;
+  background:var(--phase-text);color:#fff;
+  font-size:11px;font-weight:700;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  padding-top:1px;
+}
+
+.lm-mistakes{list-style:none;padding:0;margin:0;counter-reset:mistake}
+.lm-mistakes li{
+  counter-increment:mistake;
+  font-size:13px;color:var(--text2);line-height:1.5;
+  padding:8px 12px;margin-bottom:6px;
+  background:var(--surface);border:1px solid var(--surface-border);
+  border-radius:10px;
+  display:flex;gap:10px;align-items:center;
+}
+.lm-mistakes li::before{
+  content:'\26A0';flex-shrink:0;
+  min-width:24px;height:24px;border-radius:50%;
+  background:var(--phase-text);color:#fff;
+  font-size:12px;line-height:1;padding-bottom:2px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.lm-yt-container{
+  position:relative;width:100%;
+  padding-bottom:56.25%;
+  border-radius:12px;overflow:hidden;
+  background:#000;cursor:pointer;
+  margin-bottom:8px;
+}
+.lm-yt-container img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;
+}
+.lm-yt-play{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:64px;height:44px;
+  background:rgba(255,0,0,.85);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.lm-yt-container:hover .lm-yt-play{background:#f00}
+.lm-yt-play svg{
+  width:24px;height:24px;fill:#fff;stroke:none;
+  margin-left:3px;
+}
+.lm-yt-container iframe{
+  position:absolute;inset:0;width:100%;height:100%;
+  border:none;
+}
+
+.lm-accordion{
+  border:1px solid var(--surface-border);
+  border-radius:12px;overflow:hidden;margin-top:10px;
+}
+.lm-accordion-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;cursor:pointer;
+  background:var(--surface);font-size:12px;font-weight:700;
+  color:var(--text2);text-transform:uppercase;letter-spacing:.3px;
+  user-select:none;-webkit-user-select:none;
+  border:none;width:100%;font-family:inherit;
+}
+.lm-accordion-hdr:active{opacity:.7}
+.lm-accordion-chevron{
+  width:16px;height:16px;transition:transform .3s;
+  color:var(--text3);
+}
+.lm-accordion.open .lm-accordion-chevron{transform:rotate(180deg)}
+.lm-accordion-body{
+  display:grid;grid-template-rows:0fr;
+  transition:grid-template-rows .35s ease;
+}
+.lm-accordion.open .lm-accordion-body{grid-template-rows:1fr}
+.lm-accordion-inner{
+  overflow:hidden;min-height:0;
+  padding:0 14px;
+}
+.lm-accordion.open .lm-accordion-inner{padding:8px 14px 14px}
+
+.sdc-learn-more{
+  border:none;background:none;padding:0;
+  color:var(--phase-text);
+  font-family:inherit;font-size:11px;font-weight:600;
+  cursor:pointer;transition:opacity .15s;
+  white-space:nowrap;margin-left:auto;
+}
+.sdc-learn-more:hover{opacity:.7}
+.sdc-learn-more:active{opacity:.5}
 </style>
 </head>
 <body>
@@ -678,6 +848,9 @@ html{scrollbar-width:none}
   <button class="modal-delete" id="rankup-delete">Delete Rank Up</button>
 </div>
 
+<div class="lm-overlay" id="lm-overlay"></div>
+<div class="lm-modal" id="lm-modal"></div>
+
 <div class="backdrop" id="backdrop"></div>
 <div id="theme-panel">
   <h3>Choose Theme</h3>
@@ -791,6 +964,358 @@ function spritePos(id){
   const y=p[1]*(100/7);
   return `${x}% ${y}%`;
 }
+
+/* =============== LEARN MORE CONTENT =============== */
+const SKILL_CONTENT={
+'falling-recovery':{
+  explanation:'Falling and recovery is the very first skill every ice skater must learn. Knowing how to fall safely removes fear and prevents injury, which makes learning every other skill easier. The goal is to fall in a controlled way onto the fleshiest parts of your body and get back up efficiently without grabbing the boards or another skater.',
+  steps:['Bend your knees deeply and squat down as low as you can.','Lean slightly to one side and lower yourself onto your hip and outer thigh.','Tuck your chin to your chest to protect your head.','Keep your fingers off the ice — make fists or place hands on your thighs.','To get up, roll onto your hands and knees.','Place one foot between your hands, blade flat on the ice.','Press down on your thigh and push yourself up to standing with knees bent.'],
+  mistakes:['Falling backward with arms extended — this risks wrist fractures.','Trying to catch yourself with straight arms and open palms on the ice.','Standing up with straight legs instead of staying low and using your thigh muscles.'],
+  videos:['zGHdZ8YhG1k','Mwip1ZaJ_98','1RATr9DLzUk']
+},
+'forward-marching':{
+  explanation:'Forward marching is your first way of moving across the ice. Rather than gliding, you literally walk on the ice with small steps, keeping your weight centered over your blades. This builds balance and confidence before you learn to push and glide. Think of it as walking with slightly bent knees on a very slippery surface.',
+  steps:['Stand at the boards with feet shoulder-width apart, knees softly bent.','Hold your arms out to the sides at about waist height for balance.','Shift your weight fully onto your left foot.','Lift your right foot just one inch off the ice and place it down ahead of you.','Shift your weight onto the right foot and repeat with the left.','Take small, deliberate steps — do not rush or lean forward.'],
+  mistakes:['Looking down at your feet instead of looking forward across the rink.','Keeping your legs straight — always maintain a gentle knee bend.','Taking steps that are too large, which throws off your balance.'],
+  videos:['GAyMgZc8hJA','rv-mHUQG6lg','1wRIPjVcje8']
+},
+'fwd-two-foot-glide':{
+  explanation:'The forward two-foot glide is the foundation of skating movement. After marching to build momentum, you bring your feet parallel and coast forward on two blades. This is where you first experience the sensation of true gliding and learn to trust your edges. Good posture and knee bend are everything.',
+  steps:['Start with a few marching steps to build some forward speed.','Bring both feet parallel, about hip-width apart.','Bend your knees so you can feel pressure on the balls of your feet.','Hold your arms out to the sides for balance.','Keep your core tight and your back straight — do not hunch.','Glide as far as you can, then march again if you slow down.'],
+  mistakes:['Standing too upright with locked knees — you will wobble and fall.','Leaning too far forward from the waist instead of bending at the knees.','Feet too close together or too far apart — aim for hip-width.'],
+  videos:['9zJuwbVSmPY','2TZqmAoyU6g','1wRIPjVcje8']
+},
+'forward-swizzles':{
+  explanation:'Forward swizzles (also called "lemons" because your feet trace a lemon shape on the ice) teach you to generate movement without lifting your feet. You push your heels out, then pull your toes back together, creating a repeating hourglass pattern. This is your first introduction to using edges to create power.',
+  steps:['Start with feet together, toes pointing slightly outward in a small V.','Bend your knees and press outward through your heels.','Let your feet separate to slightly wider than shoulder-width.','Begin pulling your toes back inward, squeezing your inner thigh muscles.','Bring your feet back together to the starting position.','Repeat without stopping — each push-pull cycle should feel smooth.'],
+  mistakes:['Pushing with your toes instead of your heels — the power comes from heel pressure.','Not bending your knees enough, making the push weak and wobbly.','Rushing the movement — slow and controlled is better than fast and sloppy.'],
+  videos:['r8VG-3tFBho','JkSFnmR04ic','E2bzX5taswY']
+},
+'rocking-horse':{
+  explanation:'The rocking horse combines one forward swizzle immediately followed by one backward swizzle. It teaches you to shift your weight from the balls of your feet to your heels and back, giving you your first taste of backward movement. The rocking motion builds the comfort needed for backward skating.',
+  steps:['Start with feet together, knees bent.','Do one forward swizzle: push heels out, pull toes back together.','Immediately shift your weight onto your heels.','Do one backward swizzle: push toes out, pull heels back together.','Shift weight forward again and repeat the cycle.','Keep your arms out for balance and your upper body still.'],
+  mistakes:['Leaning too far forward or backward during the weight shift.','Pausing between the forward and backward swizzle — it should be one fluid motion.','Straightening your legs during the transition.'],
+  videos:['vfbWYyChUmI','1J42cuiHx_o','E1kYM53ccM0']
+},
+'dip':{
+  explanation:'The dip teaches you to maintain balance while lowering your center of gravity on a glide. You skate forward and bend deeply into a squat while both blades stay on the ice. This builds leg strength, balance, and confidence in your edges — all essential for advanced moves like lunges and sit spins later.',
+  steps:['Build some forward speed with a few pushes or swizzles.','Bring both feet parallel in a glide position.','Slowly bend your knees, sinking as low as you can.','Keep your arms extended forward for counterbalance.','Hold the low position for as long as you can while gliding.','Rise back up smoothly, pressing through your thighs.'],
+  mistakes:['Bending at the waist instead of at the knees — keep your chest up.','Going down too fast and losing your balance backward.','Letting your feet drift apart as you lower — keep them parallel.'],
+  videos:['X829xKqyEwE','6mIzuMyp8Yk','GB2LicY2Ezs']
+},
+'fwd-snowplow-stop':{
+  explanation:'The forward snowplow stop is your first stopping technique. By pushing your heels outward and pressing the inside edges of your blades into the ice, you create friction that slows and stops your movement. It is named after the V-shape your feet make, similar to a snowplow. This is the most important safety skill for beginners.',
+  steps:['Build moderate forward speed with a glide.','Start with feet parallel, knees bent.','Slowly push both heels outward, turning your toes inward.','Press the inside edges of your blades into the ice — you should feel scraping.','Increase the pressure gradually until you come to a complete stop.','Keep your weight centered — do not lean forward or backward.'],
+  mistakes:['Not pressing hard enough with the edges — you just coast instead of stopping.','Pushing toes out instead of heels — this will trip you forward.','Only using one foot instead of both, creating uneven stopping.'],
+  videos:['rhQY1_bTjVs','uH3ozA7e3zw','COJOyWCYoHc']
+},
+'forward-skating':{
+  explanation:'Forward skating is the natural evolution from marching. Instead of lifting your feet straight up and down, you push off to the side using your blade edges and glide between pushes. This is real skating — alternating pushes and glides to travel across the ice with efficiency and increasing speed.',
+  steps:['Start in a basic stance: knees bent, arms out, feet shoulder-width apart.','Turn your right foot slightly outward.','Push off the inside edge of your right blade diagonally to the side.','Shift your weight onto your left foot and glide forward.','Bring the right foot back alongside the left.','Repeat on the other side: push left, glide on right.'],
+  mistakes:['Pushing straight back (like running) instead of pushing to the side.','Not fully transferring your weight to the gliding foot.','Keeping your pushing foot on the ice too long after the push.'],
+  videos:['8vaZXbHHQxM','rv-mHUQG6lg','-7QqRz2EZAM']
+},
+'fwd-one-foot-glide':{
+  explanation:'The forward one-foot glide challenges you to balance on a single blade while moving. This is a huge milestone because nearly every advanced skill — edges, turns, jumps, spins — requires solid one-foot balance. You will practice on both feet since the skill requires equal comfort on each side.',
+  steps:['Build forward speed with a few strong pushes.','Glide on two feet in a stable position.','Slowly shift all your weight onto one foot.','Lift the free foot just slightly off the ice (one to two inches).','Hold the glide for as long as possible with your knee bent.','Set the free foot down gently and try the other side.'],
+  mistakes:['Lifting the free foot too high, which shifts your center of gravity.','Locking the skating knee — keep it soft and bent.','Looking down instead of keeping your eyes forward.'],
+  videos:['iU5cVON1n2g','hKnyLPAgBPQ','eKCmxOisO78']
+},
+'forward-slalom':{
+  explanation:'Forward slalom involves wiggling both feet side-to-side in parallel while moving forward, like a skier doing slalom turns. Both feet stay on the ice and move together. This teaches you edge control and body rotation while building a fun, flowing rhythm across the ice.',
+  steps:['Build moderate forward speed.','Keep both feet parallel, about hip-width apart.','Turn both feet slightly to the right, pressing your left edges.','Immediately turn both feet slightly to the left, pressing your right edges.','Continue alternating in a smooth, rhythmic S-pattern.','Use your hips and knees to guide the direction, not your upper body.'],
+  mistakes:['Moving only your feet without engaging your knees and hips.','Making the S-curves too large — start small and controlled.','Leaning your upper body side-to-side — keep it centered and quiet.'],
+  videos:['Q6pW8m7qJhA','Dvjqhv8R2-A','oB87kcZk7zI']
+},
+'backward-skating':{
+  explanation:'Moving backward on ice is intimidating at first but essential for nearly all intermediate and advanced skills. Backward skating starts with small steps and builds to smooth glides. The key is learning to look over your shoulder periodically for safety while keeping your weight slightly toward the balls of your feet.',
+  steps:['Stand with your back to the direction you want to travel, knees bent.','Hold your arms out to the sides for balance.','Turn your toes slightly inward.','Push gently with one foot, pressing the inside edge backward.','Shift your weight to the other foot and repeat.','Keep your head up and check over your shoulder regularly.'],
+  mistakes:['Leaning too far back — keep your weight centered to slightly forward.','Looking down at the ice instead of checking over your shoulder.','Taking large steps instead of small, controlled pushes.'],
+  videos:['dZsfWfYxqzw','xUc0_3ab4uc','cyQZ8bauDvY']
+},
+'backward-swizzles':{
+  explanation:'Backward swizzles are the reverse of forward swizzles — your toes push outward and your heels pull back together, creating a lemon shape traveling backward. This is typically the most comfortable way for beginners to build backward speed and gets your body used to moving in reverse.',
+  steps:['Stand with feet together, toes turned slightly inward, knees bent.','Push your toes outward, letting your feet separate.','When feet are wider than shoulder-width, begin pulling heels together.','Squeeze your inner thighs to bring your feet back to the start.','Repeat immediately for continuous backward movement.','Keep your arms out and your back straight — do not look down.'],
+  mistakes:['Pushing with your heels instead of your toes.','Not bending your knees deeply enough to engage the edges.','Arching your back instead of keeping your core engaged.'],
+  videos:['LUKEQIw1SVk','dZsfWfYxqzw','r8VG-3tFBho']
+},
+'two-foot-turn':{
+  explanation:'The two-foot turn is your first rotational move — you rotate 180 degrees on the spot from forward to backward while both feet stay on the ice. It teaches you to manage the transition between forward and backward skating and introduces you to the concept of checking (using your shoulders and arms to control rotation).',
+  steps:['Glide forward on two feet, knees bent.','Extend your arms out to the sides.','Begin rotating your shoulders and head in the direction you want to turn.','Allow your hips and feet to follow your upper body.','Keep both feet on the ice throughout the 180-degree rotation.','Finish facing backward with knees still bent and arms out.'],
+  mistakes:['Lifting a foot off the ice during the turn — keep both blades down.','Not committing to the rotation — hesitation causes you to get stuck halfway.','Snapping the turn too fast instead of using a smooth, controlled rotation.'],
+  videos:['BCCXsY1RX0E','z8NdzDnCsx4','a_Y3UOIDCrY']
+},
+'forward-stroking':{
+  explanation:'Forward stroking is the refined version of forward skating. Each stroke consists of a powerful push from the full blade edge followed by an extended one-foot glide. Stroking develops proper technique: full knee bend on the push, extension through the ankle, and a long, balanced glide on the skating foot. This is the foundation of elegant, efficient skating.',
+  steps:['Start with feet together, knees deeply bent.','Push off the inside edge of your right foot using the full blade.','Extend your pushing leg fully behind you, toe pointed.','Glide on your left foot with a deep knee bend.','Bring the right foot back next to the left smoothly.','Repeat on the other side with equal power and extension.'],
+  mistakes:['Not fully extending the pushing leg — you lose power and look choppy.','Rising up between strokes instead of maintaining a consistent knee bend.','Pumping your arms — keep your upper body quiet and still.'],
+  videos:['-7QqRz2EZAM','8vaZXbHHQxM','NF_Zmii6cNA']
+},
+'forward-pumps':{
+  explanation:'Forward pumps generate speed on a circle using edge pressure rather than stroking. Your inside foot stays on the ice tracing the circle while your outside leg does a push-and-recover motion. This is your introduction to skating on curves and crossovers will build directly on this skill.',
+  steps:['Skate onto a face-off circle or mark a curved path.','Place your inside foot on the circle, knee bent, on an inside edge.','Push your outside foot away from the circle using the inside edge.','Let the outside foot extend, then bring it back next to the inside foot.','Repeat the pump to build speed around the circle.','Practice in both directions — clockwise and counterclockwise.'],
+  mistakes:['Not committing your weight to the inside foot — you drift off the circle.','Pushing straight back instead of outward away from the curve.','Leaning your upper body into the circle too much.'],
+  videos:['ssk15saJpOg','et5Jt1PMAk8','189APBtIi9Q']
+},
+'moving-two-foot-turn':{
+  explanation:'The moving two-foot turn is the traveling version of the stationary two-foot turn. You execute a 180-degree rotation from forward to backward while gliding along a curve. This builds on your earlier two-foot turn and introduces the concept of turning with momentum — essential for more advanced one-foot turns like 3-turns.',
+  steps:['Skate forward on a gentle curve with moderate speed.','Bend your knees and extend your arms for balance.','Begin rotating your shoulders in the direction of the curve.','Let your hips and feet follow, keeping both blades on the ice.','Complete the 180-degree turn and continue gliding backward on the curve.','Check your rotation by holding your arms in the backward position.'],
+  mistakes:['Turning on a straight line instead of on a curve.','Losing too much speed during the turn — maintain your momentum.','Not checking (stopping the rotation) after completing the turn.'],
+  videos:['Rp1YaU1lun0','BCCXsY1RX0E','z8NdzDnCsx4']
+},
+'back-two-foot-glide':{
+  explanation:'The backward two-foot glide is the backward equivalent of the forward two-foot glide. After building some backward momentum, you let both blades coast backward. This forces you to trust your backward balance and develop comfort moving in a direction you cannot see. Regular shoulder checks are essential.',
+  steps:['Build backward speed using backward swizzles or pushes.','Bring both feet parallel, about hip-width apart.','Bend your knees and shift your weight slightly toward the balls of your feet.','Let yourself glide backward with arms extended for balance.','Look over one shoulder to check behind you periodically.','Hold the glide as long as possible before needing another push.'],
+  mistakes:['Leaning backward — keep your weight centered or slightly forward.','Not checking behind you, which is unsafe.','Tensing up — stay relaxed in your knees and ankles.'],
+  videos:['Vc3g6xoCX_s','SlrZ_IYfAMo','dZsfWfYxqzw']
+},
+'forward-chasses':{
+  explanation:'Forward chassés (pronounced sha-SAY) are a step-together-step pattern performed on a circle. They are the precursor to crossovers. You step your outside foot next to your inside foot and then extend the inside foot back to its leading position. This teaches weight transfer and balance on curves.',
+  steps:['Skate forward on a circle, inside foot leading.','Pick up your outside foot and place it next to your inside foot on the circle.','Shift your weight to the outside foot momentarily.','Step your inside foot forward to resume the lead position on the circle.','Repeat this step-together-step rhythm around the circle.','Practice on circles in both directions.'],
+  mistakes:['Stepping too far ahead or behind instead of right next to the other foot.','Not maintaining the curve — you drift off the circle.','Forgetting to bend your knees during each step.'],
+  videos:['5SsqBDjdnS0','tlpu9-LjV-o','1BqJUai_g5k']
+},
+'back-snowplow-stop':{
+  explanation:'The backward snowplow stop mirrors the forward version but while moving backward. You push your heels outward and press the inside edges of your blades into the ice. This is critical for safety — you need to be able to stop going backward before attempting any backward skating at speed.',
+  steps:['Build moderate backward speed.','Start with feet parallel, knees bent.','Push both heels outward, turning your toes inward (pigeon-toed).','Press the inside edges of your blades firmly into the ice.','Increase the pressure gradually until you come to a complete stop.','Keep your weight centered and arms out for balance.'],
+  mistakes:['Not pressing hard enough — you barely slow down.','Bending at the waist instead of the knees during the stop.','Only using one foot, which makes you spin instead of stop.'],
+  videos:['0qYMeMdojAE','H-l83LNv8j8','RWxD3CJhtNY']
+},
+'fwd-outside-edge':{
+  explanation:'Forward outside edges are glides on one foot where your body leans to the outside of the curve you are tracing. "Outside" means you are on the edge of the blade that faces away from your body. Outside edges are the foundation for outside 3-turns, crossovers, many jumps, and all Moves in the Field patterns.',
+  steps:['Push onto your right foot and glide on the outside (right) edge.','Lean your entire body slightly to the right — not just your ankle.','Your free (left) foot should be held slightly behind or beside you.','Trace a smooth curve arcing to the right.','Hold the edge for as long as possible, aiming for a full half-circle.','Repeat on the left foot, curving to the left.'],
+  mistakes:['Leaning only with your ankle instead of your whole body.','Letting the free leg swing around, which disturbs your balance.','Not committing to the curve — flat edges produce wobbly lines.'],
+  videos:['dJwWAA8gFSU','FxNdhpldt2w','gK8mOMAgY-w']
+},
+'fwd-inside-edge':{
+  explanation:'Forward inside edges are the counterpart to outside edges. You glide on one foot leaning toward the inside of the curve, on the edge of the blade closest to your body. Inside edges are critical for inside 3-turns, Mohawk turns, Salchow jumps, and most transitional footwork sequences.',
+  steps:['Push onto your right foot and glide on the inside (left-leaning) edge.','Lean your body slightly to the left, into the curve.','Hold your free foot slightly in front or beside you.','Trace a smooth curve arcing to the left on your right foot.','Hold the edge as long as possible, building confidence.','Repeat on the left foot, curving to the right.'],
+  mistakes:['Dropping your free hip — keep both hips level.','Using your toe pick to steer instead of your edge lean.','Gripping the ice with your toes instead of pressing through the ball of your foot.'],
+  videos:['WeL4Q7RAW7Y','FxNdhpldt2w','dJwWAA8gFSU']
+},
+'fwd-crossovers':{
+  explanation:'Forward crossovers are the primary way to build speed and navigate curves on the ice. The outside foot crosses over the inside foot on each step, with both feet pushing to generate power. This is one of the most-used skills in all of skating — you will use crossovers in every session for the rest of your skating life.',
+  steps:['Skate forward on a counterclockwise circle, left foot on the inside.','Push with the inside (left) edge of your right foot.','Cross your right foot over your left, placing it on the inside of the circle.','Push with the outside edge of your left foot (the "underpush").','Bring your left foot back to the inside position.','Repeat with rhythm: cross, push, recover, cross, push, recover.'],
+  mistakes:['Only stepping over without pushing — you need power from both feet.','Not bending your knees enough, which makes the crossover stiff and small.','Leaning your upper body too far into the circle instead of staying upright.'],
+  videos:['kiixg2aczH4','pgwVCAiRrDk','UjnDyMkZSrU']
+},
+'back-one-foot-glide':{
+  explanation:'The backward one-foot glide is one of the most challenging balance skills for developing skaters. You must maintain a steady backward glide on a single blade while resisting the urge to put your other foot down. This builds the balance foundation for back edges, back crossovers, and all backward turns.',
+  steps:['Build backward speed using backward crossovers or swizzles.','Glide on two feet in a backward position.','Slowly shift all your weight onto one foot.','Lift the free foot just one to two inches off the ice.','Keep your skating knee bent and your core tight.','Hold for as long as possible, then try the other foot.'],
+  mistakes:['Leaning backward — keep weight centered or slightly forward on the blade.','Lifting the free foot too high, disturbing your balance.','Tensing your ankle — let it stay relaxed and flexible.'],
+  videos:['nZ1W6rGNhh0','8qebXzQnpFQ','eKCmxOisO78']
+},
+'back-pumps':{
+  explanation:'Backward pumps are the backward equivalent of forward pumps. You generate speed on a circle by pushing the outside leg outward and recovering it while the inside foot holds the curve. This skill builds the muscle memory and edge control needed for backward crossovers.',
+  steps:['Stand on a circle facing backward, inside foot on the circle.','Push your outside foot away from the circle using its inside edge.','Let the outside foot extend out, then pull it back next to the inside foot.','Keep your inside foot steady on the circle throughout.','Repeat the pump motion to build speed around the circle.','Practice both clockwise and counterclockwise.'],
+  mistakes:['Leaning too far backward instead of staying centered.','Not pushing outward enough — the push should be away from the curve.','Lifting your inside foot off the ice during the pump.'],
+  videos:['b3L1eDOXsbw','et5Jt1PMAk8','J6I_IN65_tM']
+},
+'hockey-stop':{
+  explanation:'The hockey stop is a quick, aggressive stop where you turn both feet perpendicular to your direction of travel and skid to a halt. It is faster and more dramatic than a snowplow stop and works at higher speeds. Mastering the hockey stop gives you confidence to skate faster because you know you can stop at any time.',
+  steps:['Build moderate to high forward speed.','Keep your knees deeply bent and your weight centered.','Quickly rotate your hips and both feet 90 degrees to one side.','Press hard into the ice with both inside edges simultaneously.','Lean slightly away from the direction of the skid for balance.','Come to a complete stop — you should see a spray of ice shavings.'],
+  mistakes:['Not committing to the rotation — a half-turn just makes you spin.','Leaning forward during the stop, which sends you over the toe picks.','Only practicing one side — train both left and right hockey stops.'],
+  videos:['nIfU38nAYYk','Y_xjJJ47cfc','d4T7wQ05FDE']
+},
+'back-outside-edge':{
+  explanation:'Backward outside edges are glides on one foot while traveling backward, leaning to the outside of the curve. These edges are critical for back crossovers, back outside 3-turns, and jump landings (nearly every jump lands on a back outside edge). Mastering this edge is essential for advanced skating.',
+  steps:['Build backward speed from backward crossovers.','Push onto your right foot on a backward outside edge.','Lean your whole body slightly to the right.','Hold your free foot slightly in front of you.','Trace a curve arcing to the right as seen from above.','Hold the edge for a full half-circle, then try the left foot.'],
+  mistakes:['Looking down at the ice instead of over your shoulder.','Rotating your body too far into the circle — hold your check.','Sitting back on your heel instead of staying centered on the blade.'],
+  videos:['OQkMH_YFZDI','rxe1nvHbK1I','dJwWAA8gFSU']
+},
+'back-inside-edge':{
+  explanation:'Backward inside edges are backward glides on the edge of the blade closest to your body. You lean into the curve while traveling backward. These edges are crucial for back inside 3-turns, Salchow jump takeoffs, and many footwork sequences.',
+  steps:['Build backward speed from crossovers or pushes.','Push onto your right foot on a backward inside edge.','Lean your body slightly to the left, into the curve.','Hold your free foot slightly in front of or beside you.','Trace a curve arcing to the left while on your right foot.','Hold the edge, then repeat on the left foot.'],
+  mistakes:['Not committing to the lean — flat edges make wobbly curves.','Bending at the waist instead of keeping your body aligned.','Swinging your free leg around, which disrupts your edge.'],
+  videos:['OQkMH_YFZDI','716HD-YEKXI','XYRyOJRXr74']
+},
+'back-crossovers':{
+  explanation:'Backward crossovers are the backward version of forward crossovers and are essential for building speed and navigating curves while skating backward. They are also used as entries for many jumps and spins. The inside foot crosses behind the outside foot while both feet push to generate power.',
+  steps:['Skate backward on a counterclockwise circle.','Push with the outside edge of your right (outside) foot.','Cross your left (inside) foot behind your right.','Push with the inside edge of your right foot from underneath.','Bring your right foot back to the outside position.','Repeat with rhythm: cross behind, push, recover.'],
+  mistakes:['Crossing in front instead of behind — the inside foot goes behind.','Not using the underpush from the outside foot, losing power.','Standing too upright — deep knee bend is essential.'],
+  videos:['9mhnUmSCTUY','3iOqaiKEv6k','L3-iqj4E-i4']
+},
+'fwd-outside-3-turn':{
+  explanation:'The forward outside 3-turn is your first one-foot turn. Starting on a forward outside edge, you rotate 180 degrees and finish on a backward inside edge, all on one foot. The turn traces a "3" shape on the ice, hence the name. This turn is a prerequisite for waltz jumps and many other advanced elements.',
+  steps:['Glide forward on your right foot on an outside edge, tracing a curve to the right.','Extend your arms: left arm forward, right arm back, along the curve.','Begin rotating your shoulders and left arm toward the center of the circle.','Allow your hips to follow — the turn will happen naturally at the top of the curve.','Keep your knee bent throughout — do not straighten up.','After the turn, you should be on a backward inside edge. Check the rotation by holding your right arm forward.'],
+  mistakes:['Forcing the turn with your toe pick instead of letting the edge and rotation create it.','Straightening your skating knee at the moment of the turn.','Not checking after the turn — you will keep spinning uncontrollably.'],
+  videos:['njqJC85X8U0','L5tFYHHDkTc','R4FEwcD8kSY']
+},
+'swing-rolls':{
+  explanation:'Swing rolls combine edge skating with a flowing free-leg swing. You glide forward on an edge while swinging your free leg from behind you to in front, creating a beautiful, continuous pattern. Swing rolls develop balance, edge quality, and the free-leg control needed for jumps and spirals.',
+  steps:['Push onto your right foot on a forward outside edge.','Start with your free (left) leg extended behind you.','Smoothly swing your left leg forward past your skating foot.','As your free leg reaches the front, hold the position briefly.','Step onto the left foot and push onto a left forward outside edge.','Swing your right leg forward and repeat the pattern.'],
+  mistakes:['Swinging the free leg too forcefully, which pulls you off balance.','Not keeping the skating knee bent throughout the swing.','Letting the free foot touch the ice during the swing.'],
+  videos:['Q7nfJLtDgR8','AlGACvBIKNQ','Z3G3ayYfc6g']
+},
+'beg-two-foot-spin':{
+  explanation:'The two-foot spin is your introduction to the world of spinning. You rotate on two feet in a small circle, learning to find and stay on a fixed axis. The goal is controlled, continuous rotation without traveling across the ice. This builds the balance and comfort with spinning needed for all advanced spins.',
+  steps:['Stand with feet shoulder-width apart, knees bent.','Begin a slow counterclockwise rotation using your arms.','Pull your arms in close to your body to speed up (angular momentum).','Keep both feet flat on the ice with equal weight distribution.','Spot a fixed point and let it blur — do not try to track it.','To stop, extend your arms outward to slow the rotation.'],
+  mistakes:['Traveling across the ice instead of spinning in one spot.','Leaning too far to one side and falling off your axis.','Keeping your arms extended the entire time — pull them in to spin.'],
+  videos:['sxY4yGAAgEM','1Wb9CyUWjrM','ZWmNKqOEmGA']
+},
+'fwd-inside-3-turn':{
+  explanation:'The forward inside 3-turn is the companion to the forward outside 3-turn. You start on a forward inside edge and rotate to a backward outside edge, all on one foot. Inside 3-turns are crucial for entering Salchow jumps and are a key component of footwork sequences. Many skaters find inside 3-turns harder than outside 3-turns initially.',
+  steps:['Glide forward on your left foot on an inside edge, tracing a curve to the right.','Hold your right arm forward and left arm back along the curve.','Begin rotating your right arm and shoulder toward the center of the circle.','Let your hips follow — the turn happens at the top of the curve.','Keep your knee bent and maintain pressure on the inside edge.','After the turn, you are on a backward outside edge. Check the rotation by holding your left arm forward.'],
+  mistakes:['Stepping onto two feet instead of completing the turn on one foot.','Turning too early before establishing a clear inside edge.','Not checking the rotation after the turn — you will over-rotate.'],
+  videos:['Pf84NCH6u2E','lw07ZD2STJw','jONxtshKl54']
+},
+'change-of-edge':{
+  explanation:'Change of edge is the ability to smoothly transition from an outside edge to an inside edge (or vice versa) on one foot while gliding. This creates an S-shaped curve on the ice and is a fundamental skill for Moves in the Field patterns. It teaches you how to shift your body weight subtly to change your blade angle.',
+  steps:['Push onto your right foot on a forward outside edge, curving right.','Gradually shift your weight from the outside to the inside of your blade.','You should feel your body lean transition from right to left.','The curve will change direction — you are now on a forward inside edge.','Hold the new edge for an equal distance as the first edge.','Repeat on the other foot.'],
+  mistakes:['Making a sudden, jerky switch instead of a gradual, smooth transition.','Using your free leg to force the change instead of your body weight.','Not maintaining your knee bend during the transition.'],
+  videos:['CW59EFo5mu0','HCG_v59_8IQ','qrD1zPD-YpM']
+},
+'t-stop':{
+  explanation:'The T-stop is an elegant stopping technique where you drag one foot behind the other in a T-shape, using friction to slow down. It is quieter and more controlled than a hockey stop and is commonly used in figure skating. The trailing foot presses its inside edge into the ice while the front foot glides straight.',
+  steps:['Glide forward on your left foot with a straight line of travel.','Rotate your right foot 90 degrees so it is perpendicular to your left.','Place the inside edge of your right blade on the ice behind your left foot.','Press gently at first, increasing pressure to slow down.','Keep your weight primarily on the front (left) gliding foot.','Come to a smooth, controlled stop.'],
+  mistakes:['Putting too much weight on the trailing foot and tripping backward.','Not rotating the trailing foot a full 90 degrees — partial angles are unstable.','Scraping with the toe pick instead of the blade edge.'],
+  videos:['K1Kf0DOrb0I','aG2X6zxLgfE','6c-YKaKmkms']
+},
+'lunge':{
+  explanation:'The lunge is a dramatic skating move where you glide on one deeply bent leg while your other leg trails behind you with the blade dragging on the ice. It looks impressive and builds the leg strength and balance needed for advanced moves. The lunge is also a required element in some figure skating programs.',
+  steps:['Build moderate forward speed.','Shift all your weight onto your front (left) foot.','Bend your left knee deeply into a deep squat.','Extend your right leg straight behind you.','Let the top of your right blade or the tongue of the boot drag on the ice.','Hold the lunge as long as possible, keeping your chest upright.'],
+  mistakes:['Not bending the front leg deep enough — you need a very deep knee bend.','Leaning your chest forward instead of keeping it upright.','Dragging the toe pick aggressively, which catches and trips you.'],
+  videos:['FMWNmLUwrWU','QoL2aAbRjxw','Jr8kZAtWW_A']
+},
+'one-foot-spin':{
+  explanation:'The one-foot spin (scratch spin) is the foundation of all figure skating spins. You spin on one foot with your free leg and arms pulled in tight to maximize rotation speed. A well-centered one-foot spin can achieve remarkable speed and is a satisfying skill to master. This leads to sit spins, camel spins, and all combination spins.',
+  steps:['Enter from a backward crossover into a forward inside edge.','Step forward onto your left foot and push into the spin.','Start with arms and free leg extended to the side.','Gradually pull your arms and free leg in close to your body.','Cross your free foot in front of your ankle for a tight spinning position.','To exit, extend your arms and check to stop the rotation.'],
+  mistakes:['Traveling across the ice — you should spin on one spot.','Pulling in too fast before finding your center, which throws you off.','Bending at the waist instead of staying upright.'],
+  videos:['uD4IVjZQ35Q','zyat2c-5MXw','oT4wvPTVrTQ']
+},
+'mohawk-turn':{
+  explanation:'The Mohawk turn is a two-foot turn where you step from forward on one foot to backward on the other foot in a heel-to-heel transfer. Unlike a 3-turn which is on one foot, the Mohawk involves changing feet. There are inside and outside Mohawks. This turn is essential for ice dance, footwork sequences, and as an entry into jumps.',
+  steps:['Glide forward on your right foot on an inside edge.','Rotate your left foot 180 degrees so the heel of your left foot meets the heel of your right.','Step onto your left foot on a backward inside edge.','Shift your weight completely to the left foot.','Lift your right foot off the ice and hold the backward glide.','Check the rotation by holding your arms and looking over your shoulder.'],
+  mistakes:['Not turning the stepping foot a full 180 degrees.','Placing the feet too far apart during the step — heels should be close together.','Not fully transferring weight, resulting in a hesitant, two-footed slide.'],
+  videos:['MJkc9ONmxVY','HRyuif5OU74','8MrF6AxeN1w']
+},
+'waltz-jump':{
+  explanation:'The waltz jump is your first real jump in figure skating. It is a half-rotation (180-degree) jump: you take off forward from an outside edge and land backward on the other foot. Despite being the simplest jump, it teaches you every fundamental jumping mechanic — takeoff edge, spring, air position, and landing on a back outside edge.',
+  steps:['Glide forward on your left foot on a forward outside edge.','Swing your right leg forward and upward as you spring off your left toe.','Jump into the air, rotating 180 degrees counterclockwise.','Bring your arms in briefly at the peak of the jump.','Land on your right foot on a backward outside edge.','Extend your left leg behind you and hold the landing with arms checked.'],
+  mistakes:['Not swinging the free leg hard enough — the leg swing generates height.','Looking down during the jump instead of forward and up.','Landing on two feet instead of committing to a one-foot landing.'],
+  videos:['lajRteZxQxU','hNfNFJ_86Ro','6_kN32PMNCo']
+},
+'bunny-hop':{
+  explanation:'The bunny hop is a simple, non-rotational hop on the ice that builds jumping confidence. You push off your toe pick, jump over it, and land on the other foot. There is no rotation involved. It teaches you to spring off the ice, get airtime, and land on one foot — all fundamental mechanics for every real figure skating jump.',
+  steps:['Glide forward on your left foot with moderate speed.','Reach forward with your right toe pick and tap it into the ice.','Push off the right toe pick, springing upward.','Jump forward, keeping your body upright and arms extended.','Land on your right foot on a flat blade.','Immediately glide forward and repeat if desired.'],
+  mistakes:['Not reaching far enough forward with the toe pick.','Jumping too far forward instead of upward — height is more important.','Landing on two feet instead of the right foot alone.'],
+  videos:['N5mM_i6SoSA','d8rMlxbSbOk','u2EY1zaODYo']
+},
+'forward-spiral':{
+  explanation:'The forward spiral is a beautiful skating element where you glide forward on one foot with your free leg raised high behind you, creating an arabesque shape. The goal is to hold the free leg above hip level while maintaining strong edge quality and speed. Flexibility and balance work together in this element.',
+  steps:['Build strong forward speed.','Glide on your left foot on a forward outside or inside edge.','Gradually lift your right leg behind you.','Raise the free leg as high as flexibility allows — ideally above hip height.','Extend your arms gracefully for balance and presentation.','Hold the spiral position for as long as possible.'],
+  mistakes:['Dropping the free leg below hip level — always aim higher.','Bending at the waist too much, which lowers the free leg.','Losing speed — enter with plenty of momentum.'],
+  videos:['pJh-NE4IfQg','hNJxPMIBQpo','SoIscpHVVhw']
+},
+'salchow-jump':{
+  explanation:'The Salchow is typically the first full-rotation (360-degree) jump a skater learns. Named after Ulrich Salchow, it takes off from a backward inside edge. The entry is usually from a 3-turn or Mohawk, and the free leg swings around to initiate rotation. The Salchow is an edge jump — no toe pick assist.',
+  steps:['Enter from a left forward inside 3-turn or Mohawk onto a back inside edge.','Glide backward on your left foot on a back inside edge.','Bend your skating knee deeply and load the edge.','Swing your right leg around and upward as you spring off the left foot.','Pull your arms in for a tight rotation in the air.','Land on your right foot on a backward outside edge with arms checked.'],
+  mistakes:['Not loading (bending into) the takeoff edge deeply enough.','Swinging the free leg too wide instead of upward.','Pre-rotating on the ice before actually leaving the surface.'],
+  videos:['HtaJjqL64lE','mdDdGzol20w','9q0G0EEtDP4']
+},
+'toe-loop-jump':{
+  explanation:'The toe loop is often the first toe-assisted jump a skater learns and is one of the easier full-rotation jumps. You take off from a backward outside edge with a toe pick assist from the other foot. Toe loops are extremely important because they are the most common jump used in combinations (after a landing, you can immediately go into a toe loop).',
+  steps:['Approach from backward crossovers on a counterclockwise circle.','Glide backward on your right foot on a back outside edge.','Reach back with your left toe pick and plant it firmly in the ice.','Push off the left toe pick while springing upward off the right foot.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],
+  mistakes:['Reaching too far back with the toe pick, losing your balance.','Not using enough toe pick force — you need a firm plant.','Swinging the upper body instead of rotating as a unit.'],
+  videos:['6a3URzAHPGQ','wXBMwM3IGXE','tyPGU28q5Zc']
+},
+'backspin':{
+  explanation:'The backspin is a spin rotating in the opposite direction of your normal spin (clockwise for most skaters). You spin on your right foot instead of your left. The backspin is essential for combination spins and is a required element in many programs. It is also the landing position for many jumps, so a strong backspin builds overall spinning confidence.',
+  steps:['Enter from a backward outside edge or a wind-up position.','Step onto your right foot and push into a clockwise rotation.','Start with arms and free leg extended.','Gradually pull your arms in to increase speed.','Keep your weight centered on the ball of your right foot.','Exit by extending your arms and stepping out of the spin.'],
+  mistakes:['Trying to spin on the wrong part of the blade — stay on the ball of the foot.','Not centering before pulling in, causing you to travel.','Leaning too far to one side and losing the spin axis.'],
+  videos:['6sd_I_S2IY0','VFuidrhcqFk','RNwUp7oxJkI']
+},
+'loop-jump':{
+  explanation:'The loop jump is a full-rotation edge jump that takes off and lands on the same foot (right) on a back outside edge. There is no toe pick assist and no free leg swing — the rotation comes entirely from your body position and edge pressure. The loop jump is challenging because the takeoff feels unusual at first.',
+  steps:['Approach from backward crossovers on a counterclockwise circle.','Glide backward on your right foot on a strong back outside edge.','Cross your left foot in front of your right ankle.','Bend your right knee deeply, loading the edge.','Spring upward from the right foot, pulling arms in tightly.','Rotate 360 degrees and land on your right foot on a back outside edge.'],
+  mistakes:['Not crossing the free foot tightly enough at takeoff.','Leaning too far into the circle at takeoff.','Kicking the free leg during takeoff instead of holding it crossed.'],
+  videos:['StACSROyvo8','8qsW31N5K8A','W9pMB9p7ODY']
+},
+'flip-jump':{
+  explanation:'The flip jump is a toe-assisted jump that takes off from a backward inside edge. The key difference from a Lutz is the entry edge: the flip uses an inside edge. Entry is typically from a forward inside 3-turn. The free leg reaches back to plant the toe pick while the skating foot maintains the inside edge.',
+  steps:['Enter from a right forward inside 3-turn onto a left back inside edge.','Glide backward on your left foot on a back inside edge.','Reach back with your right toe pick and plant it firmly.','Push off the toe pick while springing upward.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],
+  mistakes:['Changing to an outside edge before takeoff (that would make it a Lutz).','Not reaching straight back with the toe pick — reaching to the side twists the jump.','Over-rotating the upper body before the toe pick is planted.'],
+  videos:['UAMOQ5TrhOM','sKc7D8Ks7w4','OcfCr1wu4nU']
+},
+'sit-spin':{
+  explanation:'The sit spin is performed in a deep squat position on one foot. The skating hip drops below knee level while spinning. It demands tremendous leg strength, balance, and the ability to maintain rotation speed while in a low position. Variations include the cannonball, pancake, and broken-leg sit spin.',
+  steps:['Enter the spin the same way as a one-foot spin — inside edge, step forward.','Begin spinning on your left foot with arms extended.','Slowly bend your skating knee and lower into a squat.','Extend your free (right) leg forward, parallel to the ice.','Pull your arms in to maintain speed while in the sit position.','Rise up to exit and check the rotation.'],
+  mistakes:['Not getting low enough — your hip must be below your knee level.','Losing speed as you sit down because you are lowering too quickly.','The free leg dropping down instead of staying parallel to the ice.'],
+  videos:['IvI3Up4MaiI','VaW60XAsV5Q','2UcxRurhb5E']
+},
+'camel-spin':{
+  explanation:'The camel spin is one of the most visually striking basic spins. You spin on one foot with your body horizontal, free leg extended behind you at or above hip level, forming a T-shape. It requires good flexibility, strong core control, and the ability to maintain a fixed spin axis while your mass is distributed horizontally.',
+  steps:['Enter from a forward inside edge, stepping onto your left foot.','Push into the spin and establish rotation.','Lean your upper body forward while lifting your right leg behind you.','Create a flat T-shape: torso and free leg parallel to the ice.','Hold your arms in a graceful position.','To exit, bring the free leg down and check the rotation.'],
+  mistakes:['Not lifting the free leg high enough — it must be at hip level or above.','Bending at the waist too sharply instead of keeping the back flat.','Dropping the head down instead of keeping it in line with the spine.'],
+  videos:['PCROWY0l3v8','Ga2tYqTFdxg','OO2xE9MJEZo']
+},
+'lutz-jump':{
+  explanation:'The Lutz jump is one of the most difficult single jumps because it requires a counter-rotated takeoff. You approach on a long backward outside edge curving in one direction, then rotate in the opposite direction for the jump. The counter-rotation makes the Lutz technically demanding but also one of the most valuable jumps in competition scoring.',
+  steps:['Skate backward on a long, straight-ish line on your left back outside edge.','Hold the outside edge firmly — do not let it change to an inside edge.','Reach back with your right toe pick and plant it firmly in the ice.','Spring upward against the natural curve of the edge.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],
+  mistakes:['Changing to an inside edge before takeoff — this is a "flutz" (really a flip).','Not holding the backward glide long enough before the toe pick plant.','Telegraphing the jump by winding up the upper body too much.'],
+  videos:['X3ivH8XllpI','Dti3fNip9sM','ibnro4l6DNM']
+},
+'axel':{
+  explanation:'The Axel is the most difficult single jump and the only jump that takes off going forward. It requires 1.5 rotations in the air (compared to one rotation for all other single jumps). The forward takeoff from an outside edge combined with the extra half-rotation makes the Axel a major milestone. Landing a clean single Axel is a proud achievement for any skater.',
+  steps:['Approach from backward crossovers, then step forward onto your left outside edge.','Ride the forward outside edge on a strong curve.','Drive your right knee and arms upward powerfully.','Spring off the left foot, rotating 1.5 times counterclockwise.','Pull into a tight air position with arms close to your body.','Land on your right foot on a backward outside edge with arms checked.'],
+  mistakes:['Not driving the knee and arms upward with enough force — the Axel needs height.','Wrapping the free leg around instead of driving it straight up.','Opening up too early in the air, causing under-rotation.'],
+  videos:['F8D1OEiHvpE','cF66y390JFI','0wBeLFPwitw']
+},
+'flying-camel':{
+  explanation:'The flying camel combines a jump entry with a camel spin. You jump into the air, achieve a camel (horizontal) position mid-flight, and land into a camel spin. It is a dramatic element that demonstrates both jumping ability and spinning control. This is one of the first "flying" spins most skaters learn.',
+  steps:['Build speed from backward crossovers.','Step forward onto your left foot on an inside edge.','Spring upward, kicking your right leg forward and up.','In the air, extend into a camel position — body and free leg horizontal.','Land on your left foot and continue directly into a camel spin.','Hold the camel spin position for several rotations before exiting.'],
+  mistakes:['Not getting enough height on the jump to establish the camel position.','Landing too hard and losing the spin — the landing must be controlled.','Bending the free leg in the air instead of keeping it extended.'],
+  videos:['Z5aYvq_3xi8','G34Pl-f_HAk','dTWndXzMKgE']
+},
+'combination-spin':{
+  explanation:'A combination spin changes positions (such as camel to sit to upright) without stopping the rotation. The skater must maintain speed and centering while transitioning between fundamentally different body positions. A well-executed combination spin shows versatility and is a required element in competitive programs.',
+  steps:['Enter a camel spin on your left foot with arms extended.','While spinning, slowly lower from the camel position into a sit spin.','Hold the sit spin for 2-3 rotations.','Rise up into an upright scratch spin position.','Pull your arms in tightly for maximum speed.','Exit by checking the rotation with arms extended.'],
+  mistakes:['Losing speed during transitions between positions.','Traveling across the ice during position changes.','Rushing through positions instead of holding each one clearly.'],
+  videos:['7F9SaSoQJDQ','2Zy_NU95V3Y','Eq1zC0t1SKA']
+},
+'double-salchow':{
+  explanation:'The double Salchow requires two full rotations (720 degrees) in the air from a backward inside edge takeoff. It is typically the first double jump a skater learns because the Salchow entry is the most natural. Success demands significantly more power, tighter air position, and faster rotation than the single version.',
+  steps:['Enter from a strong forward inside 3-turn or Mohawk onto a deep back inside edge.','Bend your skating knee deeply — more than for a single.','Swing your free leg powerfully around and upward.','Pull your arms in immediately as you leave the ice.','Hold a tight crossed-arm position for two full rotations.','Land on your right foot on a backward outside edge with arms checked.'],
+  mistakes:['Not pulling into a tight air position fast enough — you will under-rotate.','Opening up the arms and free leg too early.','Not bending the takeoff knee enough to generate height.'],
+  videos:['y42ZA1Q1KmU','0YAC_2zJ0Cg','5cDGEfO7Nzs']
+},
+'double-toe-loop':{
+  explanation:'The double toe loop requires two full rotations with a toe pick assist from a backward outside edge. After the double Salchow, this is usually the next double jump learned. It is particularly important because toe loops are the primary jump used in combinations, so a double toe loop unlocks powerful jump combinations.',
+  steps:['Approach from backward crossovers with strong speed.','Glide backward on your right foot on a back outside edge.','Reach back and plant your left toe pick firmly and deeply.','Push off powerfully, springing upward.','Pull into a tight air position immediately for two rotations.','Land on your right foot on a backward outside edge.'],
+  mistakes:['Not planting the toe pick deep enough — you need a strong anchor.','Leaning too far forward at takeoff.','Under-rotating because of insufficient jump height.'],
+  videos:['vZE0C0riWrk','vS_W7EsenSE','vuOyIZd4ub8']
+},
+'double-loop-flip-lutz':{
+  explanation:'Double loop, double flip, and double Lutz are the advanced double jumps. Each requires two full rotations with progressively more difficult takeoff mechanics. The double loop demands pure edge power, the double flip adds counter-rotation from a toe pick on an inside edge, and the double Lutz requires counter-rotation from an outside edge — making it the hardest double jump.',
+  steps:['Master the single version of each jump first with consistent landing.','Increase your single jump height until you have air time to spare.','Practice pulling into a tight air position faster from each takeoff.','Attempt the double with enough speed and spring for two rotations.','Focus on one jump at a time until each is consistent.','Land each cleanly on a backward outside edge with good flow.'],
+  mistakes:['Attempting doubles before singles are consistent and effortless.','Not generating enough height — doubles need significantly more air time.','Cheating rotation by pre-rotating on the ice before takeoff.'],
+  videos:['KujZRuhuqhU','roPXwrICIEA','nvRcR23nz2s']
+},
+'brackets':{
+  explanation:'A bracket turn is a one-foot turn similar to a 3-turn but with the turn going against the natural curve — making it significantly harder. Where a 3-turn turns into the circle, a bracket turns away from it. The tracing on the ice looks like a bracket symbol }. Brackets require excellent edge control and strong rotational checking.',
+  steps:['Glide forward on a strong outside or inside edge on a clear curve.','Hold your arms and shoulders firmly in position along the curve.','Initiate the turn by rotating your shoulders against the direction of the curve.','Allow the turn to happen on the blade — do not force it with your toe pick.','After the turn, you should be on the opposite edge traveling backward.','Check the rotation firmly to prevent over-rotation.'],
+  mistakes:['Turning into the circle instead of against it — that is a 3-turn, not a bracket.','Not having enough edge depth going into the turn.','Failing to check the rotation, causing the turn to become a full spin.'],
+  videos:['xPqP2LQxwmg','CJ5m19UuZSs','iPMvnw1bpaA']
+},
+'counters-rockers':{
+  explanation:'Counters and rockers are advanced one-foot turns that change direction without changing edge. A counter turns against the curve (like a bracket) but stays on the same edge. A rocker turns with the curve (like a 3-turn) but also stays on the same edge. These turns are required for high-level Moves in the Field and are components of advanced footwork sequences.',
+  steps:['Build strong one-foot edge control on both inside and outside edges.','For a counter: glide on an edge and turn against the curve while maintaining the same edge.','For a rocker: glide on an edge and turn with the curve while maintaining the same edge.','The key is controlling the rotation so precisely that the edge does not change.','Practice each type on all four edges (FO, FI, BO, BI).','Use strong arm and shoulder positions to control the turn.'],
+  mistakes:['Changing the edge during the turn — the edge must stay the same.','Confusing counters with brackets or rockers with 3-turns.','Not having sufficient edge depth and speed before attempting the turn.'],
+  videos:['iPMvnw1bpaA','qy8uL8KuReA','YLBXvXbpogk']
+},
+'twizzles':{
+  explanation:'Twizzles are traveling multi-rotational turns on one foot. Unlike a spin which stays in one spot, a twizzle moves across the ice while rotating. Think of it as a rapidly spinning one-foot glide. Twizzles are a signature element of ice dance and are also used in singles skating footwork sequences.',
+  steps:['Glide on one foot with good speed and edge control.','Begin rotating by pulling your arms in close.','Maintain your glide direction while spinning on one foot.','Keep your free foot close to your skating ankle.','Complete multiple rotations while traveling forward.','Exit by extending your arms and checking the rotation.'],
+  mistakes:['Stopping your forward momentum — you must keep traveling while rotating.','Touching the free foot down between rotations.','Losing your balance axis and wobbling during the turns.'],
+  videos:['TvqVaTh9IpM','57e3vAkCxHk','6yygtvAYZZI']
+},
+'biellmann-spin':{
+  explanation:'The Biellmann spin is one of the most iconic and visually spectacular figure skating spins. Named after Denise Biellmann, you spin on one foot while pulling your free blade above and behind your head with both hands. It requires extreme flexibility in the back and hips, plus strong one-foot spinning ability. This is considered a master-level spin element.',
+  steps:['Enter a strong one-foot spin on your left foot.','Establish a fast, centered rotation.','Reach behind you with your right hand and grab your right blade.','Bring your left hand to assist in pulling the blade upward.','Pull the blade up and over your head while maintaining the spin.','Hold the extended Biellmann position for several rotations before releasing.'],
+  mistakes:['Attempting this without sufficient back and hip flexibility — you risk injury.','Losing your spin center when reaching for the blade.','Pulling the blade up too quickly before the spin is fully centered.'],
+  videos:['QE-JdhHSh04','3DYRwRooQ_w','rpVaN7zep8o']
+}
+};
 
 /* =============== STATE =============== */
 let progress={};
@@ -927,7 +1452,7 @@ function openCard(skillId,itemEl){
 
   cardEl.innerHTML=`
     <div class="sdc-arrow"></div>
-    <div class="sdc-header"><span class="sdc-name">${skill.n}</span><span class="sdc-phase">${skill.p}</span></div>
+    <div class="sdc-header"><span class="sdc-name">${skill.n}</span><span class="sdc-phase">${skill.p}</span>${SKILL_CONTENT[skillId]?`<button class="sdc-learn-more" data-id="${skillId}">Learn More &rsaquo;</button>`:''}</div>
     <div class="sdc-desc">${skill.d}</div>
     <div class="sdc-controls">${controlsHTML}</div>
     <div class="sdc-prereq">${prereqNames?'Requires: '+prereqNames:''}</div>
@@ -959,8 +1484,17 @@ function openCard(skillId,itemEl){
     cardEl.querySelector('.sdc-arrow').style.left=arrowLeft+'px';
     cardEl.classList.add('open');
 
-    // Scroll card into view
-    setTimeout(()=>cardEl.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+    // Scroll card into view with extra padding at the bottom
+    setTimeout(()=>{
+      const cr=cardEl.getBoundingClientRect();
+      const vp=window.innerHeight;
+      const pad=80;
+      if(cr.bottom+pad>vp){
+        window.scrollBy({top:cr.bottom+pad-vp,behavior:'smooth'});
+      }else if(cr.top<0){
+        window.scrollBy({top:cr.top-pad,behavior:'smooth'});
+      }
+    },80);
   });
 
   // Mark selected
@@ -986,6 +1520,13 @@ function attachCardBtns(skillId){
       refreshCard(skillId,side);
     });
   });
+  const lmBtn=cardEl.querySelector('.sdc-learn-more');
+  if(lmBtn){
+    lmBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      openLearnMore(lmBtn.dataset.id);
+    });
+  }
 }
 
 function refreshCard(skillId,animSide){
@@ -1027,6 +1568,114 @@ function closeCard(instant){
   }
   activeCardId=null;
   document.querySelectorAll('.skill-item.selected').forEach(i=>i.classList.remove('selected'));
+}
+
+/* =============== LEARN MORE =============== */
+function ytThumb(vid){return `https://img.youtube.com/vi/${vid}/hqdefault.jpg`}
+
+function makeYtEmbed(vid){
+  return `<div class="lm-yt-container" data-vid="${vid}">
+    <img src="${ytThumb(vid)}" alt="Video thumbnail" loading="lazy">
+    <div class="lm-yt-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+  </div>`;
+}
+
+function openLearnMore(skillId){
+  const skill=SMAP[skillId];
+  const content=SKILL_CONTENT[skillId];
+  if(!skill||!content)return;
+
+  const modal=document.getElementById('lm-modal');
+  const overlay=document.getElementById('lm-overlay');
+
+  const stepsHTML=content.steps.map(s=>`<li><span>${s}</span></li>`).join('');
+  const mistakesHTML=content.mistakes.map(m=>`<li><span>${m}</span></li>`).join('');
+  const moreVideosHTML=content.videos.length>1
+    ?content.videos.slice(1).map(v=>makeYtEmbed(v)).join(''):'';
+
+  modal.innerHTML=`
+    <div class="lm-header">
+      <button class="lm-back" id="lm-back-btn">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="lm-title">${skill.n}</span>
+      <span class="lm-phase">${skill.p}</span>
+    </div>
+    <div class="lm-body">
+      <div class="lm-section">
+        <div class="lm-section-title">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+          About This Skill
+        </div>
+        <div class="lm-text">${content.explanation}</div>
+      </div>
+
+      <div class="lm-section">
+        <div class="lm-section-title">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          How To Do It
+        </div>
+        <ol class="lm-steps">${stepsHTML}</ol>
+      </div>
+
+      <div class="lm-section">
+        <div class="lm-section-title">
+          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Common Mistakes
+        </div>
+        <ul class="lm-mistakes">${mistakesHTML}</ul>
+      </div>
+
+      <div class="lm-section">
+        <div class="lm-section-title">
+          <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          Watch & Learn
+        </div>
+        ${makeYtEmbed(content.videos[0])}
+        ${moreVideosHTML?`
+        <div class="lm-accordion" id="lm-more-videos">
+          <button class="lm-accordion-hdr">
+            More Videos
+            <svg class="lm-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="lm-accordion-body">
+            <div class="lm-accordion-inner">${moreVideosHTML}</div>
+          </div>
+        </div>`:''}
+      </div>
+    </div>
+  `;
+
+  overlay.classList.add('open');
+  modal.classList.add('open');
+  modal.scrollTop=0;
+  document.body.style.overflow='hidden';
+
+  document.getElementById('lm-back-btn').addEventListener('click',closeLearnMore);
+  overlay.addEventListener('click',closeLearnMore);
+
+  modal.querySelectorAll('.lm-yt-container').forEach(c=>{
+    c.addEventListener('click',function(){
+      const v=this.dataset.vid;
+      this.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    },{once:true});
+  });
+
+  const acc=document.getElementById('lm-more-videos');
+  if(acc){
+    acc.querySelector('.lm-accordion-hdr').addEventListener('click',()=>{
+      acc.classList.toggle('open');
+    });
+  }
+}
+
+function closeLearnMore(){
+  const modal=document.getElementById('lm-modal');
+  const overlay=document.getElementById('lm-overlay');
+  modal.classList.remove('open');
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+  setTimeout(()=>{modal.innerHTML=''},350);
 }
 
 /* =============== DOM BUILD =============== */
@@ -1399,6 +2048,13 @@ document.getElementById('reset-btn').addEventListener('click',()=>{
 
 document.addEventListener('click',e=>{
   if(activeCardId&&!e.target.closest('.skill-item')&&!e.target.closest('.skill-detail-card'))closeCard();
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    const lm=document.getElementById('lm-modal');
+    if(lm&&lm.classList.contains('open')){closeLearnMore();e.stopPropagation();}
+  }
 });
 
 document.querySelectorAll('.nav-tab').forEach(t=>{
