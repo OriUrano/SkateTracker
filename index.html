@@ -1311,8 +1311,7 @@ function renderHistory(){
       const sk=SMAP[item.d.skillId];const nm=sk?sk.n:item.d.skillId;
       const sd=item.d.side?' ('+item.d.side+')':'';
       const lnm=LEVEL_NAMES[item.d.to]||'';const lc=LEVEL_COLORS[item.d.to]||'';
-      const timeStr=item.d.time?`<div class="history-time-sub">${fmt12h(item.d.time)}</div>`:'';
-      html+=`<div class="history-item rankup" data-rk-idx="${item.idx}"><div class="rankup-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6z"/></svg></div><div class="history-body"><div class="rankup-text">${nm}${sd}</div><div class="rankup-detail">Leveled up to <span class="rankup-level" style="background:${lc}"></span> ${lnm}</div>${timeStr}</div></div>`;
+      html+=`<div class="history-item rankup" data-rk-idx="${item.idx}"><div class="rankup-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6z"/></svg></div><div class="history-body"><div class="rankup-text">${nm}${sd}</div><div class="rankup-detail">Leveled up to <span class="rankup-level" style="background:${lc}"></span> ${lnm}</div></div></div>`;
     }else if(item.t==='sh'){
       const iceMin=shIceTime[item.idx]||0;
       const iceStr=iceMin>0?fmtDur(iceMin)+' on blades':'';
