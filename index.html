@@ -1273,7 +1273,11 @@ function renderCalBlock(startDate,endDate,totals,today,wrapW){
   const cw=cs+g;
   const dayH=cs;
   weeks.forEach((w,i)=>{const m=w[3]?w[3].getMonth():w[0].getMonth();if(m!==lastM){months.push({c:i,n:MN[m]});lastM=m}});
-  const mHTML=months.map(m=>`<span class="streak-month" style="position:absolute;left:${m.c*cw}px">${m.n}</span>`).join('');
+  const filteredMonths=months.filter((m,i)=>{
+    const nextCol=i<months.length-1?months[i+1].c:weeks.length;
+    return(nextCol-m.c)*cw>=24;
+  });
+  const mHTML=filteredMonths.map(m=>`<span class="streak-month" style="position:absolute;left:${m.c*cw}px">${m.n}</span>`).join('');
   let cells='';
   weeks.forEach(w=>w.forEach(day=>{
     const ds=localDS(day);
