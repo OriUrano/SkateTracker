@@ -182,7 +182,13 @@ main{padding:8px 0 220px}
 /* Single (no L/R) backgrounds */
 .skill-circle .bg-full{position:absolute;inset:0;transition:background .35s;border-radius:50%}
 
-/* L/R gradient backgrounds (reuses .bg-full with inline gradient) */
+/* L/R gradient backgrounds — @property makes custom props animatable */
+@property --lc{syntax:'<color>';inherits:false;initial-value:#888}
+@property --rc{syntax:'<color>';inherits:false;initial-value:#888}
+.skill-circle .bg-full.bg-lr{
+  background:linear-gradient(to right,var(--lc) 30%,var(--rc) 70%)!important;
+  transition:--lc .35s,--rc .35s;
+}
 
 /* Progress level backgrounds */
 [data-lv="-1"]{background:var(--locked)!important}
@@ -1053,7 +1059,7 @@ function build(){
 
       {
         const bf=document.createElement('div');
-        bf.className='bg-full';bf.dataset.lv='0';
+        bf.className='bg-full'+(s.lr?' bg-lr':'');bf.dataset.lv='0';
         circle.appendChild(bf);
       }
 
@@ -1102,15 +1108,12 @@ function updateAll(){
     if(s.lr){
       const ll=unlocked?getLevel(id,'L'):-1;
       const rl=unlocked?getLevel(id,'R'):-1;
-      const mx=Math.max(ll,rl);
-      bf.dataset.lv=mx;
-      const lc=LV_BG[ll+1],rc=LV_BG[rl+1];
-      if(ll===rl){bf.style.cssText=''}
-      else{bf.style.cssText=`background:linear-gradient(to right,${lc} 30%,${rc} 70%)!important`}
+      bf.dataset.lv=Math.max(ll,rl);
+      bf.style.setProperty('--lc',LV_BG[ll+1]);
+      bf.style.setProperty('--rc',LV_BG[rl+1]);
     }else{
       const lv=unlocked?getLevel(id):-1;
       bf.dataset.lv=lv;
-      bf.style.cssText='';
     }
   });
 
