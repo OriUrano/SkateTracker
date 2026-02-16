@@ -508,6 +508,24 @@ html{scrollbar-width:none}
 }
 .modal-submit:active{transform:scale(.98);opacity:.9}
 .modal-submit:disabled{opacity:.4;cursor:default}
+.modal-end-time{
+  font-size:13px;font-weight:600;color:var(--phase-text);
+  padding:8px 12px;border-radius:10px;
+  background:var(--surface-hover);border:1px solid var(--surface-border);
+  text-align:center;margin-top:8px;
+}
+.modal-end-time:empty{display:none}
+.modal-delete{
+  width:100%;padding:11px;border-radius:12px;border:none;
+  background:rgba(220,40,40,.08);color:#c62828;
+  font-family:inherit;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .15s;margin-top:8px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.modal-delete:active{transform:scale(.98);background:rgba(220,40,40,.15)}
+.history-item.session{cursor:pointer}
+.history-item.session:active{background:var(--surface-hover)}
+.history-time-sub{font-size:11px;color:var(--text3);margin-top:1px}
 </style>
 </head>
 <body>
@@ -560,10 +578,14 @@ html{scrollbar-width:none}
 </button>
 
 <div class="session-modal" id="session-modal">
-  <div class="modal-title">Log Session</div>
+  <div class="modal-title" id="modal-title">Log Session</div>
   <div class="modal-field">
     <label class="modal-label">Date</label>
     <input type="date" class="modal-input" id="session-date">
+  </div>
+  <div class="modal-field">
+    <label class="modal-label">Start Time</label>
+    <input type="time" class="modal-input" id="session-time">
   </div>
   <div class="modal-field">
     <label class="modal-label">Type</label>
@@ -584,8 +606,10 @@ html{scrollbar-width:none}
       <button class="dur-opt" data-dur="150">2:30</button>
       <button class="dur-opt" data-dur="180">3:00</button>
     </div>
+    <div class="modal-end-time" id="modal-end-time"></div>
   </div>
   <button class="modal-submit" id="session-submit" disabled>Add Session</button>
+  <button class="modal-delete" id="session-delete" style="display:none">Delete Session</button>
 </div>
 
 <div class="backdrop" id="backdrop"></div>
@@ -709,6 +733,7 @@ let calExpanded=false;
 let currentTab='skills';
 let modalType=null;
 let modalDur=null;
+let editingIdx=-1;
 
 function load(){
   try{const d=JSON.parse(localStorage.getItem('ice-skills-progress'));if(d)progress=d}catch(e){}
@@ -1085,6 +1110,26 @@ function getDayTotals(){
 function getIntensity(m){if(!m||m<=0)return 0;if(m<=30)return 1;if(m<=60)return 2;if(m<=90)return 3;return 4}
 function fmtDur(min){const h=Math.floor(min/60),m=min%60;if(h===0)return m+'m';if(m===0)return h+'h';return h+'h '+m+'m'}
 function fmtDateShort(d){return['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+' '+d.getDate()}
+function calcEndTime(start,dur){
+  if(!start||!dur)return '';
+  const [h,m]=start.split(':').map(Number);
+  const t=h*60+m+parseInt(dur);
+  return String(Math.floor(t/60)%24).padStart(2,'0')+':'+String(t%60).padStart(2,'0');
+}
+function fmt12h(t){
+  if(!t)return '';
+  const [h,m]=t.split(':').map(Number);
+  const ap=h>=12?'PM':'AM';
+  return (h%12||12)+':'+String(m).padStart(2,'0')+' '+ap;
+}
+function updateEndTimeDisplay(){
+  const el=document.getElementById('modal-end-time');if(!el)return;
+  const time=document.getElementById('session-time').value;
+  if(time&&modalDur){
+    const end=calcEndTime(time,modalDur);
+    el.textContent=fmt12h(time)+' \u2192 '+fmt12h(end);
+  }else{el.textContent=''}
+}
 
 function renderLog(){updateStats();renderCalendar();renderHistory()}
 
@@ -1154,7 +1199,7 @@ function renderCalBlock(startDate,endDate,totals,today){
 function renderHistory(){
   const list=document.getElementById('history-list');if(!list)return;
   const items=[];
-  sessions.forEach(s=>items.push({t:'s',date:s.date,d:s}));
+  sessions.forEach((s,i)=>items.push({t:'s',date:s.date,d:s,idx:i}));
   rankups.filter(r=>r.to>r.from).forEach(r=>items.push({t:'r',date:r.date,d:r}));
   items.sort((a,b)=>b.date.localeCompare(a.date));
   if(!items.length){list.innerHTML='<div class="history-empty">No sessions logged yet.<br>Tap + to add your first session.</div>';return}
@@ -1167,7 +1212,8 @@ function renderHistory(){
       lastD=item.date;
     }
     if(item.t==='s'){
-      html+=`<div class="history-item"><div class="history-type type-${item.d.type}">${item.d.type}</div><span class="history-time-right">${fmtDur(item.d.duration)}</span></div>`;
+      const timeStr=item.d.startTime?`<div class="history-time-sub">${fmt12h(item.d.startTime)} \u2192 ${fmt12h(calcEndTime(item.d.startTime,item.d.duration))}</div>`:'';
+      html+=`<div class="history-item session" data-idx="${item.idx}"><div class="history-type type-${item.d.type}">${item.d.type}</div><div class="history-body">${timeStr}</div><span class="history-time-right">${fmtDur(item.d.duration)}</span></div>`;
     }else{
       const sk=SMAP[item.d.skillId];const nm=sk?sk.n:item.d.skillId;
       const sd=item.d.side?' ('+item.d.side+')':'';
@@ -1187,12 +1233,21 @@ function switchTab(tab){
   closeCard(true);
 }
 
-function openSessionModal(){
-  document.getElementById('session-date').value=localDS(new Date());
-  modalType=null;modalDur=null;
-  document.querySelectorAll('.type-opt').forEach(b=>b.classList.remove('sel'));
-  document.querySelectorAll('.dur-opt').forEach(b=>b.classList.remove('sel'));
-  document.getElementById('session-submit').disabled=true;
+function openSessionModal(idx){
+  editingIdx=Number.isInteger(idx)?idx:-1;
+  const isEdit=editingIdx>=0;
+  const s=isEdit?sessions[editingIdx]:null;
+  document.getElementById('session-date').value=s?s.date:localDS(new Date());
+  document.getElementById('session-time').value=s&&s.startTime?s.startTime:'';
+  modalType=s?s.type:null;
+  modalDur=s?String(s.duration):null;
+  document.querySelectorAll('.type-opt').forEach(b=>b.classList.toggle('sel',b.dataset.type===modalType));
+  document.querySelectorAll('.dur-opt').forEach(b=>b.classList.toggle('sel',b.dataset.dur===modalDur));
+  document.getElementById('session-submit').disabled=!(modalType&&modalDur);
+  document.getElementById('session-submit').textContent=isEdit?'Save Changes':'Add Session';
+  document.getElementById('modal-title').textContent=isEdit?'Edit Session':'Log Session';
+  document.getElementById('session-delete').style.display=isEdit?'':'none';
+  updateEndTimeDisplay();
   document.getElementById('session-modal').classList.add('open');
   document.getElementById('backdrop').classList.add('vis');
 }
@@ -1201,6 +1256,7 @@ function closeSessionModal(){
   document.getElementById('session-modal').classList.remove('open');
   if(!document.getElementById('theme-panel').classList.contains('open'))
     document.getElementById('backdrop').classList.remove('vis');
+  editingIdx=-1;
 }
 
 /* =============== EVENTS =============== */
@@ -1246,16 +1302,35 @@ document.querySelectorAll('.dur-opt').forEach(b=>{
     document.querySelectorAll('.dur-opt').forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel');modalDur=b.dataset.dur;
     document.getElementById('session-submit').disabled=!(modalType&&modalDur);
+    updateEndTimeDisplay();
   });
 });
 
+document.getElementById('session-time').addEventListener('input',updateEndTimeDisplay);
+
 document.getElementById('session-submit').addEventListener('click',()=>{
   const date=document.getElementById('session-date').value;
+  const startTime=document.getElementById('session-time').value||null;
   if(!date||!modalType||!modalDur)return;
-  sessions.push({date,type:modalType,duration:parseInt(modalDur)});
+  const entry={date,type:modalType,duration:parseInt(modalDur),startTime};
+  if(editingIdx>=0){sessions[editingIdx]=entry}else{sessions.push(entry)}
   saveLog();closeSessionModal();
   if(currentTab==='log')renderLog();
   if(navigator.vibrate)navigator.vibrate(8);
+});
+
+document.getElementById('session-delete').addEventListener('click',()=>{
+  if(editingIdx<0)return;
+  if(!confirm('Delete this session?'))return;
+  sessions.splice(editingIdx,1);
+  saveLog();closeSessionModal();
+  if(currentTab==='log')renderLog();
+  if(navigator.vibrate)navigator.vibrate(8);
+});
+
+document.getElementById('history-list').addEventListener('click',e=>{
+  const el=e.target.closest('.history-item.session');
+  if(el&&el.dataset.idx!=null)openSessionModal(parseInt(el.dataset.idx));
 });
 
 /* =============== INIT =============== */
