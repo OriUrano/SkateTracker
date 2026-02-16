@@ -1,0 +1,59 @@
+Phase,Skill,Explanation,Prerequisite
+Adult 1,Falling & Recovery,Safely dropping to the ice and getting back up without help.,Standing on ice
+Adult 1,Forward Marching,Walking forward on the ice to gain balance.,Standing balance
+Adult 1,Forward Two-Foot Glide,Coasting forward with both feet on the ice.,Forward Marching
+Adult 1,Forward Swizzles,Pushing feet apart and pulling them together (lemon shape).,Forward Marching
+Adult 1,Rocking Horse,One forward swizzle followed immediately by one backward swizzle.,Forward Swizzles
+Adult 1,Dip,Gliding forward while squatting down as low as possible.,Two-Foot Glide
+Adult 1,Fwd Snowplow Stop,Pushing heels out to scrape the ice and stop.,Two-Foot Glide
+Adult 2,Forward Skating,Skating across the width of the ice (moving beyond marching).,Forward Marching
+Adult 2,Fwd One-Foot Glide,Gliding on a single foot (Right and Left).,Two-Foot Glide
+Adult 2,Forward Slalom,Wiggling both feet parallel side-to-side to generate momentum.,Two-Foot Glide
+Adult 2,Backward Skating,Moving backward safely.,Falling & Recovery
+Adult 2,Backward Swizzles,"Doing the ""lemon"" shape in reverse to move backward.",Fwd Swizzles
+Adult 2,Two-Foot Turn,Rotating 180° on the spot (forward to backward) on two feet.,Fwd/Back Glide
+Adult 3,Forward Stroking,"Proper ""push and glide"" using the blade edges.",Forward Skating
+Adult 3,Forward Pumps,"Skating on a circle, pumping the outer leg for speed.",One-Foot Glide
+Adult 3,Moving 2-Foot Turn,Turning forward-to-backward (and vice versa) while moving on a curve.,Stationary Turn
+Adult 3,Back 2-Foot Glide,Skating backward and holding a glide on two feet.,Backward Skating
+Adult 3,Forward Chasses,"A ""step-together-step"" motion on a circle (lifts the inside foot).",Forward Stroking
+Adult 3,Back Snowplow Stop,Pushing heels out to stop while moving backward.,Backward Skating
+Adult 4,Forward Outside Edge,"Gliding on a curve on one foot, leaning to the outside.",One-Foot Glide
+Adult 4,Forward Inside Edge,"Gliding on a curve on one foot, leaning to the inside.",One-Foot Glide
+Adult 4,Forward Crossovers,Crossing the outer foot over the inner foot to gain speed on a curve.,Forward Pumps
+Adult 4,Back One-Foot Glide,Gliding backward on a single foot (Right and Left).,Back 2-Foot Glide
+Adult 4,Back Pumps,Pumping the outer leg while gliding backward on a circle.,Back Swizzles
+Adult 4,Hockey Stop,Turning both feet sideways instantly to stop abruptly.,Snowplow Stop
+Adult 5,Back Outside Edge,"Gliding backward on a curve, leaning to the outside.",Back 1-Foot Glide
+Adult 5,Back Inside Edge,"Gliding backward on a curve, leaning to the inside.",Back 1-Foot Glide
+Adult 5,Back Crossovers,Crossing feet while moving backward on a curve.,Back Pumps
+Adult 5,Fwd Outside 3-Turn,A one-foot turn from Forward Outside edge to Backward Inside edge.,Fwd Outside Edge
+Adult 5,Swing Rolls,Gliding on edges while swinging the free leg past the skating leg.,Fwd Edges
+Adult 5,Beg. Two-Foot Spin,Spinning in a circle on two feet.,Pivot / Curves
+Adult 6,Fwd Inside 3-Turn,A one-foot turn from Forward Inside edge to Backward Outside edge.,Fwd Inside Edge
+Adult 6,Change of Edge,Changing from an outside edge to an inside edge (or vice versa) on one foot.,Fwd Edges
+Adult 6,T-Stop,"Dragging one foot behind the other in a ""T"" shape to stop.",One-Foot Glide
+Adult 6,Lunge,Gliding on one leg with the other leg dragging behind on the ice.,Dip
+Adult 6,One-Foot Spin,Spinning on one foot (entering from a two-foot spin).,Two-Foot Spin
+Pre-Bronze,Mohawk Turn,Stepping from forward to backward (heel-to-heel) to change direction.,Forward Edges
+Pre-Bronze,Waltz Jump,A 180° jump taking off forward and landing backward.,3-Turns
+Pre-Bronze,Bunny Hop,A leap over a toe pick to learn jump height.,Forward Skating
+Pre-Bronze,Forward Spiral,Gliding on one foot with free leg extended high (arabesque).,One-Foot Glide
+Bronze,Salchow Jump,A 360° jump taking off from a backward inside edge.,Waltz Jump
+Bronze,Toe Loop Jump,A 360° jump using the toe-pick to vault from a back outside edge.,Waltz Jump
+Bronze,Backspin,Spinning on one foot moving backward.,One-Foot Spin
+Silver,Loop Jump,A 360° edge jump taking off from a back outside edge (no toe pick).,Back Crossovers
+Silver,Flip Jump,A 360° toe-pick jump taking off from a back inside edge.,Loop Jump
+Silver,Sit Spin,Spinning on one foot in a squat position.,One-Foot Spin
+Silver,Camel Spin,"Spinning with body horizontal in a ""T"" shape.",Spiral
+Gold,Lutz Jump,A 360° toe-pick jump from a back outside edge (counter-rotated).,Flip Jump
+Gold,Axel (Single),"Forward takeoff, 1.5 rotations in the air.",Backspin
+Gold,Flying Camel,Jumping into a camel spin position from the air.,Camel Spin
+Gold,Combination Spin,Changing positions (Camel -> Sit) without stopping.,Solo Spins
+Master,Double Salchow,Two full rotations in the air (Back Inside edge).,Single Salchow
+Master,Double Toe Loop,Two full rotations (Toe Assist).,Single Toe Loop
+Master,Double Loop/Flip/Lutz,Two full rotations for the harder jumps.,Single Equivalents
+Master,Brackets,A turn changing direction against the circle's curve.,3-Turns
+Master,Counters & Rockers,Complex turns that change edge but maintain direction (or vice versa).,Brackets
+Master,Twizzles,Traveling multi-rotational turns on one foot.,3-Turns
+Master,Biellmann Spin,Pulling the free blade above the head while spinning.,Flexibility

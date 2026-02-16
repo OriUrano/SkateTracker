@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="frost">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#2563eb">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Ice Skills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-tap-highlight-color:transparent;overflow-y:scroll}
+body{font-family:'Sora',system-ui,sans-serif;min-height:100dvh;transition:background .4s,color .4s}
+
+/* ===== THEME: FROST ===== */
+[data-theme="frost"]{
+  --bg:#edf5fc;--bg2:linear-gradient(160deg,#e0effc 0%,#f4f9ff 100%);
+  --surface:#fff;--surface-hover:#f0f6ff;--surface-border:rgba(120,180,240,.2);
+  --text1:#1a3a5f;--text2:#4a6d8c;--text3:#8baac4;
+  --phase-bg:linear-gradient(135deg,rgba(37,99,235,.06),rgba(147,197,253,.1));
+  --phase-text:#2563eb;--phase-border:rgba(37,99,235,.12);
+  --circle-border:rgba(147,197,253,.35);--circle-shadow:0 2px 10px rgba(37,99,235,.1);
+  --locked:#c8d6e5;--unlocked:#fff;--unlocked-border:rgba(37,99,235,.25);
+  --icon-color:#4a7aab;--icon-locked:#9ab5ce;--icon-active:#000;
+  --header-bg:rgba(237,245,252,.92);--header-border:rgba(147,197,253,.25);
+  --panel-bg:#fff;
+  --divider:rgba(100,160,220,.18);--ring:rgba(37,99,235,.08);
+  --lr-text:#5a8ab5;--name-shadow:none;
+  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%232563eb' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+}
+
+/* ===== THEME: MIDNIGHT ICE ===== */
+[data-theme="midnight"]{
+  --bg:#080c18;--bg2:linear-gradient(160deg,#0a0e1a 0%,#10162a 100%);
+  --surface:#12182a;--surface-hover:#1a2038;--surface-border:rgba(0,220,255,.1);
+  --text1:#d8e4ff;--text2:#7888b0;--text3:#3e4e72;
+  --phase-bg:linear-gradient(135deg,rgba(0,220,255,.05),rgba(120,80,255,.05));
+  --phase-text:#00dcff;--phase-border:rgba(0,220,255,.12);
+  --circle-border:rgba(0,220,255,.18);--circle-shadow:0 0 14px rgba(0,220,255,.08);
+  --locked:#161e30;--unlocked:#1a2238;--unlocked-border:rgba(0,220,255,.22);
+  --icon-color:#6888b8;--icon-locked:#2e3a54;--icon-active:#fff;
+  --header-bg:rgba(8,12,24,.92);--header-border:rgba(0,220,255,.08);
+  --panel-bg:#12182a;
+  --divider:rgba(0,220,255,.1);--ring:rgba(0,220,255,.06);
+  --lr-text:#4a6890;--name-shadow:0 0 8px rgba(0,220,255,.1);
+  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%2300dcff' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+}
+
+/* ===== THEME: RINK CLASSIC ===== */
+[data-theme="rink"]{
+  --bg:#f0e8d8;--bg2:linear-gradient(160deg,#ede2cf 0%,#f8f2e8 100%);
+  --surface:#faf5eb;--surface-hover:#f0e8d8;--surface-border:rgba(139,90,43,.1);
+  --text1:#3d2b1f;--text2:#6b4f3a;--text3:#a08060;
+  --phase-bg:linear-gradient(135deg,rgba(139,90,43,.06),rgba(180,130,70,.06));
+  --phase-text:#7a3e10;--phase-border:rgba(139,90,43,.1);
+  --circle-border:rgba(139,90,43,.18);--circle-shadow:0 2px 8px rgba(100,60,20,.08);
+  --locked:#d0c4b0;--unlocked:#faf5eb;--unlocked-border:rgba(139,90,43,.18);
+  --icon-color:#7a5a3a;--icon-locked:#b0a090;--icon-active:#000;
+  --header-bg:rgba(240,232,216,.92);--header-border:rgba(139,90,43,.1);
+  --panel-bg:#faf5eb;
+  --divider:rgba(139,90,43,.1);--ring:rgba(139,90,43,.05);
+  --lr-text:#8a6a4a;--name-shadow:none;
+  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%237a3e10' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+}
+
+/* ===== THEME: AURORA ===== */
+[data-theme="aurora"]{
+  --bg:#0c1520;--bg2:linear-gradient(160deg,#0a1218 0%,#0f1f2a 40%,#151828 100%);
+  --surface:rgba(255,255,255,.05);--surface-hover:rgba(255,255,255,.08);--surface-border:rgba(52,211,153,.12);
+  --text1:#d0f0e0;--text2:#6aaa88;--text3:#345a48;
+  --phase-bg:linear-gradient(135deg,rgba(52,211,153,.06),rgba(99,102,241,.06));
+  --phase-text:#34d399;--phase-border:rgba(52,211,153,.12);
+  --circle-border:rgba(52,211,153,.18);--circle-shadow:0 0 14px rgba(52,211,153,.08);
+  --locked:rgba(255,255,255,.04);--unlocked:rgba(255,255,255,.07);--unlocked-border:rgba(52,211,153,.2);
+  --icon-color:#6aaa88;--icon-locked:#2a4a3a;--icon-active:#fff;
+  --header-bg:rgba(12,21,32,.92);--header-border:rgba(52,211,153,.08);
+  --panel-bg:#101c28;
+  --divider:rgba(52,211,153,.1);--ring:rgba(52,211,153,.05);
+  --lr-text:#4a8a6a;--name-shadow:0 0 8px rgba(52,211,153,.08);
+  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%2334d399' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+}
+
+/* ===== THEME: COMPETITION ===== */
+[data-theme="competition"]{
+  --bg:#f5f5f5;--bg2:linear-gradient(160deg,#f0f0f0 0%,#fafafa 100%);
+  --surface:#fff;--surface-hover:#f5f5f5;--surface-border:rgba(160,20,20,.08);
+  --text1:#1a1a2e;--text2:#4a4a6a;--text3:#8a8aaa;
+  --phase-bg:linear-gradient(135deg,rgba(183,28,28,.04),rgba(255,193,7,.04));
+  --phase-text:#a01414;--phase-border:rgba(183,28,28,.1);
+  --circle-border:rgba(160,20,20,.12);--circle-shadow:0 2px 10px rgba(0,0,0,.06);
+  --locked:#ddd;--unlocked:#fff;--unlocked-border:rgba(183,28,28,.15);
+  --icon-color:#4a4a6a;--icon-locked:#aaa;--icon-active:#000;
+  --header-bg:rgba(245,245,245,.95);--header-border:rgba(183,28,28,.08);
+  --panel-bg:#fff;
+  --divider:rgba(160,20,20,.08);--ring:rgba(183,28,28,.04);
+  --lr-text:#6a4a4a;--name-shadow:none;
+  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%23a01414' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+}
+
+/* ===== PROGRESS COLORS ===== */
+:root{
+  --yellow:#f0b800;--green:#2ea043;--blue:#2188ff;--purple:#8b5cf6;
+  --yellow-g:linear-gradient(135deg,#f0b800,#ffd54f);
+  --green-g:linear-gradient(135deg,#2ea043,#4ade80);
+  --blue-g:linear-gradient(135deg,#2188ff,#60a5fa);
+  --purple-g:linear-gradient(135deg,#7c3aed,#a78bfa);
+}
+
+/* ===== LAYOUT ===== */
+body{background:var(--bg);background-image:var(--bg2);color:var(--text1)}
+
+header{
+  position:sticky;top:0;z-index:100;
+  background:var(--header-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--header-border);
+  padding:12px 16px;display:flex;align-items:center;justify-content:space-between;
+}
+header h1{font-size:18px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+.hdr-icon{display:inline-block;width:24px;height:24px;background-color:var(--phase-text);-webkit-mask-image:url(icon.png);mask-image:url(icon.png);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-mode:alpha;mask-mode:alpha}
+.header-right{display:flex;gap:8px}
+.hdr-btn{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--surface-border);
+  background:var(--surface);color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.hdr-btn:active{transform:scale(.92)}
+.hdr-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* ===== MAIN / PHASES ===== */
+main{padding:8px 0 200px}
+
+.phase-section{margin-bottom:4px;position:relative}
+.phase-hdr{
+  position:sticky;top:61px;z-index:80;
+  background:var(--phase-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-top:1px solid var(--phase-border);border-bottom:1px solid var(--phase-border);
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;user-select:none;-webkit-user-select:none;
+}
+.phase-hdr h2{
+  font-size:13px;font-weight:700;color:var(--phase-text);letter-spacing:.5px;text-transform:uppercase;
+  display:flex;align-items:center;gap:6px;
+}
+.phase-hdr h2::before{content:'';width:16px;height:16px;background:var(--phase-icon);background-size:contain;background-repeat:no-repeat;background-position:center;flex-shrink:0;transform:translateY(0.5px)}
+.phase-prog{font-size:11px;font-weight:600;color:var(--text3);display:flex;align-items:center;gap:6px}
+.phase-bar{width:70px;height:5px;border-radius:3px;background:var(--surface-border);transition:background .4s}
+.phase-chevron{width:16px;height:16px;transition:transform .3s;color:var(--text3)}
+.phase-section.collapsed .phase-chevron{transform:rotate(-90deg)}
+.grid-wrap{display:grid;grid-template-rows:1fr;transition:grid-template-rows .35s ease}
+.phase-section.collapsed .grid-wrap{grid-template-rows:0fr}
+
+/* ===== SKILLS GRID ===== */
+.skills-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px 8px;padding:16px 12px;
+  overflow:hidden;min-height:0;
+  transition:padding .35s ease;
+}
+.phase-section.collapsed .skills-grid{padding-top:0;padding-bottom:0}
+@media(min-width:480px){.skills-grid{grid-template-columns:repeat(4,1fr);gap:16px 12px;padding:16px}}
+@media(min-width:768px){.skills-grid{grid-template-columns:repeat(5,1fr);gap:20px 16px;padding:20px 24px}}
+
+/* ===== SKILL ITEM ===== */
+.skill-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.skill-item.selected .skill-circle{border-color:var(--phase-text);box-shadow:0 0 0 3px var(--ring),var(--circle-shadow)}
+
+.skill-circle{
+  width:80px;height:80px;border-radius:50%;position:relative;overflow:hidden;
+  border:2.5px solid var(--circle-border);box-shadow:var(--circle-shadow);
+  transition:transform .15s,box-shadow .2s,border-color .3s;
+  -webkit-user-select:none;user-select:none;
+}
+.skill-item:active .skill-circle{transform:scale(.93)}
+.skill-circle.locked{opacity:.6}
+.skill-item:has(.skill-circle.locked):active .skill-circle{transform:none}
+
+/* Single (no L/R) backgrounds */
+.skill-circle .bg-full{position:absolute;inset:0;transition:background .35s;border-radius:50%}
+
+/* L/R split backgrounds */
+.skill-circle .bg-left{position:absolute;inset:0;transition:background .35s;clip-path:polygon(0 0,50% 0,50% 100%,0 100%)}
+.skill-circle .bg-right{position:absolute;inset:0;transition:background .35s;clip-path:polygon(50% 0,100% 0,100% 100%,50% 100%)}
+
+/* Progress level backgrounds */
+[data-lv="-1"]{background:var(--locked)!important}
+[data-lv="0"]{background:var(--unlocked)!important}
+[data-lv="1"]{background:var(--yellow)!important}
+[data-lv="2"]{background:var(--green)!important}
+[data-lv="3"]{background:var(--blue)!important}
+[data-lv="4"]{background:var(--purple)!important}
+
+/* Divider between L/R */
+.skill-circle .lr-div{
+  position:absolute;top:15%;bottom:15%;left:calc(50% - .5px);width:1px;z-index:4;
+  background:var(--divider);pointer-events:none;
+}
+
+/* Icon overlay (sprite sheet) */
+.skill-icon{
+  position:absolute;inset:10px;
+  pointer-events:none;z-index:3;
+  background-color:var(--icon-color);
+  -webkit-mask-image:url(new_sprite.png);
+  mask-image:url(new_sprite.png);
+  -webkit-mask-size:800% 800%;
+  mask-size:800% 800%;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-mode:alpha;
+  mask-mode:alpha;
+  transition:background-color .3s;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.08));
+}
+.skill-circle.locked .skill-icon{background-color:var(--icon-locked)}
+.skill-circle:has([data-lv="1"]) .skill-icon,
+.skill-circle:has([data-lv="2"]) .skill-icon,
+.skill-circle:has([data-lv="3"]) .skill-icon,
+.skill-circle:has([data-lv="4"]) .skill-icon{background-color:var(--icon-active)}
+
+/* Skill name */
+.skill-name{
+  font-size:10.5px;font-weight:500;color:var(--text2);text-align:center;
+  line-height:1.25;max-width:90px;word-wrap:break-word;
+  transition:color .2s;text-shadow:var(--name-shadow);
+}
+
+/* ===== INLINE DETAIL CARD ===== */
+.skill-detail-card{
+  position:absolute;left:16px;right:16px;z-index:90;
+  background:var(--panel-bg);border:1px solid var(--surface-border);
+  border-radius:16px;padding:16px 14px;
+  box-shadow:0 4px 24px rgba(0,0,0,.12);
+  opacity:0;transform:translateY(-6px);
+  transition:opacity .2s ease,transform .2s ease;
+  pointer-events:none;
+}
+.skill-detail-card.open{
+  opacity:1;transform:translateY(0);
+  pointer-events:auto;
+}
+.sdc-arrow{
+  position:absolute;top:-7px;width:14px;height:14px;
+  background:var(--panel-bg);border-left:1px solid var(--surface-border);
+  border-top:1px solid var(--surface-border);
+  transform:translateX(-50%) rotate(45deg);z-index:1;
+}
+.sdc-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sdc-name{font-size:14px;font-weight:700;color:var(--text1)}
+.sdc-phase{
+  font-size:9px;font-weight:700;color:var(--phase-text);background:var(--phase-bg);
+  border:1px solid var(--phase-border);border-radius:5px;padding:2px 7px;
+  text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;
+}
+.sdc-desc{font-size:12px;color:var(--text2);line-height:1.45;margin-bottom:12px}
+.sdc-controls{display:flex;gap:8px}
+.prog-btn{
+  flex:1;padding:10px 8px;border-radius:12px;border:2px solid var(--surface-border);
+  background:var(--surface);cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;gap:5px;transition:all .15s;font-family:inherit;
+}
+.prog-btn:active{transform:scale(.96);border-color:var(--phase-text)}
+.prog-btn.pop{animation:btn-pop .3s ease}
+@keyframes btn-pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+.prog-side{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.prog-dots{display:flex;gap:4px}
+.prog-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--surface-border);transition:background .25s,transform .25s;
+}
+.prog-dot.pop{animation:dot-pop .35s ease}
+@keyframes dot-pop{0%{transform:scale(1)}50%{transform:scale(1.45)}100%{transform:scale(1)}}
+.prog-dot.filled{background:var(--dot-color)}
+.prog-label{font-size:10.5px;font-weight:600;color:var(--text2)}
+.sdc-locked{
+  width:100%;text-align:center;padding:8px;font-size:12px;
+  color:var(--text3);font-weight:500;
+}
+.sdc-prereq{font-size:11px;color:var(--text3);margin-top:10px;padding-top:8px;border-top:1px solid var(--surface-border)}
+.sdc-prereq:empty{display:none}
+
+/* ===== THEME PANEL ===== */
+#theme-panel{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:var(--panel-bg);border-top:1px solid var(--surface-border);
+  border-radius:20px 20px 0 0;padding:20px 16px 28px;
+  box-shadow:0 -4px 30px rgba(0,0,0,.12);
+  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+#theme-panel.open{transform:translateY(0)}
+#theme-panel h3{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.theme-options{display:flex;gap:8px;flex-wrap:wrap}
+.theme-btn{
+  flex:1;min-width:calc(50% - 4px);padding:10px 12px;border-radius:12px;
+  border:2px solid var(--surface-border);background:var(--surface);
+  color:var(--text1);font-family:inherit;font-size:12.5px;font-weight:600;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;
+}
+.theme-btn:active{transform:scale(.97)}
+.theme-btn.active{border-color:var(--phase-text);box-shadow:0 0 0 2px var(--ring)}
+.theme-dot{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(0,0,0,.08)}
+
+/* ===== BACKDROP ===== */
+.backdrop{
+  position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.3);
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.backdrop.vis{opacity:1;pointer-events:auto}
+
+/* ===== RESET BUTTON ===== */
+.reset-btn{
+  margin-top:16px;width:100%;padding:10px;border-radius:10px;
+  border:1px solid rgba(220,40,40,.15);background:rgba(220,40,40,.05);
+  color:#c62828;font-family:inherit;font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .2s;
+}
+.reset-btn:active{background:rgba(220,40,40,.12);transform:scale(.98)}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{display:none}
+html{scrollbar-width:none}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>
+    <span class="hdr-icon"></span>
+    Ice Skills
+  </h1>
+  <div class="header-right">
+    <button class="hdr-btn" id="theme-toggle" aria-label="Theme">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<div class="backdrop" id="backdrop"></div>
+<div id="theme-panel">
+  <h3>Choose Theme</h3>
+  <div class="theme-options">
+    <button class="theme-btn" data-t="frost"><span class="theme-dot" style="background:linear-gradient(135deg,#e0effc,#2563eb)"></span>Frost</button>
+    <button class="theme-btn" data-t="midnight"><span class="theme-dot" style="background:linear-gradient(135deg,#0a0e1a,#00dcff)"></span>Midnight</button>
+    <button class="theme-btn" data-t="rink"><span class="theme-dot" style="background:linear-gradient(135deg,#f0e8d8,#7a3e10)"></span>Rink Classic</button>
+    <button class="theme-btn" data-t="aurora"><span class="theme-dot" style="background:linear-gradient(135deg,#0c1520,#34d399)"></span>Aurora</button>
+    <button class="theme-btn" data-t="competition"><span class="theme-dot" style="background:linear-gradient(135deg,#f5f5f5,#a01414)"></span>Competition</button>
+  </div>
+  <button class="reset-btn" id="reset-btn">Reset All Progress</button>
+</div>
+
+<script>
+/* =============== SKILLS DATA =============== */
+const SKILLS=[
+{id:'falling-recovery',n:'Falling & Recovery',p:'Adult 1',d:'Safely dropping to the ice and getting back up without help.',pr:[],lr:0,ic:'fall'},
+{id:'forward-marching',n:'Forward Marching',p:'Adult 1',d:'Walking forward on the ice to gain balance.',pr:[],lr:0,ic:'march'},
+{id:'fwd-two-foot-glide',n:'Fwd Two-Foot Glide',p:'Adult 1',d:'Coasting forward with both feet on the ice.',pr:['forward-marching'],lr:0,ic:'glide'},
+{id:'forward-swizzles',n:'Forward Swizzles',p:'Adult 1',d:'Pushing feet apart and pulling them together (lemon shape).',pr:['forward-marching'],lr:0,ic:'swizzle'},
+{id:'rocking-horse',n:'Rocking Horse',p:'Adult 1',d:'One forward swizzle followed immediately by one backward swizzle.',pr:['forward-swizzles'],lr:0,ic:'swizzle'},
+{id:'dip',n:'Dip',p:'Adult 1',d:'Gliding forward while squatting down as low as possible.',pr:['fwd-two-foot-glide'],lr:0,ic:'dip'},
+{id:'fwd-snowplow-stop',n:'Fwd Snowplow Stop',p:'Adult 1',d:'Pushing heels out to scrape the ice and stop.',pr:['fwd-two-foot-glide'],lr:0,ic:'stop'},
+{id:'forward-skating',n:'Forward Skating',p:'Adult 2',d:'Skating across the width of the ice (moving beyond marching).',pr:['forward-marching'],lr:0,ic:'march'},
+{id:'fwd-one-foot-glide',n:'Fwd One-Foot Glide',p:'Adult 2',d:'Gliding on a single foot (Right and Left).',pr:['fwd-two-foot-glide'],lr:1,ic:'glide'},
+{id:'forward-slalom',n:'Forward Slalom',p:'Adult 2',d:'Wiggling both feet parallel side-to-side to generate momentum.',pr:['fwd-two-foot-glide'],lr:0,ic:'slalom'},
+{id:'backward-skating',n:'Backward Skating',p:'Adult 2',d:'Moving backward safely.',pr:['falling-recovery'],lr:0,ic:'march'},
+{id:'backward-swizzles',n:'Backward Swizzles',p:'Adult 2',d:'Doing the lemon shape in reverse to move backward.',pr:['forward-swizzles'],lr:0,ic:'swizzle'},
+{id:'two-foot-turn',n:'Two-Foot Turn',p:'Adult 2',d:'Rotating 180\u00b0 on the spot (forward to backward) on two feet.',pr:['fwd-two-foot-glide'],lr:0,ic:'turn'},
+{id:'forward-stroking',n:'Forward Stroking',p:'Adult 3',d:'Proper push and glide using the blade edges.',pr:['forward-skating'],lr:0,ic:'stroke'},
+{id:'forward-pumps',n:'Forward Pumps',p:'Adult 3',d:'Skating on a circle pumping the outer leg for speed.',pr:['fwd-one-foot-glide'],lr:1,ic:'pump'},
+{id:'moving-two-foot-turn',n:'Moving 2-Foot Turn',p:'Adult 3',d:'Turning forward-to-backward while moving on a curve.',pr:['two-foot-turn'],lr:0,ic:'turn'},
+{id:'back-two-foot-glide',n:'Back 2-Foot Glide',p:'Adult 3',d:'Skating backward and holding a glide on two feet.',pr:['backward-skating'],lr:0,ic:'glide'},
+{id:'forward-chasses',n:'Forward Chass\u00e9s',p:'Adult 3',d:'A step-together-step motion on a circle.',pr:['forward-stroking'],lr:1,ic:'stroke'},
+{id:'back-snowplow-stop',n:'Back Snowplow Stop',p:'Adult 3',d:'Pushing heels out to stop while moving backward.',pr:['backward-skating'],lr:0,ic:'stop'},
+{id:'fwd-outside-edge',n:'Fwd Outside Edge',p:'Adult 4',d:'Gliding on a curve on one foot, leaning to the outside.',pr:['fwd-one-foot-glide'],lr:1,ic:'edge'},
+{id:'fwd-inside-edge',n:'Fwd Inside Edge',p:'Adult 4',d:'Gliding on a curve on one foot, leaning to the inside.',pr:['fwd-one-foot-glide'],lr:1,ic:'edge'},
+{id:'fwd-crossovers',n:'Fwd Crossovers',p:'Adult 4',d:'Crossing the outer foot over the inner to gain speed on a curve.',pr:['forward-pumps'],lr:1,ic:'crossover'},
+{id:'back-one-foot-glide',n:'Back One-Foot Glide',p:'Adult 4',d:'Gliding backward on a single foot (Right and Left).',pr:['back-two-foot-glide'],lr:1,ic:'glide'},
+{id:'back-pumps',n:'Back Pumps',p:'Adult 4',d:'Pumping the outer leg while gliding backward on a circle.',pr:['backward-swizzles'],lr:1,ic:'pump'},
+{id:'hockey-stop',n:'Hockey Stop',p:'Adult 4',d:'Turning both feet sideways instantly to stop abruptly.',pr:['fwd-snowplow-stop'],lr:0,ic:'stop'},
+{id:'back-outside-edge',n:'Back Outside Edge',p:'Adult 5',d:'Gliding backward on a curve, leaning to the outside.',pr:['back-one-foot-glide'],lr:1,ic:'edge'},
+{id:'back-inside-edge',n:'Back Inside Edge',p:'Adult 5',d:'Gliding backward on a curve, leaning to the inside.',pr:['back-one-foot-glide'],lr:1,ic:'edge'},
+{id:'back-crossovers',n:'Back Crossovers',p:'Adult 5',d:'Crossing feet while moving backward on a curve.',pr:['back-pumps'],lr:1,ic:'crossover'},
+{id:'fwd-outside-3-turn',n:'Fwd Outside 3-Turn',p:'Adult 5',d:'A one-foot turn from Forward Outside to Backward Inside edge.',pr:['fwd-outside-edge'],lr:1,ic:'turn'},
+{id:'swing-rolls',n:'Swing Rolls',p:'Adult 5',d:'Gliding on edges while swinging the free leg past the skating leg.',pr:['fwd-outside-edge','fwd-inside-edge'],lr:1,ic:'edge'},
+{id:'beg-two-foot-spin',n:'Beg. Two-Foot Spin',p:'Adult 5',d:'Spinning in a circle on two feet.',pr:[],lr:0,ic:'spin'},
+{id:'fwd-inside-3-turn',n:'Fwd Inside 3-Turn',p:'Adult 6',d:'A one-foot turn from Forward Inside to Backward Outside edge.',pr:['fwd-inside-edge'],lr:1,ic:'turn'},
+{id:'change-of-edge',n:'Change of Edge',p:'Adult 6',d:'Changing from an outside edge to an inside edge on one foot.',pr:['fwd-outside-edge','fwd-inside-edge'],lr:1,ic:'edge'},
+{id:'t-stop',n:'T-Stop',p:'Adult 6',d:'Dragging one foot behind the other in a T shape to stop.',pr:['fwd-one-foot-glide'],lr:1,ic:'stop'},
+{id:'lunge',n:'Lunge',p:'Adult 6',d:'Gliding on one leg with the other leg dragging behind.',pr:['dip'],lr:1,ic:'dip'},
+{id:'one-foot-spin',n:'One-Foot Spin',p:'Adult 6',d:'Spinning on one foot (entering from a two-foot spin).',pr:['beg-two-foot-spin'],lr:1,ic:'spin'},
+{id:'mohawk-turn',n:'Mohawk Turn',p:'Pre-Bronze',d:'Stepping from forward to backward (heel-to-heel).',pr:['fwd-outside-edge','fwd-inside-edge'],lr:1,ic:'turn'},
+{id:'waltz-jump',n:'Waltz Jump',p:'Pre-Bronze',d:'A 180\u00b0 jump taking off forward and landing backward.',pr:['fwd-outside-3-turn'],lr:1,ic:'jump'},
+{id:'bunny-hop',n:'Bunny Hop',p:'Pre-Bronze',d:'A leap over a toe pick to learn jump height.',pr:['forward-skating'],lr:0,ic:'jump'},
+{id:'forward-spiral',n:'Forward Spiral',p:'Pre-Bronze',d:'Gliding on one foot with free leg extended high (arabesque).',pr:['fwd-one-foot-glide'],lr:1,ic:'spiral'},
+{id:'salchow-jump',n:'Salchow Jump',p:'Bronze',d:'A 360\u00b0 jump taking off from a backward inside edge.',pr:['waltz-jump'],lr:1,ic:'jump'},
+{id:'toe-loop-jump',n:'Toe Loop Jump',p:'Bronze',d:'A 360\u00b0 jump using the toe-pick from a back outside edge.',pr:['waltz-jump'],lr:1,ic:'jump'},
+{id:'backspin',n:'Backspin',p:'Bronze',d:'Spinning on one foot moving backward.',pr:['one-foot-spin'],lr:1,ic:'spin'},
+{id:'loop-jump',n:'Loop Jump',p:'Silver',d:'A 360\u00b0 edge jump from a back outside edge (no toe pick).',pr:['back-crossovers'],lr:1,ic:'jump'},
+{id:'flip-jump',n:'Flip Jump',p:'Silver',d:'A 360\u00b0 toe-pick jump from a back inside edge.',pr:['loop-jump'],lr:1,ic:'jump'},
+{id:'sit-spin',n:'Sit Spin',p:'Silver',d:'Spinning on one foot in a squat position.',pr:['one-foot-spin'],lr:1,ic:'spin'},
+{id:'camel-spin',n:'Camel Spin',p:'Silver',d:'Spinning with body horizontal in a T shape.',pr:['forward-spiral'],lr:1,ic:'spin'},
+{id:'lutz-jump',n:'Lutz Jump',p:'Gold',d:'A 360\u00b0 toe-pick jump from a back outside edge (counter-rotated).',pr:['flip-jump'],lr:1,ic:'jump'},
+{id:'axel',n:'Axel (Single)',p:'Gold',d:'Forward takeoff, 1.5 rotations in the air.',pr:['backspin'],lr:1,ic:'jump'},
+{id:'flying-camel',n:'Flying Camel',p:'Gold',d:'Jumping into a camel spin from the air.',pr:['camel-spin'],lr:1,ic:'spin'},
+{id:'combination-spin',n:'Combination Spin',p:'Gold',d:'Changing positions (Camel \u2192 Sit) without stopping.',pr:['one-foot-spin'],lr:1,ic:'spin'},
+{id:'double-salchow',n:'Double Salchow',p:'Master',d:'Two full rotations in the air (Back Inside edge).',pr:['salchow-jump'],lr:1,ic:'jump'},
+{id:'double-toe-loop',n:'Double Toe Loop',p:'Master',d:'Two full rotations (Toe Assist).',pr:['toe-loop-jump'],lr:1,ic:'jump'},
+{id:'double-loop-flip-lutz',n:'Dbl Loop/Flip/Lutz',p:'Master',d:'Two full rotations for the harder jumps.',pr:['loop-jump'],lr:1,ic:'jump'},
+{id:'brackets',n:'Brackets',p:'Master',d:'A turn changing direction against the curve.',pr:['fwd-outside-3-turn'],lr:1,ic:'turn'},
+{id:'counters-rockers',n:'Counters & Rockers',p:'Master',d:'Complex turns that change edge but maintain direction.',pr:['brackets'],lr:1,ic:'turn'},
+{id:'twizzles',n:'Twizzles',p:'Master',d:'Traveling multi-rotational turns on one foot.',pr:['fwd-outside-3-turn'],lr:1,ic:'twizzle'},
+{id:'biellmann-spin',n:'Biellmann Spin',p:'Master',d:'Pulling the free blade above the head while spinning.',pr:[],lr:1,ic:'spin'},
+];
+
+const SMAP={};SKILLS.forEach(s=>SMAP[s.id]=s);
+const PHASES=['Adult 1','Adult 2','Adult 3','Adult 4','Adult 5','Adult 6','Pre-Bronze','Bronze','Silver','Gold','Master'];
+
+/* =============== SPRITE ICON POSITIONS =============== */
+const SPRITE_POS={
+  'falling-recovery':[0,0],'forward-marching':[1,0],'fwd-two-foot-glide':[2,0],
+  'forward-swizzles':[3,0],'rocking-horse':[4,0],'dip':[5,0],
+  'fwd-snowplow-stop':[6,0],'forward-skating':[7,0],
+  'fwd-one-foot-glide':[0,1],'forward-slalom':[1,1],'backward-skating':[2,1],
+  'backward-swizzles':[3,1],'two-foot-turn':[4,1],'forward-stroking':[5,1],
+  'forward-pumps':[6,1],'moving-two-foot-turn':[7,1],
+  'back-two-foot-glide':[0,2],'forward-chasses':[1,2],'back-snowplow-stop':[2,2],
+  'fwd-outside-edge':[3,2],'fwd-inside-edge':[4,2],'fwd-crossovers':[5,2],
+  'back-one-foot-glide':[6,2],'back-pumps':[7,2],
+  'hockey-stop':[0,3],'back-outside-edge':[1,3],'back-inside-edge':[2,3],
+  'back-crossovers':[3,3],'fwd-outside-3-turn':[4,3],'swing-rolls':[5,3],
+  'beg-two-foot-spin':[6,3],'fwd-inside-3-turn':[7,3],
+  'change-of-edge':[0,4],'t-stop':[1,4],'lunge':[2,4],
+  'one-foot-spin':[3,4],'mohawk-turn':[4,4],'waltz-jump':[5,4],
+  'bunny-hop':[6,4],'forward-spiral':[7,4],
+  'salchow-jump':[0,5],'toe-loop-jump':[1,5],'backspin':[2,5],
+  'loop-jump':[3,5],'flip-jump':[4,5],'sit-spin':[5,5],
+  'camel-spin':[6,5],'lutz-jump':[7,5],
+  'axel':[0,6],'flying-camel':[1,6],'combination-spin':[2,6],
+  'double-salchow':[3,6],'double-toe-loop':[4,6],'double-loop-flip-lutz':[5,6],
+  'brackets':[6,6],'counters-rockers':[7,6],
+  'twizzles':[0,7],'biellmann-spin':[1,7],
+};
+
+function spritePos(id){
+  const p=SPRITE_POS[id]||[0,0];
+  const x=p[0]*(100/7);
+  const y=p[1]*(100/7);
+  return `${x}% ${y}%`;
+}
+
+/* =============== STATE =============== */
+let progress={};
+let theme='frost';
+
+function load(){
+  try{const d=JSON.parse(localStorage.getItem('ice-skills-progress'));if(d)progress=d}catch(e){}
+  try{const t=localStorage.getItem('ice-skills-theme');if(t)theme=t}catch(e){}
+}
+
+function save(){
+  localStorage.setItem('ice-skills-progress',JSON.stringify(progress));
+  localStorage.setItem('ice-skills-theme',theme);
+}
+
+function getLevel(skillId,side){
+  const key=side?`${skillId}-${side}`:skillId;
+  return progress[key]||0;
+}
+
+function setLevel(skillId,side,lv){
+  const key=side?`${skillId}-${side}`:skillId;
+  progress[key]=lv;
+  save();
+}
+
+function isUnlocked(skillId){
+  const s=SMAP[skillId];
+  if(!s)return true;
+  if(!s.pr.length)return true;
+  for(const pid of s.pr){
+    const ps=SMAP[pid];
+    if(!ps)continue;
+    if(ps.lr){
+      if(getLevel(pid,'L')<1||getLevel(pid,'R')<1)return false;
+    }else{
+      if(getLevel(pid)<1)return false;
+    }
+  }
+  return true;
+}
+
+function getPhaseProgress(phase){
+  const skills=SKILLS.filter(s=>s.p===phase);
+  let total=0,done=0;
+  skills.forEach(s=>{
+    if(s.lr){total+=2;if(getLevel(s.id,'L')>=1)done++;if(getLevel(s.id,'R')>=1)done++}
+    else{total++;if(getLevel(s.id)>=1)done++}
+  });
+  return{done,total};
+}
+
+/* =============== INLINE DETAIL CARD =============== */
+const LEVEL_NAMES=['Not Started','Learning','Decent','Great','Fluent'];
+const LEVEL_COLORS=['var(--surface-border)','var(--yellow)','var(--green)','var(--blue)','var(--purple)'];
+let activeCardId=null;
+let cardEl=null;
+
+function getGridCols(grid){
+  return getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+}
+
+function makeProgBtn(skillId,side){
+  const lv=getLevel(skillId,side);
+  const dots=[0,1,2,3].map(i=>{
+    const filled=lv>0&&i<lv;
+    const color=LEVEL_COLORS[Math.max(lv,1)];
+    return `<span class="prog-dot${filled?' filled':''}" style="--dot-color:${color}"></span>`;
+  }).join('');
+  return `<button class="prog-btn" data-side="${side||''}" data-id="${skillId}">
+    ${side?`<span class="prog-side">${side==='L'?'Left':'Right'}</span>`:''}
+    <div class="prog-dots">${dots}</div>
+    <span class="prog-label">${LEVEL_NAMES[lv]}</span>
+  </button>`;
+}
+
+function openCard(skillId,itemEl){
+  // Close if same skill
+  if(activeCardId===skillId){closeCard();return}
+
+  const skill=SMAP[skillId];
+  if(!skill)return;
+  const grid=itemEl.closest('.skills-grid');
+  if(!grid)return;
+
+  // Remove old card
+  closeCard(true);
+
+  // Build card
+  cardEl=document.createElement('div');
+  cardEl.className='skill-detail-card';
+  const unlocked=isUnlocked(skillId);
+  const prereqNames=skill.pr.map(pid=>SMAP[pid]?.n||pid).join(', ');
+
+  let controlsHTML='';
+  if(!unlocked){
+    controlsHTML=`<div class="sdc-locked">Complete prerequisites to unlock</div>`;
+  }else if(skill.lr){
+    controlsHTML=makeProgBtn(skillId,'L')+makeProgBtn(skillId,'R');
+  }else{
+    controlsHTML=makeProgBtn(skillId,null);
+  }
+
+  cardEl.innerHTML=`
+    <div class="sdc-arrow"></div>
+    <div class="sdc-header"><span class="sdc-name">${skill.n}</span><span class="sdc-phase">${skill.p}</span></div>
+    <div class="sdc-desc">${skill.d}</div>
+    <div class="sdc-controls">${controlsHTML}</div>
+    <div class="sdc-prereq">${prereqNames?'Requires: '+prereqNames:''}</div>
+  `;
+
+  // Append to phase section (outside grid-wrap so overflow:hidden doesn't clip)
+  const sec=grid.closest('.phase-section');
+  sec.appendChild(cardEl);
+
+  // Position card below the clicked skill's row
+  requestAnimationFrame(()=>{
+    const secRect=sec.getBoundingClientRect();
+    const items=[...grid.querySelectorAll(':scope > .skill-item')];
+    const idx=items.indexOf(itemEl);
+    const cols=getGridCols(grid);
+    const rowStart=Math.floor(idx/cols)*cols;
+    const rowEnd=Math.min(rowStart+cols,items.length);
+    let maxBottom=0;
+    for(let i=rowStart;i<rowEnd;i++){
+      maxBottom=Math.max(maxBottom,items[i].getBoundingClientRect().bottom);
+    }
+    const top=maxBottom-secRect.top+6;
+    cardEl.style.top=top+'px';
+
+    // Position arrow to point at the selected skill
+    const itemRect=itemEl.getBoundingClientRect();
+    const cardRect=cardEl.getBoundingClientRect();
+    const arrowLeft=itemRect.left+itemRect.width/2-cardRect.left;
+    cardEl.querySelector('.sdc-arrow').style.left=arrowLeft+'px';
+    cardEl.classList.add('open');
+
+    // Scroll card into view
+    setTimeout(()=>cardEl.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+  });
+
+  // Mark selected
+  document.querySelectorAll('.skill-item.selected').forEach(i=>i.classList.remove('selected'));
+  itemEl.classList.add('selected');
+  activeCardId=skillId;
+
+  // Attach button handlers
+  attachCardBtns(skillId);
+}
+
+function attachCardBtns(skillId){
+  if(!cardEl)return;
+  cardEl.querySelectorAll('.prog-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const side=btn.dataset.side||null;
+      const current=getLevel(skillId,side);
+      const next=(current+1)%5;
+      setLevel(skillId,side,next);
+      if(navigator.vibrate)navigator.vibrate(8);
+      updateAll();
+      refreshCard(skillId,side);
+    });
+  });
+}
+
+function refreshCard(skillId,animSide){
+  if(!cardEl)return;
+  const skill=SMAP[skillId];
+  if(!skill)return;
+  const unlocked=isUnlocked(skillId);
+  let controlsHTML='';
+  if(!unlocked){
+    controlsHTML=`<div class="sdc-locked">Complete prerequisites to unlock</div>`;
+  }else if(skill.lr){
+    controlsHTML=makeProgBtn(skillId,'L')+makeProgBtn(skillId,'R');
+  }else{
+    controlsHTML=makeProgBtn(skillId,null);
+  }
+  const ctrl=cardEl.querySelector('.sdc-controls');
+  if(ctrl)ctrl.innerHTML=controlsHTML;
+  // Animate the clicked button
+  cardEl.querySelectorAll('.prog-btn').forEach(b=>{
+    const s=b.dataset.side||null;
+    if(s===animSide){
+      b.classList.add('pop');
+      b.querySelectorAll('.prog-dot').forEach(d=>d.classList.add('pop'));
+    }
+  });
+  attachCardBtns(skillId);
+}
+
+function closeCard(instant){
+  if(cardEl){
+    if(instant){
+      cardEl.remove();
+    }else{
+      cardEl.classList.remove('open');
+      const el=cardEl;
+      setTimeout(()=>el.remove(),300);
+    }
+    cardEl=null;
+  }
+  activeCardId=null;
+  document.querySelectorAll('.skill-item.selected').forEach(i=>i.classList.remove('selected'));
+}
+
+/* =============== DOM BUILD =============== */
+function build(){
+  const app=document.getElementById('app');
+  app.innerHTML='';
+  PHASES.forEach(phase=>{
+    const skills=SKILLS.filter(s=>s.p===phase);
+    const sec=document.createElement('section');
+    sec.className='phase-section';
+    sec.dataset.phase=phase;
+
+    const hdr=document.createElement('div');
+    hdr.className='phase-hdr';
+    const prog=getPhaseProgress(phase);
+    hdr.innerHTML=`<h2>${phase}</h2><span class="phase-prog"><span class="pp-text">${prog.done}/${prog.total}</span><span class="phase-bar"></span><svg class="phase-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>`;
+    hdr.addEventListener('click',()=>{closeCard(true);sec.classList.toggle('collapsed')});
+    sec.appendChild(hdr);
+
+    const grid=document.createElement('div');
+    grid.className='skills-grid';
+    skills.forEach(s=>{
+      const item=document.createElement('div');
+      item.className='skill-item';
+      item.dataset.id=s.id;
+
+      const circle=document.createElement('div');
+      circle.className='skill-circle'+(s.lr?' has-lr':'');
+      circle.dataset.id=s.id;
+
+      if(s.lr){
+        const bl=document.createElement('div');
+        bl.className='bg-left';bl.dataset.side='L';bl.dataset.lv='0';
+        const br=document.createElement('div');
+        br.className='bg-right';br.dataset.side='R';br.dataset.lv='0';
+        const dv=document.createElement('div');dv.className='lr-div';
+        circle.append(bl,br,dv);
+      }else{
+        const bf=document.createElement('div');
+        bf.className='bg-full';bf.dataset.lv='0';
+        circle.appendChild(bf);
+      }
+
+      const ico=document.createElement('div');
+      ico.className='skill-icon';
+      const mp=spritePos(s.id);
+      ico.style.webkitMaskPosition=mp;
+      ico.style.maskPosition=mp;
+      circle.appendChild(ico);
+
+      item.appendChild(circle);
+
+      const nm=document.createElement('div');
+      nm.className='skill-name';nm.textContent=s.n;
+      item.appendChild(nm);
+
+      // Click entire item to open detail card
+      item.addEventListener('click',e=>{
+        e.stopPropagation();
+        openCard(s.id,item);
+      });
+
+      grid.appendChild(item);
+    });
+    const wrap=document.createElement('div');
+    wrap.className='grid-wrap';
+    wrap.appendChild(grid);
+    sec.appendChild(wrap);
+    app.appendChild(sec);
+  });
+  updateAll();
+}
+
+/* =============== UPDATE STATES =============== */
+function updateAll(){
+  document.querySelectorAll('.skill-item').forEach(item=>{
+    const id=item.dataset.id;
+    const s=SMAP[id];if(!s)return;
+    const circle=item.querySelector('.skill-circle');
+    const unlocked=isUnlocked(id);
+
+    circle.classList.toggle('locked',!unlocked);
+
+    if(s.lr){
+      const ll=unlocked?getLevel(id,'L'):-1;
+      const rl=unlocked?getLevel(id,'R'):-1;
+      item.querySelector('.bg-left').dataset.lv=ll;
+      item.querySelector('.bg-right').dataset.lv=rl;
+    }else{
+      const lv=unlocked?getLevel(id):-1;
+      item.querySelector('.bg-full').dataset.lv=lv;
+    }
+  });
+
+  PHASES.forEach(phase=>{
+    const sec=document.querySelector(`.phase-section[data-phase="${phase}"]`);
+    if(!sec)return;
+    const prog=getPhaseProgress(phase);
+    const txt=sec.querySelector('.pp-text');
+    const bar=sec.querySelector('.phase-bar');
+    if(txt)txt.textContent=`${prog.done}/${prog.total}`;
+    if(bar){
+      // Count skills at each level
+      const skills=SKILLS.filter(s=>s.p===phase);
+      let total=0;const counts=[0,0,0,0,0];
+      skills.forEach(s=>{
+        if(s.lr){
+          total+=2;
+          counts[isUnlocked(s.id)?getLevel(s.id,'L'):0]++;
+          counts[isUnlocked(s.id)?getLevel(s.id,'R'):0]++;
+        }else{
+          total++;
+          counts[isUnlocked(s.id)?getLevel(s.id):0]++;
+        }
+      });
+      // Build gradient: purple(4), blue(3), green(2), yellow(1), gray(0)
+      const segs=[
+        {c:counts[4],color:'var(--purple)'},
+        {c:counts[3],color:'var(--blue)'},
+        {c:counts[2],color:'var(--green)'},
+        {c:counts[1],color:'var(--yellow)'},
+        {c:counts[0],color:'var(--surface-border)'}
+      ];
+      let cum=0,stops=[];
+      for(const s of segs){
+        if(s.c>0){const pct=s.c/total*100;stops.push(`${s.color} ${cum}% ${cum+pct}%`);cum+=pct;}
+      }
+      bar.style.background=stops.length?`linear-gradient(to right,${stops.join(',')})`:'var(--surface-border)';
+    }
+  });
+}
+
+/* =============== THEME =============== */
+function setTheme(t){
+  theme=t;
+  document.documentElement.dataset.theme=t;
+  document.querySelectorAll('.theme-btn').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
+  save();
+}
+
+function toggleThemePanel(){
+  const panel=document.getElementById('theme-panel');
+  const open=panel.classList.toggle('open');
+  document.getElementById('backdrop').classList.toggle('vis',open);
+}
+
+function closePanel(){
+  document.getElementById('theme-panel').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('vis');
+}
+
+/* =============== EVENTS =============== */
+document.getElementById('theme-toggle').addEventListener('click',toggleThemePanel);
+document.getElementById('backdrop').addEventListener('click',closePanel);
+
+document.querySelectorAll('.theme-btn').forEach(b=>{
+  b.addEventListener('click',()=>{setTheme(b.dataset.t);setTimeout(closePanel,200)});
+});
+
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  if(confirm('Reset all progress? This cannot be undone.')){
+    progress={};save();closeCard(true);updateAll();closePanel();
+  }
+});
+
+// Close card when tapping outside
+document.addEventListener('click',e=>{
+  if(activeCardId && !e.target.closest('.skill-item') && !e.target.closest('.skill-detail-card')){
+    closeCard();
+  }
+});
+
+/* =============== INIT =============== */
+load();
+setTheme(theme);
+build();
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>

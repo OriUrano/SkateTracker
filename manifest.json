@@ -1,0 +1,30 @@
+{
+  "name": "Ice Skills Tracker",
+  "short_name": "Ice Skills",
+  "description": "Track your ice skating skill progress",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#e8f4fd",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
