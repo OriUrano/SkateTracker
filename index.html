@@ -378,7 +378,7 @@ html{scrollbar-width:none}
 
 /* ===== STREAK CALENDAR ===== */
 .streak-wrap{
-  background:var(--surface);border:1px solid var(--surface-border);
+  background:var(--panel-bg);border:1px solid var(--surface-border);
   border-radius:14px;padding:12px;overflow-x:auto;overflow-y:hidden;
   -ms-overflow-style:none;scrollbar-width:none;
 }
@@ -386,7 +386,7 @@ html{scrollbar-width:none}
 .streak-block{margin-bottom:16px;min-width:fit-content}
 .streak-block:last-child{margin-bottom:0}
 .streak-body{display:flex;align-items:flex-start}
-.streak-days{display:flex;flex-direction:column;gap:2px;margin-right:4px;flex-shrink:0;position:sticky;left:0;z-index:2;background:var(--surface)}
+.streak-days{display:flex;flex-direction:column;gap:2px;margin-right:4px;flex-shrink:0;position:sticky;left:0;z-index:2;background:var(--panel-bg)}
 .streak-day-label{height:12px;line-height:12px;font-size:9px;font-weight:500;color:var(--text3);width:24px}
 .streak-month{font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
 .cal-grid{
@@ -1191,7 +1191,7 @@ function renderCalBlock(startDate,endDate,totals,today){
   return `<div class="streak-block">
 <div style="position:relative;height:14px;margin-left:30px;margin-bottom:2px;min-width:${weeks.length*cw-g}px">${mHTML}</div>
 <div class="streak-body">
-<div class="streak-days"><div class="streak-day-label">Mon</div><div class="streak-day-label"></div><div class="streak-day-label">Wed</div><div class="streak-day-label"></div><div class="streak-day-label">Fri</div><div class="streak-day-label"></div><div class="streak-day-label"></div></div>
+<div class="streak-days"><div class="streak-day-label">Mon</div><div class="streak-day-label">Tue</div><div class="streak-day-label">Wed</div><div class="streak-day-label">Thu</div><div class="streak-day-label">Fri</div><div class="streak-day-label">Sat</div><div class="streak-day-label">Sun</div></div>
 <div class="cal-grid" style="grid-auto-columns:${cs}px;grid-template-rows:repeat(7,${cs}px);gap:${g}px">${cells}</div>
 </div></div>`;
 }
