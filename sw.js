@@ -1,4 +1,4 @@
-const CACHE = 'ice-skills-v16';
+const CACHE = 'ice-skills-v17';
 
 self.addEventListener('install', e => {
   e.waitUntil(

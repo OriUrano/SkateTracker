@@ -524,8 +524,8 @@ html{scrollbar-width:none}
   text-transform:uppercase;letter-spacing:.5px;
 }
 .modal-delete:active{transform:scale(.98);background:rgba(220,40,40,.15)}
-.history-item.session{cursor:pointer}
-.history-item.session:active{background:var(--surface-hover)}
+.history-item.session,.history-item.sharpening{cursor:pointer}
+.history-item.session:active,.history-item.sharpening:active{background:var(--surface-hover)}
 .history-time-sub{font-size:11px;color:var(--text3);margin-top:1px}
 .history-item.sharpening{
   border-color:rgba(33,136,255,.3);border-style:dashed;
@@ -635,12 +635,13 @@ html{scrollbar-width:none}
 </div>
 
 <div class="sharpening-modal" id="sharpening-modal">
-  <div class="modal-title">Log Sharpening</div>
+  <div class="modal-title" id="sharpening-modal-title">Log Sharpening</div>
   <div class="modal-field">
     <label class="modal-label">Date</label>
     <input type="date" class="modal-input" id="sharpening-date">
   </div>
   <button class="modal-submit" id="sharpening-submit">Save</button>
+  <button class="modal-delete" id="sharpening-delete" style="display:none">Delete Sharpening</button>
 </div>
 
 <div class="backdrop" id="backdrop"></div>
@@ -766,6 +767,7 @@ let currentTab='skills';
 let modalType=null;
 let modalDur=null;
 let editingIdx=-1;
+let editingShIdx=-1;
 
 function load(){
   try{const d=JSON.parse(localStorage.getItem('ice-skills-progress'));if(d)progress=d}catch(e){}
@@ -1243,7 +1245,7 @@ function renderHistory(){
   const items=[];
   sessions.forEach((s,i)=>items.push({t:'s',date:s.date,d:s,idx:i}));
   rankups.filter(r=>r.to>r.from).forEach(r=>items.push({t:'r',date:r.date,d:r}));
-  sharpenings.forEach(sh=>items.push({t:'sh',date:sh.date,d:sh}));
+  sharpenings.forEach((sh,i)=>items.push({t:'sh',date:sh.date,d:sh,idx:i}));
   items.sort((a,b)=>b.date.localeCompare(a.date));
   if(!items.length){list.innerHTML='<div class="history-empty">No sessions logged yet.<br>Tap + to add your first session.</div>';return}
   let html='',lastD='';
@@ -1264,7 +1266,7 @@ function renderHistory(){
       html+=`<div class="history-item rankup"><div class="rankup-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6z"/></svg></div><div class="history-body"><div class="rankup-text">${nm}${sd}</div><div class="rankup-detail">Leveled up to <span class="rankup-level" style="background:${lc}"></span> ${lnm}</div></div></div>`;
     }else if(item.t==='sh'){
       const iceAt=item.d.iceTimeAtSharpening||0;
-      html+=`<div class="history-item sharpening"><div class="sharpening-icon"><svg viewBox="0 0 24 24"><path d="M3 17l2-8h14l2 8H3zm4-8V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg></div><div class="history-body"><div class="rankup-text">Blades Sharpened</div><div class="rankup-detail">${iceAt>0?fmtDur(iceAt)+' total ice time':'First sharpening logged'}</div></div></div>`;
+      html+=`<div class="history-item sharpening" data-sh-idx="${item.idx}"><div class="sharpening-icon"><svg viewBox="0 0 24 24"><path d="M3 17l2-8h14l2 8H3zm4-8V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg></div><div class="history-body"><div class="rankup-text">Blades Sharpened</div><div class="rankup-detail">${iceAt>0?fmtDur(iceAt)+' total ice time':'First sharpening logged'}</div></div></div>`;
     }
   });
   list.innerHTML=html;
@@ -1375,12 +1377,20 @@ document.getElementById('session-delete').addEventListener('click',()=>{
 });
 
 document.getElementById('history-list').addEventListener('click',e=>{
-  const el=e.target.closest('.history-item.session');
-  if(el&&el.dataset.idx!=null)openSessionModal(parseInt(el.dataset.idx));
+  const se=e.target.closest('.history-item.session');
+  if(se&&se.dataset.idx!=null){openSessionModal(parseInt(se.dataset.idx));return}
+  const sh=e.target.closest('.history-item.sharpening');
+  if(sh&&sh.dataset.shIdx!=null)openSharpeningModal(parseInt(sh.dataset.shIdx));
 });
 
-function openSharpeningModal(){
-  document.getElementById('sharpening-date').value=localDS(new Date());
+function openSharpeningModal(idx){
+  editingShIdx=Number.isInteger(idx)?idx:-1;
+  const isEdit=editingShIdx>=0;
+  const sh=isEdit?sharpenings[editingShIdx]:null;
+  document.getElementById('sharpening-date').value=sh?sh.date:localDS(new Date());
+  document.getElementById('sharpening-modal-title').textContent=isEdit?'Edit Sharpening':'Log Sharpening';
+  document.getElementById('sharpening-submit').textContent=isEdit?'Save Changes':'Save';
+  document.getElementById('sharpening-delete').style.display=isEdit?'':'none';
   document.getElementById('sharpening-modal').classList.add('open');
   document.getElementById('backdrop').classList.add('vis');
 }
@@ -1388,13 +1398,27 @@ function closeSharpeningModal(){
   document.getElementById('sharpening-modal').classList.remove('open');
   if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('session-modal').classList.contains('open'))
     document.getElementById('backdrop').classList.remove('vis');
+  editingShIdx=-1;
 }
 document.getElementById('stat-sharpening-card').addEventListener('click',openSharpeningModal);
 document.getElementById('sharpening-submit').addEventListener('click',()=>{
   const date=document.getElementById('sharpening-date').value;
   if(!date)return;
-  const totalMin=sessions.reduce((sum,s)=>sum+s.duration,0);
-  sharpenings.push({date,iceTimeAtSharpening:totalMin});
+  if(editingShIdx>=0){
+    sharpenings[editingShIdx].date=date;
+  }else{
+    const totalMin=sessions.reduce((sum,s)=>sum+s.duration,0);
+    sharpenings.push({date,iceTimeAtSharpening:totalMin});
+  }
+  saveLog();closeSharpeningModal();
+  if(currentTab==='log')renderLog();
+  if(navigator.vibrate)navigator.vibrate(8);
+});
+
+document.getElementById('sharpening-delete').addEventListener('click',()=>{
+  if(editingShIdx<0)return;
+  if(!confirm('Delete this sharpening?'))return;
+  sharpenings.splice(editingShIdx,1);
   saveLog();closeSharpeningModal();
   if(currentTab==='log')renderLog();
   if(navigator.vibrate)navigator.vibrate(8);
