@@ -356,11 +356,19 @@ html{scrollbar-width:none}
 
 /* ===== LOG VIEW ===== */
 #log-view{display:none;padding:12px 16px 80px}
-.log-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.log-stats{
+  display:flex;gap:10px;margin-bottom:20px;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  -ms-overflow-style:none;scrollbar-width:none;
+}
+.log-stats::-webkit-scrollbar{display:none}
 .stat-card{
   background:var(--surface);border:1px solid var(--surface-border);
   border-radius:14px;padding:16px;text-align:center;
+  min-width:calc(50% - 5px);flex-shrink:0;scroll-snap-align:start;
 }
+.stat-card.tappable{cursor:pointer;position:relative}
+.stat-card.tappable:active{background:var(--surface-hover);transform:scale(.98)}
 .stat-value{font-size:28px;font-weight:800;color:var(--phase-text);letter-spacing:-.5px;line-height:1.1}
 .stat-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
 .log-section{margin-bottom:20px}
@@ -526,6 +534,26 @@ html{scrollbar-width:none}
 .history-item.session{cursor:pointer}
 .history-item.session:active{background:var(--surface-hover)}
 .history-time-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.history-item.sharpening{
+  border-color:rgba(33,136,255,.3);border-style:dashed;
+  background:linear-gradient(135deg,rgba(33,136,255,.04),rgba(33,136,255,.08));
+}
+.sharpening-icon{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  background:var(--blue-g);
+  display:flex;align-items:center;justify-content:center;
+}
+.sharpening-icon svg{width:16px;height:16px;fill:#fff;stroke:none}
+.sharpening-modal{
+  position:fixed;bottom:0;left:0;right:0;z-index:210;
+  background:var(--panel-bg);border-top:1px solid var(--surface-border);
+  border-radius:20px 20px 0 0;
+  padding:20px 16px calc(28px + env(safe-area-inset-bottom,0));
+  box-shadow:0 -4px 30px rgba(0,0,0,.15);
+  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.sharpening-modal.open{transform:translateY(0)}
 </style>
 </head>
 <body>
@@ -548,6 +576,7 @@ html{scrollbar-width:none}
   <div class="log-stats">
     <div class="stat-card"><div class="stat-value" id="stat-days">0</div><div class="stat-label">Days on Ice</div></div>
     <div class="stat-card"><div class="stat-value" id="stat-time">0h</div><div class="stat-label">Total Ice Time</div></div>
+    <div class="stat-card tappable" id="stat-sharpening-card"><div class="stat-value" id="stat-sharpening">0h</div><div class="stat-label">Since Sharpening</div></div>
   </div>
   <div class="log-section">
     <div class="log-section-hdr">
@@ -610,6 +639,15 @@ html{scrollbar-width:none}
   </div>
   <button class="modal-submit" id="session-submit" disabled>Add Session</button>
   <button class="modal-delete" id="session-delete" style="display:none">Delete Session</button>
+</div>
+
+<div class="sharpening-modal" id="sharpening-modal">
+  <div class="modal-title">Log Sharpening</div>
+  <div class="modal-field">
+    <label class="modal-label">Date</label>
+    <input type="date" class="modal-input" id="sharpening-date">
+  </div>
+  <button class="modal-submit" id="sharpening-submit">Save</button>
 </div>
 
 <div class="backdrop" id="backdrop"></div>
@@ -729,6 +767,7 @@ let progress={};
 let theme='frost';
 let sessions=[];
 let rankups=[];
+let sharpenings=[];
 let calExpanded=false;
 let currentTab='skills';
 let modalType=null;
@@ -740,6 +779,7 @@ function load(){
   try{const t=localStorage.getItem('ice-skills-theme');if(t)theme=t}catch(e){}
   try{sessions=JSON.parse(localStorage.getItem('ice-sessions'))||[]}catch(e){sessions=[]}
   try{rankups=JSON.parse(localStorage.getItem('ice-rankups'))||[]}catch(e){rankups=[]}
+  try{sharpenings=JSON.parse(localStorage.getItem('ice-sharpenings'))||[]}catch(e){sharpenings=[]}
 }
 
 function save(){
@@ -750,6 +790,7 @@ function save(){
 function saveLog(){
   localStorage.setItem('ice-sessions',JSON.stringify(sessions));
   localStorage.setItem('ice-rankups',JSON.stringify(rankups));
+  localStorage.setItem('ice-sharpenings',JSON.stringify(sharpenings));
 }
 
 function getLevel(skillId,side){
@@ -1131,14 +1172,23 @@ function updateEndTimeDisplay(){
   }else{el.textContent=''}
 }
 
+function getTimeSinceSharpening(){
+  const totalMin=sessions.reduce((sum,s)=>sum+s.duration,0);
+  if(!sharpenings.length)return totalMin;
+  const last=sharpenings[sharpenings.length-1];
+  return Math.max(0,totalMin-(last.iceTimeAtSharpening||0));
+}
+
 function renderLog(){updateStats();renderCalendar();renderHistory()}
 
 function updateStats(){
   const days=new Set(sessions.map(s=>s.date)).size;
   const totalMin=sessions.reduce((sum,s)=>sum+s.duration,0);
-  const de=document.getElementById('stat-days'),te=document.getElementById('stat-time');
+  const de=document.getElementById('stat-days'),te=document.getElementById('stat-time'),se=document.getElementById('stat-sharpening');
   if(de)de.textContent=days;
   if(te)te.textContent=totalMin>0?fmtDur(totalMin):'0h';
+  const sinceSh=getTimeSinceSharpening();
+  if(se)se.textContent=sinceSh>0?fmtDur(sinceSh):'0h';
 }
 
 function renderCalendar(){
@@ -1201,6 +1251,7 @@ function renderHistory(){
   const items=[];
   sessions.forEach((s,i)=>items.push({t:'s',date:s.date,d:s,idx:i}));
   rankups.filter(r=>r.to>r.from).forEach(r=>items.push({t:'r',date:r.date,d:r}));
+  sharpenings.forEach(sh=>items.push({t:'sh',date:sh.date,d:sh}));
   items.sort((a,b)=>b.date.localeCompare(a.date));
   if(!items.length){list.innerHTML='<div class="history-empty">No sessions logged yet.<br>Tap + to add your first session.</div>';return}
   let html='',lastD='';
@@ -1214,11 +1265,14 @@ function renderHistory(){
     if(item.t==='s'){
       const timeStr=item.d.startTime?`<div class="history-time-sub">${fmt12h(item.d.startTime)} \u2192 ${fmt12h(calcEndTime(item.d.startTime,item.d.duration))}</div>`:'';
       html+=`<div class="history-item session" data-idx="${item.idx}"><div class="history-type type-${item.d.type}">${item.d.type}</div><div class="history-body">${timeStr}</div><span class="history-time-right">${fmtDur(item.d.duration)}</span></div>`;
-    }else{
+    }else if(item.t==='r'){
       const sk=SMAP[item.d.skillId];const nm=sk?sk.n:item.d.skillId;
       const sd=item.d.side?' ('+item.d.side+')':'';
       const lnm=LEVEL_NAMES[item.d.to]||'';const lc=LEVEL_COLORS[item.d.to]||'';
       html+=`<div class="history-item rankup"><div class="rankup-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6z"/></svg></div><div class="history-body"><div class="rankup-text">${nm}${sd}</div><div class="rankup-detail">Leveled up to <span class="rankup-level" style="background:${lc}"></span> ${lnm}</div></div></div>`;
+    }else if(item.t==='sh'){
+      const iceAt=item.d.iceTimeAtSharpening||0;
+      html+=`<div class="history-item sharpening"><div class="sharpening-icon"><svg viewBox="0 0 24 24"><path d="M3 17l2-8h14l2 8H3zm4-8V5a1 1 0 011-1h8a1 1 0 011 1v4"/></svg></div><div class="history-body"><div class="rankup-text">Blades Sharpened</div><div class="rankup-detail">${iceAt>0?fmtDur(iceAt)+' total ice time':'First sharpening logged'}</div></div></div>`;
     }
   });
   list.innerHTML=html;
@@ -1261,7 +1315,7 @@ function closeSessionModal(){
 
 /* =============== EVENTS =============== */
 document.getElementById('theme-toggle').addEventListener('click',toggleThemePanel);
-document.getElementById('backdrop').addEventListener('click',()=>{closePanel();closeSessionModal()});
+document.getElementById('backdrop').addEventListener('click',()=>{closePanel();closeSessionModal();closeSharpeningModal()});
 
 document.querySelectorAll('.theme-btn').forEach(b=>{
   b.addEventListener('click',()=>{setTheme(b.dataset.t);setTimeout(closePanel,200)});
@@ -1269,7 +1323,7 @@ document.querySelectorAll('.theme-btn').forEach(b=>{
 
 document.getElementById('reset-btn').addEventListener('click',()=>{
   if(confirm('Reset all progress? This cannot be undone.')){
-    progress={};sessions=[];rankups=[];save();saveLog();
+    progress={};sessions=[];rankups=[];sharpenings=[];save();saveLog();
     closeCard(true);updateAll();closePanel();
     if(currentTab==='log')renderLog();
   }
@@ -1331,6 +1385,27 @@ document.getElementById('session-delete').addEventListener('click',()=>{
 document.getElementById('history-list').addEventListener('click',e=>{
   const el=e.target.closest('.history-item.session');
   if(el&&el.dataset.idx!=null)openSessionModal(parseInt(el.dataset.idx));
+});
+
+function openSharpeningModal(){
+  document.getElementById('sharpening-date').value=localDS(new Date());
+  document.getElementById('sharpening-modal').classList.add('open');
+  document.getElementById('backdrop').classList.add('vis');
+}
+function closeSharpeningModal(){
+  document.getElementById('sharpening-modal').classList.remove('open');
+  if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('session-modal').classList.contains('open'))
+    document.getElementById('backdrop').classList.remove('vis');
+}
+document.getElementById('stat-sharpening-card').addEventListener('click',openSharpeningModal);
+document.getElementById('sharpening-submit').addEventListener('click',()=>{
+  const date=document.getElementById('sharpening-date').value;
+  if(!date)return;
+  const totalMin=sessions.reduce((sum,s)=>sum+s.duration,0);
+  sharpenings.push({date,iceTimeAtSharpening:totalMin});
+  saveLog();closeSharpeningModal();
+  if(currentTab==='log')renderLog();
+  if(navigator.vibrate)navigator.vibrate(8);
 });
 
 /* =============== INIT =============== */
