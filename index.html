@@ -1671,7 +1671,8 @@ function openLearnMore(skillId){
   overlay.addEventListener('click',()=>closeLearnMore());
 
   modal.querySelectorAll('.lm-yt-container').forEach(c=>{
-    c.addEventListener('click',function(){
+    c.addEventListener('click',function(e){
+      e.stopPropagation();
       const v=this.dataset.vid;
       this.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     },{once:true});
@@ -2079,7 +2080,7 @@ document.getElementById('reset-btn').addEventListener('click',()=>{
 });
 
 document.addEventListener('click',e=>{
-  if(activeCardId&&!e.target.closest('.skill-item')&&!e.target.closest('.skill-detail-card'))closeCard();
+  if(activeCardId&&!e.target.closest('.skill-item')&&!e.target.closest('.skill-detail-card')&&!e.target.closest('.lm-modal'))closeCard();
 });
 
 document.addEventListener('keydown',e=>{

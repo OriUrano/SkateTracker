@@ -12,7 +12,7 @@ Open `index.html` directly in a browser. No build step, no install, no dev serve
 
 Local server: `python -m http.server 8080` → **http://localhost:8080**
 
-The service worker (`sw.js`) caches assets with version key `ice-skills-v19` — **bump this version string** whenever `index.html` changes to bust the cache.
+The service worker (`sw.js`) caches assets with version key `ice-skills-v24` — **bump this version string** whenever `index.html` changes to bust the cache.
 
 ## Architecture
 
