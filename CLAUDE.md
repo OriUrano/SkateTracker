@@ -10,6 +10,8 @@ Ice Skills Tracker — a single-file PWA for tracking ice skating skill progress
 
 Open `index.html` directly in a browser. No build step, no install, no dev server required.
 
+Local server: `python -m http.server 8080` → **http://localhost:8080**
+
 The service worker (`sw.js`) caches assets with version key `ice-skills-v19` — **bump this version string** whenever `index.html` changes to bust the cache.
 
 ## Architecture
