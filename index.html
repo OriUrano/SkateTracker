@@ -1490,6 +1490,7 @@ function openCard(skillId,itemEl){
     const arrowLeft=itemRect.left+itemRect.width/2-cardRect.left;
     cardEl.querySelector('.sdc-arrow').style.left=arrowLeft+'px';
     cardEl.classList.add('open');
+    _pushModal('card');
 
     // Scroll card into view with extra padding at the bottom
     setTimeout(()=>{
@@ -1562,7 +1563,8 @@ function refreshCard(skillId,animSide){
   attachCardBtns(skillId);
 }
 
-function closeCard(instant){
+function closeCard(instant,fromBack){
+  if(!cardEl&&!activeCardId)return;
   if(cardEl){
     if(instant){
       cardEl.remove();
@@ -1575,6 +1577,7 @@ function closeCard(instant){
   }
   activeCardId=null;
   document.querySelectorAll('.skill-item.selected').forEach(i=>i.classList.remove('selected'));
+  if(!fromBack&&_modalStack.includes('card')){_popModal('card');history.back()}
 }
 
 /* =============== LEARN MORE =============== */
@@ -1657,9 +1660,10 @@ function openLearnMore(skillId){
   modal.classList.add('open');
   modal.scrollTop=0;
   document.body.style.overflow='hidden';
+  _pushModal('learnMore');
 
-  document.getElementById('lm-back-btn').addEventListener('click',closeLearnMore);
-  overlay.addEventListener('click',closeLearnMore);
+  document.getElementById('lm-back-btn').addEventListener('click',()=>closeLearnMore());
+  overlay.addEventListener('click',()=>closeLearnMore());
 
   modal.querySelectorAll('.lm-yt-container').forEach(c=>{
     c.addEventListener('click',function(){
@@ -1676,13 +1680,15 @@ function openLearnMore(skillId){
   }
 }
 
-function closeLearnMore(){
+function closeLearnMore(fromBack){
   const modal=document.getElementById('lm-modal');
+  if(!modal.classList.contains('open'))return;
   const overlay=document.getElementById('lm-overlay');
   modal.classList.remove('open');
   overlay.classList.remove('open');
   document.body.style.overflow='';
   setTimeout(()=>{modal.innerHTML=''},350);
+  if(!fromBack&&_modalStack.includes('learnMore')){_popModal('learnMore');history.back()}
 }
 
 /* =============== DOM BUILD =============== */
@@ -1823,11 +1829,15 @@ function toggleThemePanel(){
   const panel=document.getElementById('theme-panel');
   const open=panel.classList.toggle('open');
   document.getElementById('backdrop').classList.toggle('vis',open);
+  if(open)_pushModal('theme');
+  else{_popModal('theme');history.back()}
 }
 
-function closePanel(){
+function closePanel(fromBack){
+  if(!document.getElementById('theme-panel').classList.contains('open'))return;
   document.getElementById('theme-panel').classList.remove('open');
   document.getElementById('backdrop').classList.remove('vis');
+  if(!fromBack&&_modalStack.includes('theme')){_popModal('theme');history.back()}
 }
 
 /* =============== LOG FUNCTIONS =============== */
@@ -2035,13 +2045,16 @@ function openSessionModal(idx){
   updateEndTimeDisplay();
   document.getElementById('session-modal').classList.add('open');
   document.getElementById('backdrop').classList.add('vis');
+  _pushModal('session');
 }
 
-function closeSessionModal(){
+function closeSessionModal(fromBack){
+  if(!document.getElementById('session-modal').classList.contains('open'))return;
   document.getElementById('session-modal').classList.remove('open');
   if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('sharpening-modal').classList.contains('open')&&!document.getElementById('rankup-modal').classList.contains('open'))
     document.getElementById('backdrop').classList.remove('vis');
   editingIdx=-1;
+  if(!fromBack&&_modalStack.includes('session')){_popModal('session');history.back()}
 }
 
 /* =============== EVENTS =============== */
@@ -2174,12 +2187,15 @@ function openSharpeningModal(idx){
   document.getElementById('sharpening-delete').style.display=isEdit?'':'none';
   document.getElementById('sharpening-modal').classList.add('open');
   document.getElementById('backdrop').classList.add('vis');
+  _pushModal('sharpening');
 }
-function closeSharpeningModal(){
+function closeSharpeningModal(fromBack){
+  if(!document.getElementById('sharpening-modal').classList.contains('open'))return;
   document.getElementById('sharpening-modal').classList.remove('open');
   if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('session-modal').classList.contains('open')&&!document.getElementById('rankup-modal').classList.contains('open'))
     document.getElementById('backdrop').classList.remove('vis');
   editingShIdx=-1;
+  if(!fromBack&&_modalStack.includes('sharpening')){_popModal('sharpening');history.back()}
 }
 document.getElementById('stat-sharpening-card').addEventListener('click',openSharpeningModal);
 document.getElementById('sharpening-submit').addEventListener('click',()=>{
@@ -2217,12 +2233,15 @@ function openRankupModal(idx){
   document.getElementById('rankup-time').value=r.time||'';
   document.getElementById('rankup-modal').classList.add('open');
   document.getElementById('backdrop').classList.add('vis');
+  _pushModal('rankup');
 }
-function closeRankupModal(){
+function closeRankupModal(fromBack){
+  if(!document.getElementById('rankup-modal').classList.contains('open'))return;
   document.getElementById('rankup-modal').classList.remove('open');
   if(!document.getElementById('theme-panel').classList.contains('open')&&!document.getElementById('session-modal').classList.contains('open')&&!document.getElementById('sharpening-modal').classList.contains('open'))
     document.getElementById('backdrop').classList.remove('vis');
   editingRkIdx=-1;
+  if(!fromBack&&_modalStack.includes('rankup')){_popModal('rankup');history.back()}
 }
 document.getElementById('rankup-submit').addEventListener('click',()=>{
   if(editingRkIdx<0)return;
@@ -2242,6 +2261,21 @@ document.getElementById('rankup-delete').addEventListener('click',()=>{
   saveLog();closeRankupModal();
   if(currentTab==='log')renderLog();
   if(navigator.vibrate)navigator.vibrate(8);
+});
+
+/* =============== BACK BUTTON / HISTORY =============== */
+const _modalStack=[];
+function _pushModal(id){_modalStack.push(id);history.pushState({modal:id},'')}
+function _popModal(id){const i=_modalStack.lastIndexOf(id);if(i>-1)_modalStack.splice(i,1)}
+window.addEventListener('popstate',function(){
+  const top=_modalStack.pop();
+  if(!top)return;
+  if(top==='learnMore')closeLearnMore(true);
+  else if(top==='session')closeSessionModal(true);
+  else if(top==='sharpening')closeSharpeningModal(true);
+  else if(top==='rankup')closeRankupModal(true);
+  else if(top==='theme')closePanel(true);
+  else if(top==='card')closeCard(false,true);
 });
 
 /* =============== INIT =============== */
