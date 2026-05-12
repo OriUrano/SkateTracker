@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0c1a2e">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
@@ -15,179 +15,313 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-tap-highlight-color:transparent;overflow-y:scroll}
-body{font-family:'Sora',system-ui,sans-serif;min-height:100dvh;transition:background .4s,color .4s}
+body{font-family:'Sora',system-ui,sans-serif;min-height:100dvh;transition:background .5s,color .5s}
 
-/* ===== THEME: FROST ===== */
+/* ═══════════════════════════════════════════
+   ANIMATED BACKGROUND
+   ═══════════════════════════════════════════ */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;
+  background:var(--bg);
+  background-image:var(--bg2);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:-1;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 30%, var(--orb1) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 500px at 80% 60%, var(--orb2) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 50% 90%, var(--orb3) 0%, transparent 70%);
+  animation:orbShift 25s ease-in-out infinite alternate;
+  opacity:.7;
+}
+@keyframes orbShift{
+  0%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(-2%,1%) scale(1.02)}
+  66%{transform:translate(1%,-2%) scale(.98)}
+  100%{transform:translate(-1%,2%) scale(1.01)}
+}
+
+/* ═══════════════════════════════════════════
+   THEME: FROST (default)
+   ═══════════════════════════════════════════ */
 [data-theme="frost"]{
-  --bg:#edf5fc;--bg2:linear-gradient(160deg,#e0effc 0%,#f4f9ff 100%);
-  --surface:#fff;--surface-hover:#f0f6ff;--surface-border:rgba(120,180,240,.2);
-  --text1:#1a3a5f;--text2:#4a6d8c;--text3:#8baac4;
-  --phase-bg:linear-gradient(135deg,rgba(37,99,235,.06),rgba(147,197,253,.1));
-  --phase-text:#2563eb;--phase-border:rgba(37,99,235,.12);
-  --circle-border:rgba(147,197,253,.35);--circle-shadow:0 2px 10px rgba(37,99,235,.1);
-  --locked:#c8d6e5;--unlocked:#fff;--unlocked-border:rgba(37,99,235,.25);
-  --icon-color:#4a7aab;--icon-locked:#9ab5ce;--icon-active:#fff;
-  --header-bg:rgba(237,245,252,.92);--header-border:rgba(147,197,253,.25);
-  --panel-bg:#fff;
-  --divider:rgba(100,160,220,.18);--ring:rgba(37,99,235,.08);
-  --lr-text:#5a8ab5;--name-shadow:none;
-  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%232563eb' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+  --bg:#0c1a2e;
+  --bg2:linear-gradient(160deg,#0c1a2e 0%,#0f1e35 40%,#162844 70%,#0c1a2e 100%);
+  --orb1:rgba(100,180,255,0.08);--orb2:rgba(140,100,255,0.06);--orb3:rgba(80,200,220,0.05);
+  --glass:rgba(255,255,255,0.06);--glass-hover:rgba(255,255,255,0.1);
+  --glass-border:rgba(255,255,255,0.1);--glass-border-hover:rgba(255,255,255,0.18);
+  --glass-blur:24px;
+  --surface:rgba(255,255,255,0.04);--surface-hover:rgba(255,255,255,0.08);--surface-border:rgba(255,255,255,0.08);
+  --text1:#e8f0ff;--text2:rgba(255,255,255,0.55);--text3:rgba(255,255,255,0.3);
+  --phase-bg:rgba(110,193,255,0.06);--phase-text:#6ec1ff;--phase-border:rgba(110,193,255,0.15);
+  --circle-border:rgba(255,255,255,0.12);--circle-shadow:0 2px 12px rgba(0,0,0,.2);
+  --locked:rgba(255,255,255,0.03);--unlocked:rgba(255,255,255,0.06);
+  --unlocked-border:rgba(255,255,255,0.12);
+  --icon-color:rgba(255,255,255,0.4);--icon-locked:rgba(255,255,255,0.15);--icon-active:#fff;
+  --header-bg:rgba(12,26,46,0.85);--header-border:rgba(255,255,255,0.06);
+  --panel-bg:rgba(16,28,48,0.95);
+  --divider:rgba(255,255,255,0.06);--ring:rgba(110,193,255,0.15);
+  --lr-text:rgba(255,255,255,0.35);--name-shadow:none;
+  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%236ec1ff' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+  --heat-0:rgba(110,193,255,0.06);--heat-1:rgba(110,193,255,0.2);
+  --heat-2:rgba(110,193,255,0.4);--heat-3:rgba(110,193,255,0.65);--heat-4:#6ec1ff;
+  --glow-yellow:rgba(250,204,21,0.35);--glow-green:rgba(74,222,128,0.35);
+  --glow-blue:rgba(96,165,250,0.35);--glow-purple:rgba(167,139,250,0.4);
+  --nav-indicator:#6ec1ff;
 }
 
-/* ===== THEME: MIDNIGHT ICE ===== */
+/* ═══════════════════════════════════════════
+   THEME: MIDNIGHT ICE
+   ═══════════════════════════════════════════ */
 [data-theme="midnight"]{
-  --bg:#080c18;--bg2:linear-gradient(160deg,#0a0e1a 0%,#10162a 100%);
-  --surface:#12182a;--surface-hover:#1a2038;--surface-border:rgba(0,220,255,.1);
-  --text1:#d8e4ff;--text2:#7888b0;--text3:#3e4e72;
-  --phase-bg:linear-gradient(135deg,rgba(0,220,255,.05),rgba(120,80,255,.05));
-  --phase-text:#00dcff;--phase-border:rgba(0,220,255,.12);
-  --circle-border:rgba(0,220,255,.18);--circle-shadow:0 0 14px rgba(0,220,255,.08);
-  --locked:#161e30;--unlocked:#1a2238;--unlocked-border:rgba(0,220,255,.22);
-  --icon-color:#6888b8;--icon-locked:#2e3a54;--icon-active:#fff;
-  --header-bg:rgba(8,12,24,.92);--header-border:rgba(0,220,255,.08);
-  --panel-bg:#12182a;
-  --divider:rgba(0,220,255,.1);--ring:rgba(0,220,255,.06);
-  --lr-text:#4a6890;--name-shadow:0 0 8px rgba(0,220,255,.1);
+  --bg:#050810;
+  --bg2:linear-gradient(160deg,#050810 0%,#080c18 40%,#0a1020 70%,#050810 100%);
+  --orb1:rgba(0,220,255,0.07);--orb2:rgba(80,60,200,0.06);--orb3:rgba(0,180,220,0.04);
+  --glass:rgba(255,255,255,0.04);--glass-hover:rgba(255,255,255,0.07);
+  --glass-border:rgba(0,220,255,0.1);--glass-border-hover:rgba(0,220,255,0.2);
+  --glass-blur:24px;
+  --surface:rgba(255,255,255,0.03);--surface-hover:rgba(255,255,255,0.06);--surface-border:rgba(0,220,255,0.08);
+  --text1:#d8e4ff;--text2:rgba(255,255,255,0.45);--text3:rgba(255,255,255,0.22);
+  --phase-bg:rgba(0,220,255,0.05);--phase-text:#00dcff;--phase-border:rgba(0,220,255,0.12);
+  --circle-border:rgba(0,220,255,0.12);--circle-shadow:0 0 14px rgba(0,0,0,.3);
+  --locked:rgba(255,255,255,0.02);--unlocked:rgba(255,255,255,0.04);
+  --unlocked-border:rgba(0,220,255,0.15);
+  --icon-color:rgba(255,255,255,0.35);--icon-locked:rgba(255,255,255,0.1);--icon-active:#fff;
+  --header-bg:rgba(5,8,16,0.9);--header-border:rgba(0,220,255,0.06);
+  --panel-bg:rgba(8,12,24,0.95);
+  --divider:rgba(0,220,255,0.06);--ring:rgba(0,220,255,0.1);
+  --lr-text:rgba(255,255,255,0.3);--name-shadow:0 0 8px rgba(0,220,255,0.08);
   --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%2300dcff' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+  --heat-0:rgba(0,220,255,0.06);--heat-1:rgba(0,220,255,0.2);
+  --heat-2:rgba(0,220,255,0.4);--heat-3:rgba(0,220,255,0.65);--heat-4:#00dcff;
+  --glow-yellow:rgba(250,204,21,0.3);--glow-green:rgba(74,222,128,0.3);
+  --glow-blue:rgba(96,165,250,0.3);--glow-purple:rgba(167,139,250,0.35);
+  --nav-indicator:#00dcff;
 }
 
-/* ===== THEME: RINK CLASSIC ===== */
+/* ═══════════════════════════════════════════
+   THEME: RINK CLASSIC
+   ═══════════════════════════════════════════ */
 [data-theme="rink"]{
-  --bg:#f0e8d8;--bg2:linear-gradient(160deg,#ede2cf 0%,#f8f2e8 100%);
-  --surface:#faf5eb;--surface-hover:#f0e8d8;--surface-border:rgba(139,90,43,.1);
-  --text1:#3d2b1f;--text2:#6b4f3a;--text3:#a08060;
-  --phase-bg:linear-gradient(135deg,rgba(139,90,43,.06),rgba(180,130,70,.06));
-  --phase-text:#7a3e10;--phase-border:rgba(139,90,43,.1);
-  --circle-border:rgba(139,90,43,.18);--circle-shadow:0 2px 8px rgba(100,60,20,.08);
-  --locked:#d0c4b0;--unlocked:#faf5eb;--unlocked-border:rgba(139,90,43,.18);
-  --icon-color:#7a5a3a;--icon-locked:#b0a090;--icon-active:#fff;
-  --header-bg:rgba(240,232,216,.92);--header-border:rgba(139,90,43,.1);
-  --panel-bg:#faf5eb;
-  --divider:rgba(139,90,43,.1);--ring:rgba(139,90,43,.05);
-  --lr-text:#8a6a4a;--name-shadow:none;
-  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%237a3e10' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+  --bg:#1a120a;
+  --bg2:linear-gradient(160deg,#1a120a 0%,#201610 40%,#2a1c12 70%,#1a120a 100%);
+  --orb1:rgba(180,130,70,0.08);--orb2:rgba(160,100,40,0.06);--orb3:rgba(200,160,80,0.04);
+  --glass:rgba(255,240,220,0.06);--glass-hover:rgba(255,240,220,0.1);
+  --glass-border:rgba(180,130,70,0.15);--glass-border-hover:rgba(180,130,70,0.25);
+  --glass-blur:24px;
+  --surface:rgba(255,240,220,0.04);--surface-hover:rgba(255,240,220,0.08);--surface-border:rgba(180,130,70,0.1);
+  --text1:#f0e0cc;--text2:rgba(255,240,220,0.55);--text3:rgba(255,240,220,0.3);
+  --phase-bg:rgba(180,130,70,0.08);--phase-text:#d4a050;--phase-border:rgba(180,130,70,0.15);
+  --circle-border:rgba(180,130,70,0.15);--circle-shadow:0 2px 12px rgba(0,0,0,.2);
+  --locked:rgba(255,240,220,0.03);--unlocked:rgba(255,240,220,0.06);
+  --unlocked-border:rgba(180,130,70,0.15);
+  --icon-color:rgba(255,240,220,0.4);--icon-locked:rgba(255,240,220,0.15);--icon-active:#fff;
+  --header-bg:rgba(26,18,10,0.88);--header-border:rgba(180,130,70,0.08);
+  --panel-bg:rgba(26,18,10,0.95);
+  --divider:rgba(180,130,70,0.08);--ring:rgba(180,130,70,0.12);
+  --lr-text:rgba(255,240,220,0.35);--name-shadow:none;
+  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%23d4a050' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+  --heat-0:rgba(180,130,70,0.06);--heat-1:rgba(180,130,70,0.2);
+  --heat-2:rgba(180,130,70,0.4);--heat-3:rgba(180,130,70,0.65);--heat-4:#d4a050;
+  --glow-yellow:rgba(250,204,21,0.3);--glow-green:rgba(74,222,128,0.3);
+  --glow-blue:rgba(96,165,250,0.3);--glow-purple:rgba(167,139,250,0.35);
+  --nav-indicator:#d4a050;
 }
 
-/* ===== THEME: AURORA ===== */
+/* ═══════════════════════════════════════════
+   THEME: AURORA
+   ═══════════════════════════════════════════ */
 [data-theme="aurora"]{
-  --bg:#0c1520;--bg2:linear-gradient(160deg,#0a1218 0%,#0f1f2a 40%,#151828 100%);
-  --surface:rgba(255,255,255,.05);--surface-hover:rgba(255,255,255,.08);--surface-border:rgba(52,211,153,.12);
-  --text1:#d0f0e0;--text2:#6aaa88;--text3:#345a48;
-  --phase-bg:linear-gradient(135deg,rgba(52,211,153,.06),rgba(99,102,241,.06));
-  --phase-text:#34d399;--phase-border:rgba(52,211,153,.12);
-  --circle-border:rgba(52,211,153,.18);--circle-shadow:0 0 14px rgba(52,211,153,.08);
-  --locked:rgba(255,255,255,.04);--unlocked:rgba(255,255,255,.07);--unlocked-border:rgba(52,211,153,.2);
-  --icon-color:#6aaa88;--icon-locked:#2a4a3a;--icon-active:#fff;
-  --header-bg:rgba(12,21,32,.92);--header-border:rgba(52,211,153,.08);
-  --panel-bg:#101c28;
-  --divider:rgba(52,211,153,.1);--ring:rgba(52,211,153,.05);
-  --lr-text:#4a8a6a;--name-shadow:0 0 8px rgba(52,211,153,.08);
+  --bg:#08120e;
+  --bg2:linear-gradient(160deg,#08120e 0%,#0a1812 40%,#0c2018 70%,#08120e 100%);
+  --orb1:rgba(52,211,153,0.07);--orb2:rgba(99,102,241,0.05);--orb3:rgba(40,200,160,0.04);
+  --glass:rgba(200,255,230,0.05);--glass-hover:rgba(200,255,230,0.08);
+  --glass-border:rgba(52,211,153,0.12);--glass-border-hover:rgba(52,211,153,0.22);
+  --glass-blur:24px;
+  --surface:rgba(200,255,230,0.03);--surface-hover:rgba(200,255,230,0.06);--surface-border:rgba(52,211,153,0.08);
+  --text1:#d0f0e0;--text2:rgba(200,255,230,0.5);--text3:rgba(200,255,230,0.25);
+  --phase-bg:rgba(52,211,153,0.06);--phase-text:#34d399;--phase-border:rgba(52,211,153,0.12);
+  --circle-border:rgba(52,211,153,0.12);--circle-shadow:0 2px 12px rgba(0,0,0,.2);
+  --locked:rgba(200,255,230,0.02);--unlocked:rgba(200,255,230,0.05);
+  --unlocked-border:rgba(52,211,153,0.15);
+  --icon-color:rgba(200,255,230,0.4);--icon-locked:rgba(200,255,230,0.12);--icon-active:#fff;
+  --header-bg:rgba(8,18,14,0.88);--header-border:rgba(52,211,153,0.06);
+  --panel-bg:rgba(8,18,14,0.95);
+  --divider:rgba(52,211,153,0.06);--ring:rgba(52,211,153,0.1);
+  --lr-text:rgba(200,255,230,0.3);--name-shadow:0 0 8px rgba(52,211,153,0.06);
   --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%2334d399' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+  --heat-0:rgba(52,211,153,0.06);--heat-1:rgba(52,211,153,0.2);
+  --heat-2:rgba(52,211,153,0.4);--heat-3:rgba(52,211,153,0.65);--heat-4:#34d399;
+  --glow-yellow:rgba(250,204,21,0.3);--glow-green:rgba(74,222,128,0.3);
+  --glow-blue:rgba(96,165,250,0.3);--glow-purple:rgba(167,139,250,0.35);
+  --nav-indicator:#34d399;
 }
 
-/* ===== THEME: COMPETITION ===== */
+/* ═══════════════════════════════════════════
+   THEME: COMPETITION
+   ═══════════════════════════════════════════ */
 [data-theme="competition"]{
-  --bg:#f5f5f5;--bg2:linear-gradient(160deg,#f0f0f0 0%,#fafafa 100%);
-  --surface:#fff;--surface-hover:#f5f5f5;--surface-border:rgba(160,20,20,.08);
-  --text1:#1a1a2e;--text2:#4a4a6a;--text3:#8a8aaa;
-  --phase-bg:linear-gradient(135deg,rgba(183,28,28,.04),rgba(255,193,7,.04));
-  --phase-text:#a01414;--phase-border:rgba(183,28,28,.1);
-  --circle-border:rgba(160,20,20,.12);--circle-shadow:0 2px 10px rgba(0,0,0,.06);
-  --locked:#ddd;--unlocked:#fff;--unlocked-border:rgba(183,28,28,.15);
-  --icon-color:#4a4a6a;--icon-locked:#aaa;--icon-active:#fff;
-  --header-bg:rgba(245,245,245,.95);--header-border:rgba(183,28,28,.08);
-  --panel-bg:#fff;
-  --divider:rgba(160,20,20,.08);--ring:rgba(183,28,28,.04);
-  --lr-text:#6a4a4a;--name-shadow:none;
-  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%23a01414' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+  --bg:#0e0a10;
+  --bg2:linear-gradient(160deg,#0e0a10 0%,#14101a 40%,#1a1222 70%,#0e0a10 100%);
+  --orb1:rgba(220,40,60,0.06);--orb2:rgba(200,180,220,0.04);--orb3:rgba(180,30,50,0.04);
+  --glass:rgba(255,230,240,0.05);--glass-hover:rgba(255,230,240,0.08);
+  --glass-border:rgba(220,60,80,0.12);--glass-border-hover:rgba(220,60,80,0.22);
+  --glass-blur:24px;
+  --surface:rgba(255,230,240,0.03);--surface-hover:rgba(255,230,240,0.06);--surface-border:rgba(220,60,80,0.08);
+  --text1:#f0e0ea;--text2:rgba(255,230,240,0.5);--text3:rgba(255,230,240,0.25);
+  --phase-bg:rgba(220,60,80,0.06);--phase-text:#f06080;--phase-border:rgba(220,60,80,0.15);
+  --circle-border:rgba(220,60,80,0.12);--circle-shadow:0 2px 12px rgba(0,0,0,.2);
+  --locked:rgba(255,230,240,0.02);--unlocked:rgba(255,230,240,0.05);
+  --unlocked-border:rgba(220,60,80,0.15);
+  --icon-color:rgba(255,230,240,0.4);--icon-locked:rgba(255,230,240,0.12);--icon-active:#fff;
+  --header-bg:rgba(14,10,16,0.88);--header-border:rgba(220,60,80,0.06);
+  --panel-bg:rgba(14,10,16,0.95);
+  --divider:rgba(220,60,80,0.06);--ring:rgba(220,60,80,0.1);
+  --lr-text:rgba(255,230,240,0.3);--name-shadow:none;
+  --phase-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%23f06080' stroke-width='1.5'%3E%3Cpath d='M10 3.25l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z'/%3E%3C/svg%3E");
+  --heat-0:rgba(220,60,80,0.06);--heat-1:rgba(220,60,80,0.2);
+  --heat-2:rgba(220,60,80,0.4);--heat-3:rgba(220,60,80,0.65);--heat-4:#f06080;
+  --glow-yellow:rgba(250,204,21,0.3);--glow-green:rgba(74,222,128,0.3);
+  --glow-blue:rgba(96,165,250,0.3);--glow-purple:rgba(167,139,250,0.35);
+  --nav-indicator:#f06080;
 }
 
-/* ===== PROGRESS COLORS ===== */
+/* ═══════════════════════════════════════════
+   PROGRESS COLORS
+   ═══════════════════════════════════════════ */
 :root{
-  --yellow:#f0b800;--green:#2ea043;--blue:#2188ff;--purple:#8b5cf6;
-  --yellow-g:linear-gradient(135deg,#f0b800,#ffd54f);
-  --green-g:linear-gradient(135deg,#2ea043,#4ade80);
-  --blue-g:linear-gradient(135deg,#2188ff,#60a5fa);
-  --purple-g:linear-gradient(135deg,#7c3aed,#a78bfa);
+  --yellow:#facc15;--green:#4ade80;--blue:#60a5fa;--purple:#a78bfa;
+  --yellow-g:linear-gradient(135deg,#facc15,#fde68a);
+  --green-g:linear-gradient(135deg,#4ade80,#86efac);
+  --blue-g:linear-gradient(135deg,#60a5fa,#93c5fd);
+  --purple-g:linear-gradient(135deg,#8b5cf6,#a78bfa);
 }
 
-/* ===== LAYOUT ===== */
-body{background:var(--bg);background-image:var(--bg2);color:var(--text1)}
+/* ═══════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════ */
+body{color:var(--text1)}
 
+/* ═══════════════════════════════════════════
+   HEADER — glass bar
+   ═══════════════════════════════════════════ */
 header{
   position:sticky;top:0;z-index:100;
-  background:var(--header-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:var(--header-bg);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-bottom:1px solid var(--header-border);
-  padding:12px 16px;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-header h1{font-size:18px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
-.hdr-icon{display:inline-block;width:24px;height:24px;background-color:var(--phase-text);-webkit-mask-image:url(icon.png);mask-image:url(icon.png);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-mode:alpha;mask-mode:alpha}
+header h1{
+  font-size:20px;font-weight:700;letter-spacing:-.3px;
+  display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--text1) 30%,var(--phase-text));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hdr-icon{
+  display:inline-block;width:24px;height:24px;
+  background-color:var(--phase-text);
+  -webkit-mask-image:url(icon.png);mask-image:url(icon.png);
+  -webkit-mask-size:contain;mask-size:contain;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-mode:alpha;mask-mode:alpha;
+}
 .header-right{display:flex;gap:8px}
 .hdr-btn{
-  width:36px;height:36px;border-radius:10px;border:1px solid var(--surface-border);
-  background:var(--surface);color:var(--text2);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  width:38px;height:38px;border-radius:12px;
+  border:1px solid var(--glass-border);
+  background:var(--glass);color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
+.hdr-btn:hover{background:var(--glass-hover);border-color:var(--glass-border-hover)}
 .hdr-btn:active{transform:scale(.92)}
 .hdr-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
 
-/* ===== MAIN / PHASES ===== */
+/* ═══════════════════════════════════════════
+   MAIN / TABS
+   ═══════════════════════════════════════════ */
 .tab-wrap{position:relative;overflow:clip}
 main,#log-view{transition:opacity .3s ease,translate .3s ease}
 .tab-hidden{opacity:0;pointer-events:none;position:absolute;top:0;left:0;right:0;visibility:hidden}
 .tab-hidden.slide-left{translate:-60px 0}
 .tab-hidden.slide-right{translate:60px 0}
-main{padding:8px 0 220px}
+main{padding:8px 0 100px}
 
-.phase-section{margin-bottom:4px;position:relative}
+/* ═══════════════════════════════════════════
+   PHASE SECTIONS — glass cards
+   ═══════════════════════════════════════════ */
+.phase-section{margin-bottom:6px;position:relative}
 .phase-hdr{
   position:sticky;top:61px;z-index:80;
-  background:var(--phase-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border-top:1px solid var(--phase-border);border-bottom:1px solid var(--phase-border);
-  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+  background:var(--phase-bg);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid var(--phase-border);
+  border-bottom:1px solid var(--phase-border);
+  padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;
   cursor:pointer;user-select:none;-webkit-user-select:none;
+  transition:background .3s;
 }
+.phase-hdr:active{background:var(--glass-hover)}
 .phase-hdr h2{
-  font-size:13px;font-weight:700;color:var(--phase-text);letter-spacing:.5px;text-transform:uppercase;
+  font-size:12px;font-weight:700;color:var(--phase-text);
+  letter-spacing:.8px;text-transform:uppercase;
   display:flex;align-items:center;gap:6px;
 }
-.phase-hdr h2::before{content:'';width:16px;height:16px;background:var(--phase-icon);background-size:contain;background-repeat:no-repeat;background-position:center;flex-shrink:0;transform:translateY(0.5px)}
-.phase-prog{font-size:11px;font-weight:600;color:var(--text3);display:flex;align-items:center;gap:6px}
-.phase-bar{width:70px;height:5px;border-radius:3px;background:var(--surface-border);transition:background .4s}
+.phase-hdr h2::before{
+  content:'';width:16px;height:16px;
+  background:var(--phase-icon);background-size:contain;
+  background-repeat:no-repeat;background-position:center;
+  flex-shrink:0;transform:translateY(0.5px);
+}
+.phase-prog{font-size:11px;font-weight:600;color:var(--text3);display:flex;align-items:center;gap:8px}
+.phase-bar{width:80px;height:4px;border-radius:2px;background:var(--surface-border);transition:background .4s;overflow:hidden}
 .phase-chevron{width:16px;height:16px;transition:transform .3s;color:var(--text3)}
 .phase-section.collapsed .phase-chevron{transform:rotate(-90deg)}
 .grid-wrap{display:grid;grid-template-rows:1fr;transition:grid-template-rows .35s ease}
 .phase-section.collapsed .grid-wrap{grid-template-rows:0fr}
 
-/* ===== SKILLS GRID ===== */
+/* ═══════════════════════════════════════════
+   SKILLS GRID
+   ═══════════════════════════════════════════ */
 .skills-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:16px 8px;padding:16px 12px;
+  gap:16px 8px;padding:20px 16px;
   overflow:hidden;min-height:0;
   transition:padding .35s ease;
 }
 .phase-section.collapsed .skills-grid{padding-top:0;padding-bottom:0}
-@media(min-width:480px){.skills-grid{grid-template-columns:repeat(4,1fr);gap:16px 12px;padding:16px}}
-@media(min-width:768px){.skills-grid{grid-template-columns:repeat(5,1fr);gap:20px 16px;padding:20px 24px}}
+@media(min-width:480px){.skills-grid{grid-template-columns:repeat(4,1fr);gap:16px 12px;padding:20px}}
+@media(min-width:768px){.skills-grid{grid-template-columns:repeat(5,1fr);gap:20px 16px;padding:24px 28px}}
 
-/* ===== SKILL ITEM ===== */
-.skill-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
-.skill-item.selected .skill-circle{border-color:var(--phase-text);box-shadow:0 0 0 3px var(--ring),var(--circle-shadow)}
+/* ═══════════════════════════════════════════
+   SKILL ITEM — glass circles with glow
+   ═══════════════════════════════════════════ */
+.skill-item{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer}
+.skill-item.selected .skill-circle{
+  border-color:var(--phase-text)!important;
+  box-shadow:0 0 0 3px var(--ring),0 0 20px var(--ring);
+}
 
 .skill-circle{
-  width:80px;height:80px;border-radius:50%;position:relative;overflow:hidden;
-  border:2.5px solid var(--circle-border);box-shadow:var(--circle-shadow);
-  transition:transform .15s,box-shadow .2s,border-color .3s;
+  width:76px;height:76px;border-radius:50%;position:relative;overflow:hidden;
+  border:2px solid var(--circle-border);
+  box-shadow:var(--circle-shadow);
+  transition:transform .15s,box-shadow .35s,border-color .35s;
   -webkit-user-select:none;user-select:none;
 }
 .skill-item:active .skill-circle{transform:scale(.93)}
-.skill-circle.locked{opacity:.6}
+.skill-circle.locked{opacity:.45}
 .skill-item:has(.skill-circle.locked):active .skill-circle{transform:none}
 
-/* Single (no L/R) backgrounds */
+/* Backgrounds */
 .skill-circle .bg-full{position:absolute;inset:0;transition:background .35s;border-radius:50%}
 
-/* L/R gradient backgrounds — @property makes custom props animatable */
+/* L/R gradient */
 @property --lc{syntax:'<color>';inherits:false;initial-value:#888}
 @property --rc{syntax:'<color>';inherits:false;initial-value:#888}
 .skill-circle .bg-full.bg-lr{
@@ -195,30 +329,43 @@ main{padding:8px 0 220px}
   transition:--lc .35s,--rc .35s;
 }
 
-/* Progress level backgrounds */
+/* Progress level backgrounds + GLOW */
 [data-lv="-1"]{background:var(--locked)!important}
 [data-lv="0"]{background:var(--unlocked)!important}
-[data-lv="1"]{background:var(--yellow)!important}
-[data-lv="2"]{background:var(--green)!important}
-[data-lv="3"]{background:var(--blue)!important}
-[data-lv="4"]{background:var(--purple)!important}
+[data-lv="1"]{background:rgba(250,204,21,0.15)!important}
+[data-lv="2"]{background:rgba(74,222,128,0.15)!important}
+[data-lv="3"]{background:rgba(96,165,250,0.15)!important}
+[data-lv="4"]{background:rgba(167,139,250,0.18)!important}
 
+/* Glow borders per level */
+.skill-circle:has([data-lv="1"]){
+  border-color:rgba(250,204,21,0.45);
+  box-shadow:0 0 18px var(--glow-yellow),var(--circle-shadow);
+}
+.skill-circle:has([data-lv="2"]){
+  border-color:rgba(74,222,128,0.45);
+  box-shadow:0 0 18px var(--glow-green),var(--circle-shadow);
+}
+.skill-circle:has([data-lv="3"]){
+  border-color:rgba(96,165,250,0.5);
+  box-shadow:0 0 22px var(--glow-blue),var(--circle-shadow);
+}
+.skill-circle:has([data-lv="4"]){
+  border-color:rgba(167,139,250,0.55);
+  box-shadow:0 0 26px var(--glow-purple),var(--circle-shadow);
+}
 
 /* Icon overlay (sprite sheet) */
 .skill-icon{
   position:absolute;inset:10px;
   pointer-events:none;z-index:3;
   background-color:var(--icon-color);
-  -webkit-mask-image:url(new_sprite.png);
-  mask-image:url(new_sprite.png);
-  -webkit-mask-size:800% 800%;
-  mask-size:800% 800%;
-  -webkit-mask-repeat:no-repeat;
-  mask-repeat:no-repeat;
-  -webkit-mask-mode:alpha;
-  mask-mode:alpha;
+  -webkit-mask-image:url(new_sprite.png);mask-image:url(new_sprite.png);
+  -webkit-mask-size:800% 800%;mask-size:800% 800%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-mode:alpha;mask-mode:alpha;
   transition:background-color .3s;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.08));
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.15));
 }
 .skill-circle.locked .skill-icon{background-color:var(--icon-locked)}
 .skill-circle:has([data-lv="1"]) .skill-icon,
@@ -233,144 +380,165 @@ main{padding:8px 0 220px}
   transition:color .2s;text-shadow:var(--name-shadow);
 }
 
-/* ===== INLINE DETAIL CARD ===== */
+/* ═══════════════════════════════════════════
+   INLINE DETAIL CARD — glass panel
+   ═══════════════════════════════════════════ */
 .skill-detail-card{
   position:absolute;left:16px;right:16px;z-index:90;
-  background:var(--panel-bg);border:1px solid var(--surface-border);
-  border-radius:16px;padding:16px 14px;
-  box-shadow:0 4px 24px rgba(0,0,0,.12);
+  background:var(--glass);
+  backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));
+  border:1px solid var(--glass-border);
+  border-radius:20px;padding:20px 18px;
+  box-shadow:0 8px 40px rgba(0,0,0,.25);
   opacity:0;transform:translateY(-6px);
-  transition:opacity .2s ease,transform .2s ease;
+  transition:opacity .25s ease,transform .25s ease;
   pointer-events:none;
 }
-.skill-detail-card.open{
-  opacity:1;transform:translateY(0);
-  pointer-events:auto;
-}
+.skill-detail-card.open{opacity:1;transform:translateY(0);pointer-events:auto}
 .sdc-arrow{
   position:absolute;top:-7px;width:14px;height:14px;
-  background:var(--panel-bg);border-left:1px solid var(--surface-border);
-  border-top:1px solid var(--surface-border);
+  background:var(--glass);border-left:1px solid var(--glass-border);
+  border-top:1px solid var(--glass-border);
   transform:translateX(-50%) rotate(45deg);z-index:1;
 }
-.sdc-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.sdc-name{font-size:14px;font-weight:700;color:var(--text1)}
+.sdc-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.sdc-name{font-size:15px;font-weight:700;color:var(--text1)}
 .sdc-phase{
-  font-size:9px;font-weight:700;color:var(--phase-text);background:var(--phase-bg);
-  border:1px solid var(--phase-border);border-radius:5px;padding:2px 7px;
-  text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;
+  font-size:9px;font-weight:700;color:var(--phase-text);
+  background:var(--phase-bg);border:1px solid var(--phase-border);
+  border-radius:6px;padding:3px 8px;
+  text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;
 }
-.sdc-desc{font-size:12px;color:var(--text2);line-height:1.45;margin-bottom:12px}
-.sdc-controls{display:flex;gap:8px}
+.sdc-desc{font-size:12.5px;color:var(--text2);line-height:1.5;margin-bottom:14px}
+.sdc-controls{display:flex;gap:10px}
 .prog-btn{
-  flex:1;padding:10px 8px;border-radius:12px;border:2px solid var(--surface-border);
-  background:var(--surface);cursor:pointer;display:flex;flex-direction:column;
-  align-items:center;gap:5px;transition:all .15s;font-family:inherit;
+  flex:1;padding:12px 8px;border-radius:14px;
+  border:1.5px solid var(--glass-border);
+  background:var(--surface);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  transition:all .15s;font-family:inherit;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
 }
 .prog-btn:active{transform:scale(.96);border-color:var(--phase-text)}
 .prog-btn.pop{animation:btn-pop .3s ease}
 @keyframes btn-pop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
-.prog-side{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
-.prog-dots{display:flex;gap:4px}
+.prog-side{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px}
+.prog-dots{display:flex;gap:5px}
 .prog-dot{
   width:10px;height:10px;border-radius:50%;
-  background:var(--surface-border);transition:background .25s,transform .25s;
+  background:var(--surface-border);
+  transition:background .25s,transform .25s,box-shadow .25s;
 }
 .prog-dot.pop{animation:dot-pop .35s ease}
-@keyframes dot-pop{0%{transform:scale(1)}50%{transform:scale(1.45)}100%{transform:scale(1)}}
-.prog-dot.filled{background:var(--dot-color)}
+@keyframes dot-pop{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1)}}
+.prog-dot.filled{background:var(--dot-color);box-shadow:0 0 8px var(--dot-color)}
 .prog-label{font-size:10.5px;font-weight:600;color:var(--text2)}
 .sdc-locked{
-  width:100%;text-align:center;padding:8px;font-size:12px;
+  width:100%;text-align:center;padding:10px;font-size:12px;
   color:var(--text3);font-weight:500;
 }
-.sdc-prereq{font-size:11px;color:var(--text3);margin-top:10px;padding-top:8px;border-top:1px solid var(--surface-border)}
+.sdc-prereq{font-size:11px;color:var(--text3);margin-top:12px;padding-top:10px;border-top:1px solid var(--glass-border)}
 .sdc-prereq:empty{display:none}
 
-/* ===== THEME PANEL ===== */
+/* ═══════════════════════════════════════════
+   THEME PANEL — glass sheet
+   ═══════════════════════════════════════════ */
 #theme-panel{
   position:fixed;bottom:0;left:0;right:0;z-index:200;
-  background:var(--panel-bg);border-top:1px solid var(--surface-border);
-  border-radius:20px 20px 0 0;padding:20px 16px 28px;
-  box-shadow:0 -4px 30px rgba(0,0,0,.12);
-  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1),visibility 0s .35s;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:var(--panel-bg);
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  border-top:1px solid var(--glass-border);
+  border-radius:24px 24px 0 0;
+  padding:24px 20px 32px;
+  box-shadow:0 -8px 40px rgba(0,0,0,.3);
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1),visibility 0s .35s;
   visibility:hidden;
 }
 #theme-panel.open{transform:translateY(0);visibility:visible;transition:transform .35s cubic-bezier(.4,0,.2,1)}
-#theme-panel h3{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+#theme-panel h3{
+  font-size:12px;font-weight:700;color:var(--text1);margin-bottom:16px;
+  text-transform:uppercase;letter-spacing:.8px;
+}
 .theme-options{display:flex;gap:8px;flex-wrap:wrap}
 .theme-btn{
-  flex:1;min-width:calc(50% - 4px);padding:10px 12px;border-radius:12px;
-  border:2px solid var(--surface-border);background:var(--surface);
+  flex:1;min-width:calc(50% - 4px);padding:12px 14px;border-radius:14px;
+  border:1.5px solid var(--glass-border);background:var(--surface);
   color:var(--text1);font-family:inherit;font-size:12.5px;font-weight:600;
   cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;
 }
 .theme-btn:active{transform:scale(.97)}
-.theme-btn.active{border-color:var(--phase-text);box-shadow:0 0 0 2px var(--ring)}
-.theme-dot{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(0,0,0,.08)}
+.theme-btn.active{border-color:var(--phase-text);box-shadow:0 0 12px var(--ring)}
+.theme-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,.1)}
 
-/* ===== BACKDROP ===== */
+/* ═══════════════════════════════════════════
+   BACKDROP
+   ═══════════════════════════════════════════ */
 .backdrop{
-  position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.3);
+  position:fixed;inset:0;z-index:150;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
   opacity:0;pointer-events:none;transition:opacity .3s;
 }
 .backdrop.vis{opacity:1;pointer-events:auto}
 
-/* ===== IMPORT / EXPORT BUTTONS ===== */
+/* ═══════════════════════════════════════════
+   IMPORT / EXPORT / RESET
+   ═══════════════════════════════════════════ */
 .csv-btn-row{margin-top:16px;display:flex;gap:8px}
 .csv-btn{
-  flex:1;padding:10px;border-radius:12px;
-  border:2px solid var(--surface-border);background:var(--surface);
+  flex:1;padding:11px;border-radius:12px;
+  border:1.5px solid var(--glass-border);background:var(--surface);
   color:var(--text1);font-family:inherit;font-size:12.5px;font-weight:600;
   cursor:pointer;transition:all .2s;
 }
 .csv-btn:active{background:var(--surface-hover);transform:scale(.97)}
-
-/* ===== RESET BUTTON ===== */
 .reset-btn{
-  margin-top:16px;width:100%;padding:10px;border-radius:10px;
-  border:1px solid rgba(220,40,40,.15);background:rgba(220,40,40,.05);
-  color:#c62828;font-family:inherit;font-size:12px;font-weight:600;
+  margin-top:16px;width:100%;padding:11px;border-radius:12px;
+  border:1px solid rgba(220,40,40,.2);background:rgba(220,40,40,.06);
+  color:#f87171;font-family:inherit;font-size:12px;font-weight:600;
   cursor:pointer;transition:all .2s;
 }
 .reset-btn:active{background:rgba(220,40,40,.12);transform:scale(.98)}
 
-/* ===== SCROLLBAR ===== */
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════ */
 ::-webkit-scrollbar{display:none}
 html{scrollbar-width:none}
 
-/* ===== HEATMAP THEME VARS ===== */
-[data-theme="frost"]{--heat-0:rgba(37,99,235,.06);--heat-1:rgba(37,99,235,.2);--heat-2:rgba(37,99,235,.4);--heat-3:rgba(37,99,235,.65);--heat-4:#2563eb}
-[data-theme="midnight"]{--heat-0:rgba(0,220,255,.08);--heat-1:rgba(0,220,255,.22);--heat-2:rgba(0,220,255,.42);--heat-3:rgba(0,220,255,.68);--heat-4:#00dcff}
-[data-theme="rink"]{--heat-0:rgba(139,90,43,.06);--heat-1:rgba(139,90,43,.2);--heat-2:rgba(139,90,43,.4);--heat-3:rgba(139,90,43,.65);--heat-4:#7a3e10}
-[data-theme="aurora"]{--heat-0:rgba(52,211,153,.08);--heat-1:rgba(52,211,153,.22);--heat-2:rgba(52,211,153,.42);--heat-3:rgba(52,211,153,.68);--heat-4:#34d399}
-[data-theme="competition"]{--heat-0:rgba(183,28,28,.05);--heat-1:rgba(183,28,28,.18);--heat-2:rgba(183,28,28,.38);--heat-3:rgba(183,28,28,.62);--heat-4:#a01414}
-
-/* ===== BOTTOM NAV ===== */
+/* ═══════════════════════════════════════════
+   BOTTOM NAV — floating glass bar
+   ═══════════════════════════════════════════ */
 .bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:var(--header-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-top:1px solid var(--header-border);
-  display:flex;height:56px;padding-bottom:env(safe-area-inset-bottom,0);
+  position:fixed;bottom:12px;left:16px;right:16px;z-index:100;
+  background:var(--glass);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  display:flex;height:60px;
+  box-shadow:0 4px 30px rgba(0,0,0,.25);
+  padding-bottom:env(safe-area-inset-bottom,0);
 }
 .nav-tab{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;cursor:pointer;border:none;background:none;position:relative;
+  gap:4px;cursor:pointer;border:none;background:none;position:relative;
   color:var(--text3);font-family:inherit;font-size:10px;font-weight:600;
-  letter-spacing:.3px;text-transform:uppercase;transition:color .25s;
+  letter-spacing:.4px;text-transform:uppercase;transition:color .25s;
   -webkit-tap-highlight-color:transparent;
 }
-.nav-tab.active{color:var(--phase-text)}
+.nav-tab.active{color:var(--nav-indicator)}
 .nav-tab.active::before{
-  content:'';position:absolute;top:0;left:25%;right:25%;height:2.5px;
-  background:var(--phase-text);border-radius:0 0 2px 2px;
+  content:'';position:absolute;top:0;left:30%;right:30%;height:2.5px;
+  background:var(--nav-indicator);border-radius:0 0 2px 2px;
 }
 .nav-tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav-tab:active{transform:scale(.95)}
 
-/* ===== LOG VIEW ===== */
-#log-view{padding:12px 16px 80px}
+/* ═══════════════════════════════════════════
+   LOG VIEW
+   ═══════════════════════════════════════════ */
+#log-view{padding:12px 16px 100px}
 .log-stats{
   display:flex;gap:10px;margin-bottom:20px;
   overflow-x:auto;scroll-snap-type:x mandatory;
@@ -378,48 +546,57 @@ html{scrollbar-width:none}
 }
 .log-stats::-webkit-scrollbar{display:none}
 .stat-card{
-  background:var(--surface);border:1px solid var(--surface-border);
-  border-radius:14px;padding:16px;text-align:center;
+  background:var(--glass);
+  backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));
+  border:1px solid var(--glass-border);
+  border-radius:16px;padding:18px;text-align:center;
   min-width:calc(50% - 5px);flex-shrink:0;scroll-snap-align:start;
+  transition:all .2s;
 }
 .stat-card.tappable{cursor:pointer;position:relative}
-.stat-card.tappable:active{background:var(--surface-hover);transform:scale(.98)}
-.stat-value{font-size:28px;font-weight:800;color:var(--phase-text);letter-spacing:-.5px;line-height:1.1}
+.stat-card.tappable:active{background:var(--glass-hover);transform:scale(.98)}
+.stat-value{
+  font-size:28px;font-weight:800;letter-spacing:-.5px;line-height:1.1;
+  background:linear-gradient(135deg,var(--text1),var(--phase-text));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
 .stat-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
 .log-section{margin-bottom:20px}
 .log-section-hdr{
   display:flex;align-items:center;justify-content:space-between;
   margin-bottom:10px;padding:0 2px;
 }
-.log-section-title{font-size:13px;font-weight:700;color:var(--text1);text-transform:uppercase;letter-spacing:.5px}
+.log-section-title{font-size:12px;font-weight:700;color:var(--text1);text-transform:uppercase;letter-spacing:.6px}
 .log-section-action{
   font-size:11px;font-weight:600;color:var(--phase-text);
   background:none;border:none;cursor:pointer;font-family:inherit;
-  padding:4px 8px;border-radius:6px;transition:background .2s;
+  padding:4px 8px;border-radius:8px;transition:background .2s;
 }
 .log-section-action:active{background:var(--surface-hover)}
 
-/* ===== STREAK CALENDAR ===== */
+/* ═══════════════════════════════════════════
+   STREAK CALENDAR
+   ═══════════════════════════════════════════ */
 .streak-wrap{
-  background:var(--panel-bg);border:1px solid var(--surface-border);
-  border-radius:14px;padding:12px;overflow-x:auto;overflow-y:hidden;
+  background:var(--glass);
+  backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));
+  border:1px solid var(--glass-border);
+  border-radius:16px;padding:14px;overflow-x:auto;overflow-y:hidden;
   -ms-overflow-style:none;scrollbar-width:none;
 }
 .streak-wrap::-webkit-scrollbar{display:none}
 .streak-block{margin-bottom:16px;min-width:fit-content}
 .streak-block:last-child{margin-bottom:0}
 .streak-body{display:flex;align-items:flex-start}
-.streak-days{display:flex;flex-direction:column;gap:2px;margin-right:4px;flex-shrink:0;position:sticky;left:0;z-index:2;background:var(--panel-bg)}
+.streak-days{display:flex;flex-direction:column;gap:2px;margin-right:4px;flex-shrink:0;position:sticky;left:0;z-index:2;background:transparent}
 .streak-day-label{font-size:9px;font-weight:500;color:var(--text3);text-align:center}
 .streak-month{font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
 .cal-grid{
   display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;
   grid-auto-columns:12px;gap:2px;
 }
-.cal-cell{
-  border-radius:2.5px;
-  background:var(--heat-0);transition:background .2s;position:relative;
-}
+.cal-cell{border-radius:3px;background:var(--heat-0);transition:background .2s;position:relative}
 .cal-cell[data-i="1"]{background:var(--heat-1)}
 .cal-cell[data-i="2"]{background:var(--heat-2)}
 .cal-cell[data-i="3"]{background:var(--heat-3)}
@@ -432,31 +609,32 @@ html{scrollbar-width:none}
 }
 .cal-cell:hover .cal-tooltip{display:block}
 
-/* ===== SESSION HISTORY ===== */
-.history-empty{text-align:center;padding:32px 16px;color:var(--text3);font-size:13px;font-weight:500}
-.history-date-hdr{
-  font-size:12px;font-weight:700;color:var(--text2);
-  padding:12px 4px 6px;letter-spacing:.3px;
-}
+/* ═══════════════════════════════════════════
+   SESSION HISTORY
+   ═══════════════════════════════════════════ */
+.history-empty{text-align:center;padding:40px 16px;color:var(--text3);font-size:13px;font-weight:500}
+.history-date-hdr{font-size:12px;font-weight:700;color:var(--text2);padding:14px 4px 6px;letter-spacing:.3px}
 .history-date-hdr:first-child{padding-top:0}
 .history-item{
   display:flex;align-items:center;gap:10px;
-  padding:10px 12px;background:var(--surface);
-  border:1px solid var(--surface-border);border-radius:12px;
-  margin-bottom:6px;transition:background .2s;
+  padding:12px 14px;
+  background:var(--glass);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--glass-border);border-radius:14px;
+  margin-bottom:8px;transition:all .2s;
 }
 .history-type{
   display:inline-block;font-size:10px;font-weight:700;
-  padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.3px;
+  padding:4px 10px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;
 }
-.type-public{background:rgba(33,136,255,.12);color:#2188ff}
-.type-private{background:rgba(139,92,246,.12);color:#8b5cf6}
-.type-freestyle{background:rgba(240,184,0,.12);color:#c89600}
-.type-lesson{background:rgba(46,160,67,.12);color:#2ea043}
+.type-public{background:rgba(96,165,250,.15);color:#60a5fa}
+.type-private{background:rgba(167,139,250,.15);color:#a78bfa}
+.type-freestyle{background:rgba(250,204,21,.12);color:#facc15}
+.type-lesson{background:rgba(74,222,128,.15);color:#4ade80}
 .history-time-right{font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap;margin-left:auto}
 .history-item.rankup{
-  border-color:rgba(240,184,0,.3);border-style:dashed;
-  background:linear-gradient(135deg,rgba(240,184,0,.04),rgba(240,184,0,.08));
+  border-color:rgba(250,204,21,.25);border-style:dashed;
+  background:linear-gradient(135deg,rgba(250,204,21,.04),rgba(250,204,21,.08));
 }
 .rankup-icon{
   width:32px;height:32px;border-radius:50%;flex-shrink:0;
@@ -468,91 +646,14 @@ html{scrollbar-width:none}
 .rankup-text{font-size:12px;font-weight:600;color:var(--text1)}
 .rankup-detail{font-size:11px;color:var(--text2);margin-top:1px}
 .rankup-level{display:inline-block;width:8px;height:8px;border-radius:50%;vertical-align:middle;margin:0 2px}
-
-/* ===== FAB ===== */
-.fab{
-  position:fixed;bottom:72px;right:16px;z-index:110;
-  width:52px;height:52px;border-radius:16px;border:none;
-  background:var(--phase-text);color:#fff;
-  display:none;align-items:center;justify-content:center;
-  cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);
-  transition:transform .2s,box-shadow .2s;
-}
-.fab.vis{display:flex}
-.fab:active{transform:scale(.9)}
-.fab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
-
-/* ===== SESSION MODAL ===== */
-.session-modal{
-  position:fixed;bottom:0;left:0;right:0;z-index:210;
-  background:var(--panel-bg);border-top:1px solid var(--surface-border);
-  border-radius:20px 20px 0 0;
-  padding:20px 16px calc(28px + env(safe-area-inset-bottom,0));
-  box-shadow:0 -4px 30px rgba(0,0,0,.15);
-  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1),visibility 0s .35s;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  visibility:hidden;
-}
-.session-modal.open{transform:translateY(0);visibility:visible;transition:transform .35s cubic-bezier(.4,0,.2,1)}
-.modal-title{font-size:15px;font-weight:700;color:var(--text1);margin-bottom:16px;text-transform:uppercase;letter-spacing:.3px}
-.modal-field{margin-bottom:14px}
-.modal-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
-.modal-input{
-  width:100%;padding:10px 12px;border-radius:10px;
-  border:1.5px solid var(--surface-border);background:var(--surface);
-  color:var(--text1);font-family:inherit;font-size:14px;font-weight:500;
-  transition:border-color .2s;-webkit-appearance:none;appearance:none;
-  color-scheme:light dark;
-}
-.modal-input:focus{outline:none;border-color:var(--phase-text)}
-.type-options{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.type-opt{
-  padding:10px 8px;border-radius:10px;
-  border:1.5px solid var(--surface-border);background:var(--surface);
-  color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;
-  cursor:pointer;transition:all .15s;text-align:center;
-}
-.type-opt:active{transform:scale(.97)}
-.type-opt.sel{border-color:var(--phase-text);color:var(--phase-text);background:var(--surface-hover)}
-.dur-options{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.dur-opt{
-  padding:10px 6px;border-radius:10px;
-  border:1.5px solid var(--surface-border);background:var(--surface);
-  color:var(--text2);font-family:inherit;font-size:13px;font-weight:600;
-  cursor:pointer;transition:all .15s;text-align:center;
-}
-.dur-opt:active{transform:scale(.97)}
-.dur-opt.sel{border-color:var(--phase-text);color:var(--phase-text);background:var(--surface-hover)}
-.modal-submit{
-  width:100%;padding:13px;border-radius:12px;border:none;
-  background:var(--phase-text);color:#fff;
-  font-family:inherit;font-size:14px;font-weight:700;
-  cursor:pointer;transition:all .15s;margin-top:4px;
-  text-transform:uppercase;letter-spacing:.5px;
-}
-.modal-submit:active{transform:scale(.98);opacity:.9}
-.modal-submit:disabled{opacity:.4;cursor:default}
-.modal-end-time{
-  font-size:13px;font-weight:600;color:var(--phase-text);
-  padding:8px 12px;border-radius:10px;
-  background:var(--surface-hover);border:1px solid var(--surface-border);
-  text-align:center;margin-top:8px;
-}
-.modal-end-time:empty{display:none}
-.modal-delete{
-  width:100%;padding:11px;border-radius:12px;border:none;
-  background:rgba(220,40,40,.08);color:#c62828;
-  font-family:inherit;font-size:13px;font-weight:700;
-  cursor:pointer;transition:all .15s;margin-top:8px;
-  text-transform:uppercase;letter-spacing:.5px;
-}
-.modal-delete:active{transform:scale(.98);background:rgba(220,40,40,.15)}
 .history-item.session,.history-item.sharpening,.history-item.rankup{cursor:pointer}
-.history-item.session:active,.history-item.sharpening:active,.history-item.rankup:active{background:var(--surface-hover)}
+.history-item.session:active,.history-item.sharpening:active,.history-item.rankup:active{
+  background:var(--glass-hover);transform:scale(.99);
+}
 .history-time-sub{font-size:11px;color:var(--text3);margin-top:1px}
 .history-item.sharpening{
-  border-color:rgba(33,136,255,.3);border-style:dashed;
-  background:linear-gradient(135deg,rgba(33,136,255,.04),rgba(33,136,255,.08));
+  border-color:rgba(96,165,250,.25);border-style:dashed;
+  background:linear-gradient(135deg,rgba(96,165,250,.04),rgba(96,165,250,.08));
 }
 .sharpening-icon{
   width:32px;height:32px;border-radius:50%;flex-shrink:0;
@@ -560,24 +661,111 @@ html{scrollbar-width:none}
   display:flex;align-items:center;justify-content:center;
 }
 .sharpening-icon svg{width:16px;height:16px;fill:#fff;stroke:none}
-.sharpening-modal{
+
+/* ═══════════════════════════════════════════
+   FAB — floating action button
+   ═══════════════════════════════════════════ */
+.fab{
+  position:fixed;bottom:84px;right:20px;z-index:110;
+  width:54px;height:54px;border-radius:16px;border:none;
+  background:var(--phase-text);color:#fff;
+  display:none;align-items:center;justify-content:center;
+  cursor:pointer;
+  box-shadow:0 4px 20px rgba(0,0,0,.3),0 0 20px var(--ring);
+  transition:transform .2s,box-shadow .2s;
+}
+.fab.vis{display:flex}
+.fab:active{transform:scale(.9)}
+.fab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+
+/* ═══════════════════════════════════════════
+   SESSION / SHARPENING / RANKUP MODALS — glass sheets
+   ═══════════════════════════════════════════ */
+.session-modal,.sharpening-modal{
   position:fixed;bottom:0;left:0;right:0;z-index:210;
-  background:var(--panel-bg);border-top:1px solid var(--surface-border);
-  border-radius:20px 20px 0 0;
-  padding:20px 16px calc(28px + env(safe-area-inset-bottom,0));
-  box-shadow:0 -4px 30px rgba(0,0,0,.15);
-  transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1),visibility 0s .35s;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:var(--panel-bg);
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  border-top:1px solid var(--glass-border);
+  border-radius:24px 24px 0 0;
+  padding:24px 20px calc(32px + env(safe-area-inset-bottom,0));
+  box-shadow:0 -8px 40px rgba(0,0,0,.3);
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1),visibility 0s .35s;
   visibility:hidden;
 }
-.sharpening-modal.open{transform:translateY(0);visibility:visible;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.session-modal.open,.sharpening-modal.open{
+  transform:translateY(0);visibility:visible;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.modal-title{
+  font-size:14px;font-weight:700;color:var(--text1);margin-bottom:18px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.modal-field{margin-bottom:14px}
+.modal-label{
+  font-size:11px;font-weight:700;color:var(--text3);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block;
+}
+.modal-input{
+  width:100%;padding:11px 14px;border-radius:12px;
+  border:1.5px solid var(--glass-border);background:var(--surface);
+  color:var(--text1);font-family:inherit;font-size:14px;font-weight:500;
+  transition:border-color .2s;-webkit-appearance:none;appearance:none;
+  color-scheme:dark;
+}
+.modal-input:focus{outline:none;border-color:var(--phase-text);box-shadow:0 0 12px var(--ring)}
+.type-options{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.type-opt{
+  padding:11px 8px;border-radius:12px;
+  border:1.5px solid var(--glass-border);background:var(--surface);
+  color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .15s;text-align:center;
+}
+.type-opt:active{transform:scale(.97)}
+.type-opt.sel{border-color:var(--phase-text);color:var(--phase-text);background:var(--surface-hover)}
+.dur-options{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.dur-opt{
+  padding:11px 6px;border-radius:12px;
+  border:1.5px solid var(--glass-border);background:var(--surface);
+  color:var(--text2);font-family:inherit;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .15s;text-align:center;
+}
+.dur-opt:active{transform:scale(.97)}
+.dur-opt.sel{border-color:var(--phase-text);color:var(--phase-text);background:var(--surface-hover)}
+.modal-submit{
+  width:100%;padding:14px;border-radius:14px;border:none;
+  background:var(--phase-text);color:#fff;
+  font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .15s;margin-top:4px;
+  text-transform:uppercase;letter-spacing:.5px;
+  box-shadow:0 4px 16px var(--ring);
+}
+.modal-submit:active{transform:scale(.98);opacity:.9}
+.modal-submit:disabled{opacity:.3;cursor:default;box-shadow:none}
+.modal-end-time{
+  font-size:13px;font-weight:600;color:var(--phase-text);
+  padding:10px 14px;border-radius:12px;
+  background:var(--surface);border:1px solid var(--glass-border);
+  text-align:center;margin-top:8px;
+}
+.modal-end-time:empty{display:none}
+.modal-delete{
+  width:100%;padding:12px;border-radius:14px;border:none;
+  background:rgba(220,40,40,.08);color:#f87171;
+  font-family:inherit;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .15s;margin-top:8px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.modal-delete:active{transform:scale(.98);background:rgba(220,40,40,.15)}
 
-/* ===== LEARN MORE MODAL ===== */
+/* ═══════════════════════════════════════════
+   LEARN MORE MODAL
+   ═══════════════════════════════════════════ */
 .lm-overlay{
   position:fixed;inset:0;z-index:300;
-  background:rgba(0,0,0,.55);
-  opacity:0;pointer-events:none;
-  transition:opacity .3s ease;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
 }
 .lm-overlay.open{opacity:1;pointer-events:auto}
 
@@ -585,153 +773,114 @@ html{scrollbar-width:none}
   position:fixed;inset:0;z-index:310;
   background:var(--panel-bg);
   overflow-y:auto;-webkit-overflow-scrolling:touch;
-  opacity:0;pointer-events:none;
-  transform:translateY(12px);
+  opacity:0;pointer-events:none;transform:translateY(12px);
   transition:opacity .3s ease,transform .3s ease;
 }
-.lm-modal.open{
-  opacity:1;pointer-events:auto;
-  transform:translateY(0);
-}
+.lm-modal.open{opacity:1;pointer-events:auto;transform:translateY(0)}
 
 .lm-header{
   position:sticky;top:0;z-index:2;
   background:var(--panel-bg);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   display:flex;align-items:center;gap:12px;
-  padding:14px 16px;
-  border-bottom:1px solid var(--surface-border);
+  padding:14px 20px;
+  border-bottom:1px solid var(--glass-border);
 }
 .lm-back{
-  width:36px;height:36px;border-radius:10px;
-  border:1px solid var(--surface-border);
-  background:var(--surface);color:var(--text2);
+  width:38px;height:38px;border-radius:12px;
+  border:1px solid var(--glass-border);
+  background:var(--glass);color:var(--text2);
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   transition:all .2s;flex-shrink:0;
 }
 .lm-back:active{transform:scale(.92)}
-.lm-back svg{
-  width:18px;height:18px;stroke:currentColor;
-  fill:none;stroke-width:2;stroke-linecap:round;
-}
+.lm-back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
 .lm-title{
   font-size:16px;font-weight:700;color:var(--text1);
-  flex:1;min-width:0;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap;
+  flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 .lm-phase{
   font-size:9px;font-weight:700;color:var(--phase-text);
   background:var(--phase-bg);border:1px solid var(--phase-border);
-  border-radius:5px;padding:2px 7px;
-  text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;
+  border-radius:6px;padding:3px 8px;
+  text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;
 }
 
-.lm-body{padding:16px 16px 80px}
+.lm-body{padding:20px 20px 80px}
 
-.lm-section{margin-bottom:20px}
+.lm-section{margin-bottom:24px}
 .lm-section-title{
   font-size:12px;font-weight:700;color:var(--phase-text);
   text-transform:uppercase;letter-spacing:.5px;
-  margin-bottom:8px;display:flex;align-items:center;gap:6px;
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
 }
 .lm-section-title svg{
   width:16px;height:16px;stroke:currentColor;
   fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
 }
 
-.lm-text{font-size:13px;color:var(--text2);line-height:1.6}
+.lm-text{font-size:13px;color:var(--text2);line-height:1.65}
 
 .lm-steps{list-style:none;counter-reset:step;padding:0;margin:0}
 .lm-steps li{
   counter-increment:step;
   font-size:13px;color:var(--text2);line-height:1.5;
-  padding:8px 12px;margin-bottom:6px;
-  background:var(--surface);border:1px solid var(--surface-border);
-  border-radius:10px;display:flex;gap:10px;align-items:center;
+  padding:10px 14px;margin-bottom:6px;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:12px;display:flex;gap:10px;align-items:center;
 }
 .lm-steps li::before{
   content:counter(step);
-  min-width:24px;height:24px;border-radius:50%;flex-shrink:0;
+  min-width:26px;height:26px;border-radius:50%;flex-shrink:0;
   background:var(--phase-text);color:#fff;
   font-size:11px;font-weight:700;line-height:1;
-  display:flex;align-items:center;justify-content:center;
-  padding-top:1px;
+  display:flex;align-items:center;justify-content:center;padding-top:1px;
 }
 
 .lm-mistakes{list-style:none;padding:0;margin:0;counter-reset:mistake}
 .lm-mistakes li{
   counter-increment:mistake;
   font-size:13px;color:var(--text2);line-height:1.5;
-  padding:8px 12px;margin-bottom:6px;
-  background:var(--surface);border:1px solid var(--surface-border);
-  border-radius:10px;
-  display:flex;gap:10px;align-items:center;
+  padding:10px 14px;margin-bottom:6px;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:12px;display:flex;gap:10px;align-items:center;
 }
 .lm-mistake-dot{
-  min-width:24px;width:24px;height:24px;flex-shrink:0;
+  min-width:26px;width:26px;height:26px;flex-shrink:0;
   background:var(--phase-text);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
 }
-.lm-mistake-dot svg{
-  width:12px;height:12px;
-  stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
-}
+.lm-mistake-dot svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 .lm-yt-container{
-  position:relative;width:100%;
-  padding-bottom:56.25%;
-  border-radius:12px;overflow:hidden;
-  background:#000;cursor:pointer;
-  margin-bottom:8px;
+  position:relative;width:100%;padding-bottom:56.25%;
+  border-radius:14px;overflow:hidden;background:#000;cursor:pointer;margin-bottom:8px;
 }
-.lm-yt-container img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;
-}
+.lm-yt-container img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .lm-yt-play{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:64px;height:44px;
-  background:rgba(255,0,0,.85);border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  transition:background .2s;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:64px;height:44px;background:rgba(255,0,0,.85);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;
 }
 .lm-yt-container:hover .lm-yt-play{background:#f00}
-.lm-yt-play svg{
-  width:24px;height:24px;fill:#fff;stroke:none;
-  margin-left:3px;
-}
-.lm-yt-container iframe{
-  position:absolute;inset:0;width:100%;height:100%;
-  border:none;
-}
+.lm-yt-play svg{width:24px;height:24px;fill:#fff;stroke:none;margin-left:3px}
+.lm-yt-container iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 
-.lm-accordion{
-  border:1px solid var(--surface-border);
-  border-radius:12px;overflow:hidden;margin-top:10px;
-}
+.lm-accordion{border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;margin-top:10px}
 .lm-accordion-hdr{
   display:flex;align-items:center;justify-content:space-between;
-  padding:12px 14px;cursor:pointer;
-  background:var(--surface);font-size:12px;font-weight:700;
+  padding:14px 16px;cursor:pointer;
+  background:var(--glass);font-size:12px;font-weight:700;
   color:var(--text2);text-transform:uppercase;letter-spacing:.3px;
   user-select:none;-webkit-user-select:none;
   border:none;width:100%;font-family:inherit;
 }
 .lm-accordion-hdr:active{opacity:.7}
-.lm-accordion-chevron{
-  width:16px;height:16px;transition:transform .3s;
-  color:var(--text3);
-}
+.lm-accordion-chevron{width:16px;height:16px;transition:transform .3s;color:var(--text3)}
 .lm-accordion.open .lm-accordion-chevron{transform:rotate(180deg)}
-.lm-accordion-body{
-  display:grid;grid-template-rows:0fr;
-  transition:grid-template-rows .35s ease;
-}
+.lm-accordion-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
 .lm-accordion.open .lm-accordion-body{grid-template-rows:1fr}
-.lm-accordion-inner{
-  overflow:hidden;min-height:0;
-  padding:0 14px;
-}
+.lm-accordion-inner{overflow:hidden;min-height:0;padding:0 14px}
 .lm-accordion.open .lm-accordion-inner{padding:8px 14px 14px}
 
 .sdc-learn-more{
@@ -868,11 +1017,11 @@ html{scrollbar-width:none}
 <div id="theme-panel">
   <h3>Choose Theme</h3>
   <div class="theme-options">
-    <button class="theme-btn" data-t="frost"><span class="theme-dot" style="background:linear-gradient(135deg,#e0effc,#2563eb)"></span>Frost</button>
-    <button class="theme-btn" data-t="midnight"><span class="theme-dot" style="background:linear-gradient(135deg,#0a0e1a,#00dcff)"></span>Midnight</button>
-    <button class="theme-btn" data-t="rink"><span class="theme-dot" style="background:linear-gradient(135deg,#f0e8d8,#7a3e10)"></span>Rink Classic</button>
-    <button class="theme-btn" data-t="aurora"><span class="theme-dot" style="background:linear-gradient(135deg,#0c1520,#34d399)"></span>Aurora</button>
-    <button class="theme-btn" data-t="competition"><span class="theme-dot" style="background:linear-gradient(135deg,#f5f5f5,#a01414)"></span>Competition</button>
+    <button class="theme-btn" data-t="frost"><span class="theme-dot" style="background:linear-gradient(135deg,#0c1a2e,#6ec1ff)"></span>Frost</button>
+    <button class="theme-btn" data-t="midnight"><span class="theme-dot" style="background:linear-gradient(135deg,#050810,#00dcff)"></span>Midnight</button>
+    <button class="theme-btn" data-t="rink"><span class="theme-dot" style="background:linear-gradient(135deg,#1a120a,#d4a050)"></span>Rink Classic</button>
+    <button class="theme-btn" data-t="aurora"><span class="theme-dot" style="background:linear-gradient(135deg,#08120e,#34d399)"></span>Aurora</button>
+    <button class="theme-btn" data-t="competition"><span class="theme-dot" style="background:linear-gradient(135deg,#0e0a10,#f06080)"></span>Competition</button>
   </div>
   <input type="file" id="import-file" accept=".csv" style="display:none">
   <div class="csv-btn-row">
@@ -985,352 +1134,97 @@ function spritePos(id){
 const SKILL_CONTENT={
 'falling-recovery':{
   explanation:'Falling and recovery is the very first skill every ice skater must learn. Knowing how to fall safely removes fear and prevents injury, which makes learning every other skill easier. The goal is to fall in a controlled way onto the fleshiest parts of your body and get back up efficiently without grabbing the boards or another skater.',
-  steps:['Bend your knees deeply and squat down as low as you can.','Lean slightly to one side and lower yourself onto your hip and outer thigh.','Tuck your chin to your chest to protect your head.','Keep your fingers off the ice — make fists or place hands on your thighs.','To get up, roll onto your hands and knees.','Place one foot between your hands, blade flat on the ice.','Press down on your thigh and push yourself up to standing with knees bent.'],
-  mistakes:['Falling backward with arms extended — this risks wrist fractures.','Trying to catch yourself with straight arms and open palms on the ice.','Standing up with straight legs instead of staying low and using your thigh muscles.'],
+  steps:['Bend your knees deeply and squat down as low as you can.','Lean slightly to one side and lower yourself onto your hip and outer thigh.','Tuck your chin to your chest to protect your head.','Keep your fingers off the ice \u2014 make fists or place hands on your thighs.','To get up, roll onto your hands and knees.','Place one foot between your hands, blade flat on the ice.','Press down on your thigh and push yourself up to standing with knees bent.'],
+  mistakes:['Falling backward with arms extended \u2014 this risks wrist fractures.','Trying to catch yourself with straight arms and open palms on the ice.','Standing up with straight legs instead of staying low and using your thigh muscles.'],
   videos:['zGHdZ8YhG1k','Mwip1ZaJ_98','1RATr9DLzUk']
 },
 'forward-marching':{
   explanation:'Forward marching is your first way of moving across the ice. Rather than gliding, you literally walk on the ice with small steps, keeping your weight centered over your blades. This builds balance and confidence before you learn to push and glide. Think of it as walking with slightly bent knees on a very slippery surface.',
-  steps:['Stand at the boards with feet shoulder-width apart, knees softly bent.','Hold your arms out to the sides at about waist height for balance.','Shift your weight fully onto your left foot.','Lift your right foot just one inch off the ice and place it down ahead of you.','Shift your weight onto the right foot and repeat with the left.','Take small, deliberate steps — do not rush or lean forward.'],
-  mistakes:['Looking down at your feet instead of looking forward across the rink.','Keeping your legs straight — always maintain a gentle knee bend.','Taking steps that are too large, which throws off your balance.'],
+  steps:['Stand at the boards with feet shoulder-width apart, knees softly bent.','Hold your arms out to the sides at about waist height for balance.','Shift your weight fully onto your left foot.','Lift your right foot just one inch off the ice and place it down ahead of you.','Shift your weight onto the right foot and repeat with the left.','Take small, deliberate steps \u2014 do not rush or lean forward.'],
+  mistakes:['Looking down at your feet instead of looking forward across the rink.','Keeping your legs straight \u2014 always maintain a gentle knee bend.','Taking steps that are too large, which throws off your balance.'],
   videos:['GAyMgZc8hJA','rv-mHUQG6lg','1wRIPjVcje8']
 },
 'fwd-two-foot-glide':{
   explanation:'The forward two-foot glide is the foundation of skating movement. After marching to build momentum, you bring your feet parallel and coast forward on two blades. This is where you first experience the sensation of true gliding and learn to trust your edges. Good posture and knee bend are everything.',
-  steps:['Start with a few marching steps to build some forward speed.','Bring both feet parallel, about hip-width apart.','Bend your knees so you can feel pressure on the balls of your feet.','Hold your arms out to the sides for balance.','Keep your core tight and your back straight — do not hunch.','Glide as far as you can, then march again if you slow down.'],
-  mistakes:['Standing too upright with locked knees — you will wobble and fall.','Leaning too far forward from the waist instead of bending at the knees.','Feet too close together or too far apart — aim for hip-width.'],
+  steps:['Start with a few marching steps to build some forward speed.','Bring both feet parallel, about hip-width apart.','Bend your knees so you can feel pressure on the balls of your feet.','Hold your arms out to the sides for balance.','Keep your core tight and your back straight \u2014 do not hunch.','Glide as far as you can, then march again if you slow down.'],
+  mistakes:['Standing too upright with locked knees \u2014 you will wobble and fall.','Leaning too far forward from the waist instead of bending at the knees.','Feet too close together or too far apart \u2014 aim for hip-width.'],
   videos:['9zJuwbVSmPY','2TZqmAoyU6g','1wRIPjVcje8']
 },
 'forward-swizzles':{
   explanation:'Forward swizzles (also called "lemons" because your feet trace a lemon shape on the ice) teach you to generate movement without lifting your feet. You push your heels out, then pull your toes back together, creating a repeating hourglass pattern. This is your first introduction to using edges to create power.',
-  steps:['Start with feet together, toes pointing slightly outward in a small V.','Bend your knees and press outward through your heels.','Let your feet separate to slightly wider than shoulder-width.','Begin pulling your toes back inward, squeezing your inner thigh muscles.','Bring your feet back together to the starting position.','Repeat without stopping — each push-pull cycle should feel smooth.'],
-  mistakes:['Pushing with your toes instead of your heels — the power comes from heel pressure.','Not bending your knees enough, making the push weak and wobbly.','Rushing the movement — slow and controlled is better than fast and sloppy.'],
+  steps:['Start with feet together, toes pointing slightly outward in a small V.','Bend your knees and press outward through your heels.','Let your feet separate to slightly wider than shoulder-width.','Begin pulling your toes back inward, squeezing your inner thigh muscles.','Bring your feet back together to the starting position.','Repeat without stopping \u2014 each push-pull cycle should feel smooth.'],
+  mistakes:['Pushing with your toes instead of your heels \u2014 the power comes from heel pressure.','Not bending your knees enough, making the push weak and wobbly.','Rushing the movement \u2014 slow and controlled is better than fast and sloppy.'],
   videos:['r8VG-3tFBho','JkSFnmR04ic','E2bzX5taswY']
 },
 'rocking-horse':{
   explanation:'The rocking horse combines one forward swizzle immediately followed by one backward swizzle. It teaches you to shift your weight from the balls of your feet to your heels and back, giving you your first taste of backward movement. The rocking motion builds the comfort needed for backward skating.',
   steps:['Start with feet together, knees bent.','Do one forward swizzle: push heels out, pull toes back together.','Immediately shift your weight onto your heels.','Do one backward swizzle: push toes out, pull heels back together.','Shift weight forward again and repeat the cycle.','Keep your arms out for balance and your upper body still.'],
-  mistakes:['Leaning too far forward or backward during the weight shift.','Pausing between the forward and backward swizzle — it should be one fluid motion.','Straightening your legs during the transition.'],
+  mistakes:['Leaning too far forward or backward during the weight shift.','Pausing between the forward and backward swizzle \u2014 it should be one fluid motion.','Straightening your legs during the transition.'],
   videos:['vfbWYyChUmI','1J42cuiHx_o','E1kYM53ccM0']
 },
 'dip':{
-  explanation:'The dip teaches you to maintain balance while lowering your center of gravity on a glide. You skate forward and bend deeply into a squat while both blades stay on the ice. This builds leg strength, balance, and confidence in your edges — all essential for advanced moves like lunges and sit spins later.',
+  explanation:'The dip teaches you to maintain balance while lowering your center of gravity on a glide. You skate forward and bend deeply into a squat while both blades stay on the ice. This builds leg strength, balance, and confidence in your edges \u2014 all essential for advanced moves like lunges and sit spins later.',
   steps:['Build some forward speed with a few pushes or swizzles.','Bring both feet parallel in a glide position.','Slowly bend your knees, sinking as low as you can.','Keep your arms extended forward for counterbalance.','Hold the low position for as long as you can while gliding.','Rise back up smoothly, pressing through your thighs.'],
-  mistakes:['Bending at the waist instead of at the knees — keep your chest up.','Going down too fast and losing your balance backward.','Letting your feet drift apart as you lower — keep them parallel.'],
+  mistakes:['Bending at the waist instead of at the knees \u2014 keep your chest up.','Going down too fast and losing your balance backward.','Letting your feet drift apart as you lower \u2014 keep them parallel.'],
   videos:['X829xKqyEwE','6mIzuMyp8Yk','GB2LicY2Ezs']
 },
 'fwd-snowplow-stop':{
   explanation:'The forward snowplow stop is your first stopping technique. By pushing your heels outward and pressing the inside edges of your blades into the ice, you create friction that slows and stops your movement. It is named after the V-shape your feet make, similar to a snowplow. This is the most important safety skill for beginners.',
-  steps:['Build moderate forward speed with a glide.','Start with feet parallel, knees bent.','Slowly push both heels outward, turning your toes inward.','Press the inside edges of your blades into the ice — you should feel scraping.','Increase the pressure gradually until you come to a complete stop.','Keep your weight centered — do not lean forward or backward.'],
-  mistakes:['Not pressing hard enough with the edges — you just coast instead of stopping.','Pushing toes out instead of heels — this will trip you forward.','Only using one foot instead of both, creating uneven stopping.'],
+  steps:['Build moderate forward speed with a glide.','Start with feet parallel, knees bent.','Slowly push both heels outward, turning your toes inward.','Press the inside edges of your blades into the ice \u2014 you should feel scraping.','Increase the pressure gradually until you come to a complete stop.','Keep your weight centered \u2014 do not lean forward or backward.'],
+  mistakes:['Not pressing hard enough with the edges \u2014 you just coast instead of stopping.','Pushing toes out instead of heels \u2014 this will trip you forward.','Only using one foot instead of both, creating uneven stopping.'],
   videos:['rhQY1_bTjVs','uH3ozA7e3zw','COJOyWCYoHc']
 },
-'forward-skating':{
-  explanation:'Forward skating is the natural evolution from marching. Instead of lifting your feet straight up and down, you push off to the side using your blade edges and glide between pushes. This is real skating — alternating pushes and glides to travel across the ice with efficiency and increasing speed.',
-  steps:['Start in a basic stance: knees bent, arms out, feet shoulder-width apart.','Turn your right foot slightly outward.','Push off the inside edge of your right blade diagonally to the side.','Shift your weight onto your left foot and glide forward.','Bring the right foot back alongside the left.','Repeat on the other side: push left, glide on right.'],
-  mistakes:['Pushing straight back (like running) instead of pushing to the side.','Not fully transferring your weight to the gliding foot.','Keeping your pushing foot on the ice too long after the push.'],
-  videos:['8vaZXbHHQxM','rv-mHUQG6lg','-7QqRz2EZAM']
-},
-'fwd-one-foot-glide':{
-  explanation:'The forward one-foot glide challenges you to balance on a single blade while moving. This is a huge milestone because nearly every advanced skill — edges, turns, jumps, spins — requires solid one-foot balance. You will practice on both feet since the skill requires equal comfort on each side.',
-  steps:['Build forward speed with a few strong pushes.','Glide on two feet in a stable position.','Slowly shift all your weight onto one foot.','Lift the free foot just slightly off the ice (one to two inches).','Hold the glide for as long as possible with your knee bent.','Set the free foot down gently and try the other side.'],
-  mistakes:['Lifting the free foot too high, which shifts your center of gravity.','Locking the skating knee — keep it soft and bent.','Looking down instead of keeping your eyes forward.'],
-  videos:['iU5cVON1n2g','hKnyLPAgBPQ','eKCmxOisO78']
-},
-'forward-slalom':{
-  explanation:'Forward slalom involves wiggling both feet side-to-side in parallel while moving forward, like a skier doing slalom turns. Both feet stay on the ice and move together. This teaches you edge control and body rotation while building a fun, flowing rhythm across the ice.',
-  steps:['Build moderate forward speed.','Keep both feet parallel, about hip-width apart.','Turn both feet slightly to the right, pressing your left edges.','Immediately turn both feet slightly to the left, pressing your right edges.','Continue alternating in a smooth, rhythmic S-pattern.','Use your hips and knees to guide the direction, not your upper body.'],
-  mistakes:['Moving only your feet without engaging your knees and hips.','Making the S-curves too large — start small and controlled.','Leaning your upper body side-to-side — keep it centered and quiet.'],
-  videos:['Q6pW8m7qJhA','Dvjqhv8R2-A','oB87kcZk7zI']
-},
-'backward-skating':{
-  explanation:'Moving backward on ice is intimidating at first but essential for nearly all intermediate and advanced skills. Backward skating starts with small steps and builds to smooth glides. The key is learning to look over your shoulder periodically for safety while keeping your weight slightly toward the balls of your feet.',
-  steps:['Stand with your back to the direction you want to travel, knees bent.','Hold your arms out to the sides for balance.','Turn your toes slightly inward.','Push gently with one foot, pressing the inside edge backward.','Shift your weight to the other foot and repeat.','Keep your head up and check over your shoulder regularly.'],
-  mistakes:['Leaning too far back — keep your weight centered to slightly forward.','Looking down at the ice instead of checking over your shoulder.','Taking large steps instead of small, controlled pushes.'],
-  videos:['dZsfWfYxqzw','xUc0_3ab4uc','cyQZ8bauDvY']
-},
-'backward-swizzles':{
-  explanation:'Backward swizzles are the reverse of forward swizzles — your toes push outward and your heels pull back together, creating a lemon shape traveling backward. This is typically the most comfortable way for beginners to build backward speed and gets your body used to moving in reverse.',
-  steps:['Stand with feet together, toes turned slightly inward, knees bent.','Push your toes outward, letting your feet separate.','When feet are wider than shoulder-width, begin pulling heels together.','Squeeze your inner thighs to bring your feet back to the start.','Repeat immediately for continuous backward movement.','Keep your arms out and your back straight — do not look down.'],
-  mistakes:['Pushing with your heels instead of your toes.','Not bending your knees deeply enough to engage the edges.','Arching your back instead of keeping your core engaged.'],
-  videos:['LUKEQIw1SVk','dZsfWfYxqzw','r8VG-3tFBho']
-},
-'two-foot-turn':{
-  explanation:'The two-foot turn is your first rotational move — you rotate 180 degrees on the spot from forward to backward while both feet stay on the ice. It teaches you to manage the transition between forward and backward skating and introduces you to the concept of checking (using your shoulders and arms to control rotation).',
-  steps:['Glide forward on two feet, knees bent.','Extend your arms out to the sides.','Begin rotating your shoulders and head in the direction you want to turn.','Allow your hips and feet to follow your upper body.','Keep both feet on the ice throughout the 180-degree rotation.','Finish facing backward with knees still bent and arms out.'],
-  mistakes:['Lifting a foot off the ice during the turn — keep both blades down.','Not committing to the rotation — hesitation causes you to get stuck halfway.','Snapping the turn too fast instead of using a smooth, controlled rotation.'],
-  videos:['BCCXsY1RX0E','z8NdzDnCsx4','a_Y3UOIDCrY']
-},
-'forward-stroking':{
-  explanation:'Forward stroking is the refined version of forward skating. Each stroke consists of a powerful push from the full blade edge followed by an extended one-foot glide. Stroking develops proper technique: full knee bend on the push, extension through the ankle, and a long, balanced glide on the skating foot. This is the foundation of elegant, efficient skating.',
-  steps:['Start with feet together, knees deeply bent.','Push off the inside edge of your right foot using the full blade.','Extend your pushing leg fully behind you, toe pointed.','Glide on your left foot with a deep knee bend.','Bring the right foot back next to the left smoothly.','Repeat on the other side with equal power and extension.'],
-  mistakes:['Not fully extending the pushing leg — you lose power and look choppy.','Rising up between strokes instead of maintaining a consistent knee bend.','Pumping your arms — keep your upper body quiet and still.'],
-  videos:['-7QqRz2EZAM','8vaZXbHHQxM','NF_Zmii6cNA']
-},
-'forward-pumps':{
-  explanation:'Forward pumps generate speed on a circle using edge pressure rather than stroking. Your inside foot stays on the ice tracing the circle while your outside leg does a push-and-recover motion. This is your introduction to skating on curves and crossovers will build directly on this skill.',
-  steps:['Skate onto a face-off circle or mark a curved path.','Place your inside foot on the circle, knee bent, on an inside edge.','Push your outside foot away from the circle using the inside edge.','Let the outside foot extend, then bring it back next to the inside foot.','Repeat the pump to build speed around the circle.','Practice in both directions — clockwise and counterclockwise.'],
-  mistakes:['Not committing your weight to the inside foot — you drift off the circle.','Pushing straight back instead of outward away from the curve.','Leaning your upper body into the circle too much.'],
-  videos:['ssk15saJpOg','et5Jt1PMAk8','189APBtIi9Q']
-},
-'moving-two-foot-turn':{
-  explanation:'The moving two-foot turn is the traveling version of the stationary two-foot turn. You execute a 180-degree rotation from forward to backward while gliding along a curve. This builds on your earlier two-foot turn and introduces the concept of turning with momentum — essential for more advanced one-foot turns like 3-turns.',
-  steps:['Skate forward on a gentle curve with moderate speed.','Bend your knees and extend your arms for balance.','Begin rotating your shoulders in the direction of the curve.','Let your hips and feet follow, keeping both blades on the ice.','Complete the 180-degree turn and continue gliding backward on the curve.','Check your rotation by holding your arms in the backward position.'],
-  mistakes:['Turning on a straight line instead of on a curve.','Losing too much speed during the turn — maintain your momentum.','Not checking (stopping the rotation) after completing the turn.'],
-  videos:['Rp1YaU1lun0','BCCXsY1RX0E','z8NdzDnCsx4']
-},
-'back-two-foot-glide':{
-  explanation:'The backward two-foot glide is the backward equivalent of the forward two-foot glide. After building some backward momentum, you let both blades coast backward. This forces you to trust your backward balance and develop comfort moving in a direction you cannot see. Regular shoulder checks are essential.',
-  steps:['Build backward speed using backward swizzles or pushes.','Bring both feet parallel, about hip-width apart.','Bend your knees and shift your weight slightly toward the balls of your feet.','Let yourself glide backward with arms extended for balance.','Look over one shoulder to check behind you periodically.','Hold the glide as long as possible before needing another push.'],
-  mistakes:['Leaning backward — keep your weight centered or slightly forward.','Not checking behind you, which is unsafe.','Tensing up — stay relaxed in your knees and ankles.'],
-  videos:['Vc3g6xoCX_s','SlrZ_IYfAMo','dZsfWfYxqzw']
-},
-'forward-chasses':{
-  explanation:'Forward chassés (pronounced sha-SAY) are a step-together-step pattern performed on a circle. They are the precursor to crossovers. You step your outside foot next to your inside foot and then extend the inside foot back to its leading position. This teaches weight transfer and balance on curves.',
-  steps:['Skate forward on a circle, inside foot leading.','Pick up your outside foot and place it next to your inside foot on the circle.','Shift your weight to the outside foot momentarily.','Step your inside foot forward to resume the lead position on the circle.','Repeat this step-together-step rhythm around the circle.','Practice on circles in both directions.'],
-  mistakes:['Stepping too far ahead or behind instead of right next to the other foot.','Not maintaining the curve — you drift off the circle.','Forgetting to bend your knees during each step.'],
-  videos:['5SsqBDjdnS0','tlpu9-LjV-o','1BqJUai_g5k']
-},
-'back-snowplow-stop':{
-  explanation:'The backward snowplow stop mirrors the forward version but while moving backward. You push your heels outward and press the inside edges of your blades into the ice. This is critical for safety — you need to be able to stop going backward before attempting any backward skating at speed.',
-  steps:['Build moderate backward speed.','Start with feet parallel, knees bent.','Push both heels outward, turning your toes inward (pigeon-toed).','Press the inside edges of your blades firmly into the ice.','Increase the pressure gradually until you come to a complete stop.','Keep your weight centered and arms out for balance.'],
-  mistakes:['Not pressing hard enough — you barely slow down.','Bending at the waist instead of the knees during the stop.','Only using one foot, which makes you spin instead of stop.'],
-  videos:['0qYMeMdojAE','H-l83LNv8j8','RWxD3CJhtNY']
-},
-'fwd-outside-edge':{
-  explanation:'Forward outside edges are glides on one foot where your body leans to the outside of the curve you are tracing. "Outside" means you are on the edge of the blade that faces away from your body. Outside edges are the foundation for outside 3-turns, crossovers, many jumps, and all Moves in the Field patterns.',
-  steps:['Push onto your right foot and glide on the outside (right) edge.','Lean your entire body slightly to the right — not just your ankle.','Your free (left) foot should be held slightly behind or beside you.','Trace a smooth curve arcing to the right.','Hold the edge for as long as possible, aiming for a full half-circle.','Repeat on the left foot, curving to the left.'],
-  mistakes:['Leaning only with your ankle instead of your whole body.','Letting the free leg swing around, which disturbs your balance.','Not committing to the curve — flat edges produce wobbly lines.'],
-  videos:['dJwWAA8gFSU','FxNdhpldt2w','gK8mOMAgY-w']
-},
-'fwd-inside-edge':{
-  explanation:'Forward inside edges are the counterpart to outside edges. You glide on one foot leaning toward the inside of the curve, on the edge of the blade closest to your body. Inside edges are critical for inside 3-turns, Mohawk turns, Salchow jumps, and most transitional footwork sequences.',
-  steps:['Push onto your right foot and glide on the inside (left-leaning) edge.','Lean your body slightly to the left, into the curve.','Hold your free foot slightly in front or beside you.','Trace a smooth curve arcing to the left on your right foot.','Hold the edge as long as possible, building confidence.','Repeat on the left foot, curving to the right.'],
-  mistakes:['Dropping your free hip — keep both hips level.','Using your toe pick to steer instead of your edge lean.','Gripping the ice with your toes instead of pressing through the ball of your foot.'],
-  videos:['WeL4Q7RAW7Y','FxNdhpldt2w','dJwWAA8gFSU']
-},
-'fwd-crossovers':{
-  explanation:'Forward crossovers are the primary way to build speed and navigate curves on the ice. The outside foot crosses over the inside foot on each step, with both feet pushing to generate power. This is one of the most-used skills in all of skating — you will use crossovers in every session for the rest of your skating life.',
-  steps:['Skate forward on a counterclockwise circle, left foot on the inside.','Push with the inside (left) edge of your right foot.','Cross your right foot over your left, placing it on the inside of the circle.','Push with the outside edge of your left foot (the "underpush").','Bring your left foot back to the inside position.','Repeat with rhythm: cross, push, recover, cross, push, recover.'],
-  mistakes:['Only stepping over without pushing — you need power from both feet.','Not bending your knees enough, which makes the crossover stiff and small.','Leaning your upper body too far into the circle instead of staying upright.'],
-  videos:['kiixg2aczH4','pgwVCAiRrDk','UjnDyMkZSrU']
-},
-'back-one-foot-glide':{
-  explanation:'The backward one-foot glide is one of the most challenging balance skills for developing skaters. You must maintain a steady backward glide on a single blade while resisting the urge to put your other foot down. This builds the balance foundation for back edges, back crossovers, and all backward turns.',
-  steps:['Build backward speed using backward crossovers or swizzles.','Glide on two feet in a backward position.','Slowly shift all your weight onto one foot.','Lift the free foot just one to two inches off the ice.','Keep your skating knee bent and your core tight.','Hold for as long as possible, then try the other foot.'],
-  mistakes:['Leaning backward — keep weight centered or slightly forward on the blade.','Lifting the free foot too high, disturbing your balance.','Tensing your ankle — let it stay relaxed and flexible.'],
-  videos:['nZ1W6rGNhh0','8qebXzQnpFQ','eKCmxOisO78']
-},
-'back-pumps':{
-  explanation:'Backward pumps are the backward equivalent of forward pumps. You generate speed on a circle by pushing the outside leg outward and recovering it while the inside foot holds the curve. This skill builds the muscle memory and edge control needed for backward crossovers.',
-  steps:['Stand on a circle facing backward, inside foot on the circle.','Push your outside foot away from the circle using its inside edge.','Let the outside foot extend out, then pull it back next to the inside foot.','Keep your inside foot steady on the circle throughout.','Repeat the pump motion to build speed around the circle.','Practice both clockwise and counterclockwise.'],
-  mistakes:['Leaning too far backward instead of staying centered.','Not pushing outward enough — the push should be away from the curve.','Lifting your inside foot off the ice during the pump.'],
-  videos:['b3L1eDOXsbw','et5Jt1PMAk8','J6I_IN65_tM']
-},
-'hockey-stop':{
-  explanation:'The hockey stop is a quick, aggressive stop where you turn both feet perpendicular to your direction of travel and skid to a halt. It is faster and more dramatic than a snowplow stop and works at higher speeds. Mastering the hockey stop gives you confidence to skate faster because you know you can stop at any time.',
-  steps:['Build moderate to high forward speed.','Keep your knees deeply bent and your weight centered.','Quickly rotate your hips and both feet 90 degrees to one side.','Press hard into the ice with both inside edges simultaneously.','Lean slightly away from the direction of the skid for balance.','Come to a complete stop — you should see a spray of ice shavings.'],
-  mistakes:['Not committing to the rotation — a half-turn just makes you spin.','Leaning forward during the stop, which sends you over the toe picks.','Only practicing one side — train both left and right hockey stops.'],
-  videos:['nIfU38nAYYk','Y_xjJJ47cfc','d4T7wQ05FDE']
-},
-'back-outside-edge':{
-  explanation:'Backward outside edges are glides on one foot while traveling backward, leaning to the outside of the curve. These edges are critical for back crossovers, back outside 3-turns, and jump landings (nearly every jump lands on a back outside edge). Mastering this edge is essential for advanced skating.',
-  steps:['Build backward speed from backward crossovers.','Push onto your right foot on a backward outside edge.','Lean your whole body slightly to the right.','Hold your free foot slightly in front of you.','Trace a curve arcing to the right as seen from above.','Hold the edge for a full half-circle, then try the left foot.'],
-  mistakes:['Looking down at the ice instead of over your shoulder.','Rotating your body too far into the circle — hold your check.','Sitting back on your heel instead of staying centered on the blade.'],
-  videos:['OQkMH_YFZDI','rxe1nvHbK1I','dJwWAA8gFSU']
-},
-'back-inside-edge':{
-  explanation:'Backward inside edges are backward glides on the edge of the blade closest to your body. You lean into the curve while traveling backward. These edges are crucial for back inside 3-turns, Salchow jump takeoffs, and many footwork sequences.',
-  steps:['Build backward speed from crossovers or pushes.','Push onto your right foot on a backward inside edge.','Lean your body slightly to the left, into the curve.','Hold your free foot slightly in front of or beside you.','Trace a curve arcing to the left while on your right foot.','Hold the edge, then repeat on the left foot.'],
-  mistakes:['Not committing to the lean — flat edges make wobbly curves.','Bending at the waist instead of keeping your body aligned.','Swinging your free leg around, which disrupts your edge.'],
-  videos:['OQkMH_YFZDI','716HD-YEKXI','XYRyOJRXr74']
-},
-'back-crossovers':{
-  explanation:'Backward crossovers are the backward version of forward crossovers and are essential for building speed and navigating curves while skating backward. They are also used as entries for many jumps and spins. The inside foot crosses behind the outside foot while both feet push to generate power.',
-  steps:['Skate backward on a counterclockwise circle.','Push with the outside edge of your right (outside) foot.','Cross your left (inside) foot behind your right.','Push with the inside edge of your right foot from underneath.','Bring your right foot back to the outside position.','Repeat with rhythm: cross behind, push, recover.'],
-  mistakes:['Crossing in front instead of behind — the inside foot goes behind.','Not using the underpush from the outside foot, losing power.','Standing too upright — deep knee bend is essential.'],
-  videos:['9mhnUmSCTUY','3iOqaiKEv6k','L3-iqj4E-i4']
-},
-'fwd-outside-3-turn':{
-  explanation:'The forward outside 3-turn is your first one-foot turn. Starting on a forward outside edge, you rotate 180 degrees and finish on a backward inside edge, all on one foot. The turn traces a "3" shape on the ice, hence the name. This turn is a prerequisite for waltz jumps and many other advanced elements.',
-  steps:['Glide forward on your right foot on an outside edge, tracing a curve to the right.','Extend your arms: left arm forward, right arm back, along the curve.','Begin rotating your shoulders and left arm toward the center of the circle.','Allow your hips to follow — the turn will happen naturally at the top of the curve.','Keep your knee bent throughout — do not straighten up.','After the turn, you should be on a backward inside edge. Check the rotation by holding your right arm forward.'],
-  mistakes:['Forcing the turn with your toe pick instead of letting the edge and rotation create it.','Straightening your skating knee at the moment of the turn.','Not checking after the turn — you will keep spinning uncontrollably.'],
-  videos:['njqJC85X8U0','L5tFYHHDkTc','R4FEwcD8kSY']
-},
-'swing-rolls':{
-  explanation:'Swing rolls combine edge skating with a flowing free-leg swing. You glide forward on an edge while swinging your free leg from behind you to in front, creating a beautiful, continuous pattern. Swing rolls develop balance, edge quality, and the free-leg control needed for jumps and spirals.',
-  steps:['Push onto your right foot on a forward outside edge.','Start with your free (left) leg extended behind you.','Smoothly swing your left leg forward past your skating foot.','As your free leg reaches the front, hold the position briefly.','Step onto the left foot and push onto a left forward outside edge.','Swing your right leg forward and repeat the pattern.'],
-  mistakes:['Swinging the free leg too forcefully, which pulls you off balance.','Not keeping the skating knee bent throughout the swing.','Letting the free foot touch the ice during the swing.'],
-  videos:['Q7nfJLtDgR8','AlGACvBIKNQ','Z3G3ayYfc6g']
-},
-'beg-two-foot-spin':{
-  explanation:'The two-foot spin is your introduction to the world of spinning. You rotate on two feet in a small circle, learning to find and stay on a fixed axis. The goal is controlled, continuous rotation without traveling across the ice. This builds the balance and comfort with spinning needed for all advanced spins.',
-  steps:['Stand with feet shoulder-width apart, knees bent.','Begin a slow counterclockwise rotation using your arms.','Pull your arms in close to your body to speed up (angular momentum).','Keep both feet flat on the ice with equal weight distribution.','Spot a fixed point and let it blur — do not try to track it.','To stop, extend your arms outward to slow the rotation.'],
-  mistakes:['Traveling across the ice instead of spinning in one spot.','Leaning too far to one side and falling off your axis.','Keeping your arms extended the entire time — pull them in to spin.'],
-  videos:['sxY4yGAAgEM','1Wb9CyUWjrM','ZWmNKqOEmGA']
-},
-'fwd-inside-3-turn':{
-  explanation:'The forward inside 3-turn is the companion to the forward outside 3-turn. You start on a forward inside edge and rotate to a backward outside edge, all on one foot. Inside 3-turns are crucial for entering Salchow jumps and are a key component of footwork sequences. Many skaters find inside 3-turns harder than outside 3-turns initially.',
-  steps:['Glide forward on your left foot on an inside edge, tracing a curve to the right.','Hold your right arm forward and left arm back along the curve.','Begin rotating your right arm and shoulder toward the center of the circle.','Let your hips follow — the turn happens at the top of the curve.','Keep your knee bent and maintain pressure on the inside edge.','After the turn, you are on a backward outside edge. Check the rotation by holding your left arm forward.'],
-  mistakes:['Stepping onto two feet instead of completing the turn on one foot.','Turning too early before establishing a clear inside edge.','Not checking the rotation after the turn — you will over-rotate.'],
-  videos:['Pf84NCH6u2E','lw07ZD2STJw','jONxtshKl54']
-},
-'change-of-edge':{
-  explanation:'Change of edge is the ability to smoothly transition from an outside edge to an inside edge (or vice versa) on one foot while gliding. This creates an S-shaped curve on the ice and is a fundamental skill for Moves in the Field patterns. It teaches you how to shift your body weight subtly to change your blade angle.',
-  steps:['Push onto your right foot on a forward outside edge, curving right.','Gradually shift your weight from the outside to the inside of your blade.','You should feel your body lean transition from right to left.','The curve will change direction — you are now on a forward inside edge.','Hold the new edge for an equal distance as the first edge.','Repeat on the other foot.'],
-  mistakes:['Making a sudden, jerky switch instead of a gradual, smooth transition.','Using your free leg to force the change instead of your body weight.','Not maintaining your knee bend during the transition.'],
-  videos:['CW59EFo5mu0','HCG_v59_8IQ','qrD1zPD-YpM']
-},
-'t-stop':{
-  explanation:'The T-stop is an elegant stopping technique where you drag one foot behind the other in a T-shape, using friction to slow down. It is quieter and more controlled than a hockey stop and is commonly used in figure skating. The trailing foot presses its inside edge into the ice while the front foot glides straight.',
-  steps:['Glide forward on your left foot with a straight line of travel.','Rotate your right foot 90 degrees so it is perpendicular to your left.','Place the inside edge of your right blade on the ice behind your left foot.','Press gently at first, increasing pressure to slow down.','Keep your weight primarily on the front (left) gliding foot.','Come to a smooth, controlled stop.'],
-  mistakes:['Putting too much weight on the trailing foot and tripping backward.','Not rotating the trailing foot a full 90 degrees — partial angles are unstable.','Scraping with the toe pick instead of the blade edge.'],
-  videos:['K1Kf0DOrb0I','aG2X6zxLgfE','6c-YKaKmkms']
-},
-'lunge':{
-  explanation:'The lunge is a dramatic skating move where you glide on one deeply bent leg while your other leg trails behind you with the blade dragging on the ice. It looks impressive and builds the leg strength and balance needed for advanced moves. The lunge is also a required element in some figure skating programs.',
-  steps:['Build moderate forward speed.','Shift all your weight onto your front (left) foot.','Bend your left knee deeply into a deep squat.','Extend your right leg straight behind you.','Let the top of your right blade or the tongue of the boot drag on the ice.','Hold the lunge as long as possible, keeping your chest upright.'],
-  mistakes:['Not bending the front leg deep enough — you need a very deep knee bend.','Leaning your chest forward instead of keeping it upright.','Dragging the toe pick aggressively, which catches and trips you.'],
-  videos:['FMWNmLUwrWU','QoL2aAbRjxw','Jr8kZAtWW_A']
-},
-'one-foot-spin':{
-  explanation:'The one-foot spin (scratch spin) is the foundation of all figure skating spins. You spin on one foot with your free leg and arms pulled in tight to maximize rotation speed. A well-centered one-foot spin can achieve remarkable speed and is a satisfying skill to master. This leads to sit spins, camel spins, and all combination spins.',
-  steps:['Enter from a backward crossover into a forward inside edge.','Step forward onto your left foot and push into the spin.','Start with arms and free leg extended to the side.','Gradually pull your arms and free leg in close to your body.','Cross your free foot in front of your ankle for a tight spinning position.','To exit, extend your arms and check to stop the rotation.'],
-  mistakes:['Traveling across the ice — you should spin on one spot.','Pulling in too fast before finding your center, which throws you off.','Bending at the waist instead of staying upright.'],
-  videos:['uD4IVjZQ35Q','zyat2c-5MXw','oT4wvPTVrTQ']
-},
-'mohawk-turn':{
-  explanation:'The Mohawk turn is a two-foot turn where you step from forward on one foot to backward on the other foot in a heel-to-heel transfer. Unlike a 3-turn which is on one foot, the Mohawk involves changing feet. There are inside and outside Mohawks. This turn is essential for ice dance, footwork sequences, and as an entry into jumps.',
-  steps:['Glide forward on your right foot on an inside edge.','Rotate your left foot 180 degrees so the heel of your left foot meets the heel of your right.','Step onto your left foot on a backward inside edge.','Shift your weight completely to the left foot.','Lift your right foot off the ice and hold the backward glide.','Check the rotation by holding your arms and looking over your shoulder.'],
-  mistakes:['Not turning the stepping foot a full 180 degrees.','Placing the feet too far apart during the step — heels should be close together.','Not fully transferring weight, resulting in a hesitant, two-footed slide.'],
-  videos:['MJkc9ONmxVY','HRyuif5OU74','8MrF6AxeN1w']
-},
-'waltz-jump':{
-  explanation:'The waltz jump is your first real jump in figure skating. It is a half-rotation (180-degree) jump: you take off forward from an outside edge and land backward on the other foot. Despite being the simplest jump, it teaches you every fundamental jumping mechanic — takeoff edge, spring, air position, and landing on a back outside edge.',
-  steps:['Glide forward on your left foot on a forward outside edge.','Swing your right leg forward and upward as you spring off your left toe.','Jump into the air, rotating 180 degrees counterclockwise.','Bring your arms in briefly at the peak of the jump.','Land on your right foot on a backward outside edge.','Extend your left leg behind you and hold the landing with arms checked.'],
-  mistakes:['Not swinging the free leg hard enough — the leg swing generates height.','Looking down during the jump instead of forward and up.','Landing on two feet instead of committing to a one-foot landing.'],
-  videos:['lajRteZxQxU','hNfNFJ_86Ro','6_kN32PMNCo']
-},
-'bunny-hop':{
-  explanation:'The bunny hop is a simple, non-rotational hop on the ice that builds jumping confidence. You push off your toe pick, jump over it, and land on the other foot. There is no rotation involved. It teaches you to spring off the ice, get airtime, and land on one foot — all fundamental mechanics for every real figure skating jump.',
-  steps:['Glide forward on your left foot with moderate speed.','Reach forward with your right toe pick and tap it into the ice.','Push off the right toe pick, springing upward.','Jump forward, keeping your body upright and arms extended.','Land on your right foot on a flat blade.','Immediately glide forward and repeat if desired.'],
-  mistakes:['Not reaching far enough forward with the toe pick.','Jumping too far forward instead of upward — height is more important.','Landing on two feet instead of the right foot alone.'],
-  videos:['N5mM_i6SoSA','d8rMlxbSbOk','u2EY1zaODYo']
-},
-'forward-spiral':{
-  explanation:'The forward spiral is a beautiful skating element where you glide forward on one foot with your free leg raised high behind you, creating an arabesque shape. The goal is to hold the free leg above hip level while maintaining strong edge quality and speed. Flexibility and balance work together in this element.',
-  steps:['Build strong forward speed.','Glide on your left foot on a forward outside or inside edge.','Gradually lift your right leg behind you.','Raise the free leg as high as flexibility allows — ideally above hip height.','Extend your arms gracefully for balance and presentation.','Hold the spiral position for as long as possible.'],
-  mistakes:['Dropping the free leg below hip level — always aim higher.','Bending at the waist too much, which lowers the free leg.','Losing speed — enter with plenty of momentum.'],
-  videos:['pJh-NE4IfQg','hNJxPMIBQpo','SoIscpHVVhw']
-},
-'salchow-jump':{
-  explanation:'The Salchow is typically the first full-rotation (360-degree) jump a skater learns. Named after Ulrich Salchow, it takes off from a backward inside edge. The entry is usually from a 3-turn or Mohawk, and the free leg swings around to initiate rotation. The Salchow is an edge jump — no toe pick assist.',
-  steps:['Enter from a left forward inside 3-turn or Mohawk onto a back inside edge.','Glide backward on your left foot on a back inside edge.','Bend your skating knee deeply and load the edge.','Swing your right leg around and upward as you spring off the left foot.','Pull your arms in for a tight rotation in the air.','Land on your right foot on a backward outside edge with arms checked.'],
-  mistakes:['Not loading (bending into) the takeoff edge deeply enough.','Swinging the free leg too wide instead of upward.','Pre-rotating on the ice before actually leaving the surface.'],
-  videos:['HtaJjqL64lE','mdDdGzol20w','9q0G0EEtDP4']
-},
-'toe-loop-jump':{
-  explanation:'The toe loop is often the first toe-assisted jump a skater learns and is one of the easier full-rotation jumps. You take off from a backward outside edge with a toe pick assist from the other foot. Toe loops are extremely important because they are the most common jump used in combinations (after a landing, you can immediately go into a toe loop).',
-  steps:['Approach from backward crossovers on a counterclockwise circle.','Glide backward on your right foot on a back outside edge.','Reach back with your left toe pick and plant it firmly in the ice.','Push off the left toe pick while springing upward off the right foot.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],
-  mistakes:['Reaching too far back with the toe pick, losing your balance.','Not using enough toe pick force — you need a firm plant.','Swinging the upper body instead of rotating as a unit.'],
-  videos:['6a3URzAHPGQ','wXBMwM3IGXE','tyPGU28q5Zc']
-},
-'backspin':{
-  explanation:'The backspin is a spin rotating in the opposite direction of your normal spin (clockwise for most skaters). You spin on your right foot instead of your left. The backspin is essential for combination spins and is a required element in many programs. It is also the landing position for many jumps, so a strong backspin builds overall spinning confidence.',
-  steps:['Enter from a backward outside edge or a wind-up position.','Step onto your right foot and push into a clockwise rotation.','Start with arms and free leg extended.','Gradually pull your arms in to increase speed.','Keep your weight centered on the ball of your right foot.','Exit by extending your arms and stepping out of the spin.'],
-  mistakes:['Trying to spin on the wrong part of the blade — stay on the ball of the foot.','Not centering before pulling in, causing you to travel.','Leaning too far to one side and losing the spin axis.'],
-  videos:['6sd_I_S2IY0','VFuidrhcqFk','RNwUp7oxJkI']
-},
-'loop-jump':{
-  explanation:'The loop jump is a full-rotation edge jump that takes off and lands on the same foot (right) on a back outside edge. There is no toe pick assist and no free leg swing — the rotation comes entirely from your body position and edge pressure. The loop jump is challenging because the takeoff feels unusual at first.',
-  steps:['Approach from backward crossovers on a counterclockwise circle.','Glide backward on your right foot on a strong back outside edge.','Cross your left foot in front of your right ankle.','Bend your right knee deeply, loading the edge.','Spring upward from the right foot, pulling arms in tightly.','Rotate 360 degrees and land on your right foot on a back outside edge.'],
-  mistakes:['Not crossing the free foot tightly enough at takeoff.','Leaning too far into the circle at takeoff.','Kicking the free leg during takeoff instead of holding it crossed.'],
-  videos:['StACSROyvo8','8qsW31N5K8A','W9pMB9p7ODY']
-},
-'flip-jump':{
-  explanation:'The flip jump is a toe-assisted jump that takes off from a backward inside edge. The key difference from a Lutz is the entry edge: the flip uses an inside edge. Entry is typically from a forward inside 3-turn. The free leg reaches back to plant the toe pick while the skating foot maintains the inside edge.',
-  steps:['Enter from a right forward inside 3-turn onto a left back inside edge.','Glide backward on your left foot on a back inside edge.','Reach back with your right toe pick and plant it firmly.','Push off the toe pick while springing upward.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],
-  mistakes:['Changing to an outside edge before takeoff (that would make it a Lutz).','Not reaching straight back with the toe pick — reaching to the side twists the jump.','Over-rotating the upper body before the toe pick is planted.'],
-  videos:['UAMOQ5TrhOM','sKc7D8Ks7w4','OcfCr1wu4nU']
-},
-'sit-spin':{
-  explanation:'The sit spin is performed in a deep squat position on one foot. The skating hip drops below knee level while spinning. It demands tremendous leg strength, balance, and the ability to maintain rotation speed while in a low position. Variations include the cannonball, pancake, and broken-leg sit spin.',
-  steps:['Enter the spin the same way as a one-foot spin — inside edge, step forward.','Begin spinning on your left foot with arms extended.','Slowly bend your skating knee and lower into a squat.','Extend your free (right) leg forward, parallel to the ice.','Pull your arms in to maintain speed while in the sit position.','Rise up to exit and check the rotation.'],
-  mistakes:['Not getting low enough — your hip must be below your knee level.','Losing speed as you sit down because you are lowering too quickly.','The free leg dropping down instead of staying parallel to the ice.'],
-  videos:['IvI3Up4MaiI','VaW60XAsV5Q','2UcxRurhb5E']
-},
-'camel-spin':{
-  explanation:'The camel spin is one of the most visually striking basic spins. You spin on one foot with your body horizontal, free leg extended behind you at or above hip level, forming a T-shape. It requires good flexibility, strong core control, and the ability to maintain a fixed spin axis while your mass is distributed horizontally.',
-  steps:['Enter from a forward inside edge, stepping onto your left foot.','Push into the spin and establish rotation.','Lean your upper body forward while lifting your right leg behind you.','Create a flat T-shape: torso and free leg parallel to the ice.','Hold your arms in a graceful position.','To exit, bring the free leg down and check the rotation.'],
-  mistakes:['Not lifting the free leg high enough — it must be at hip level or above.','Bending at the waist too sharply instead of keeping the back flat.','Dropping the head down instead of keeping it in line with the spine.'],
-  videos:['PCROWY0l3v8','Ga2tYqTFdxg','OO2xE9MJEZo']
-},
-'lutz-jump':{
-  explanation:'The Lutz jump is one of the most difficult single jumps because it requires a counter-rotated takeoff. You approach on a long backward outside edge curving in one direction, then rotate in the opposite direction for the jump. The counter-rotation makes the Lutz technically demanding but also one of the most valuable jumps in competition scoring.',
-  steps:['Skate backward on a long, straight-ish line on your left back outside edge.','Hold the outside edge firmly — do not let it change to an inside edge.','Reach back with your right toe pick and plant it firmly in the ice.','Spring upward against the natural curve of the edge.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],
-  mistakes:['Changing to an inside edge before takeoff — this is a "flutz" (really a flip).','Not holding the backward glide long enough before the toe pick plant.','Telegraphing the jump by winding up the upper body too much.'],
-  videos:['X3ivH8XllpI','Dti3fNip9sM','ibnro4l6DNM']
-},
-'axel':{
-  explanation:'The Axel is the most difficult single jump and the only jump that takes off going forward. It requires 1.5 rotations in the air (compared to one rotation for all other single jumps). The forward takeoff from an outside edge combined with the extra half-rotation makes the Axel a major milestone. Landing a clean single Axel is a proud achievement for any skater.',
-  steps:['Approach from backward crossovers, then step forward onto your left outside edge.','Ride the forward outside edge on a strong curve.','Drive your right knee and arms upward powerfully.','Spring off the left foot, rotating 1.5 times counterclockwise.','Pull into a tight air position with arms close to your body.','Land on your right foot on a backward outside edge with arms checked.'],
-  mistakes:['Not driving the knee and arms upward with enough force — the Axel needs height.','Wrapping the free leg around instead of driving it straight up.','Opening up too early in the air, causing under-rotation.'],
-  videos:['F8D1OEiHvpE','cF66y390JFI','0wBeLFPwitw']
-},
-'flying-camel':{
-  explanation:'The flying camel combines a jump entry with a camel spin. You jump into the air, achieve a camel (horizontal) position mid-flight, and land into a camel spin. It is a dramatic element that demonstrates both jumping ability and spinning control. This is one of the first "flying" spins most skaters learn.',
-  steps:['Build speed from backward crossovers.','Step forward onto your left foot on an inside edge.','Spring upward, kicking your right leg forward and up.','In the air, extend into a camel position — body and free leg horizontal.','Land on your left foot and continue directly into a camel spin.','Hold the camel spin position for several rotations before exiting.'],
-  mistakes:['Not getting enough height on the jump to establish the camel position.','Landing too hard and losing the spin — the landing must be controlled.','Bending the free leg in the air instead of keeping it extended.'],
-  videos:['Z5aYvq_3xi8','G34Pl-f_HAk','dTWndXzMKgE']
-},
-'combination-spin':{
-  explanation:'A combination spin changes positions (such as camel to sit to upright) without stopping the rotation. The skater must maintain speed and centering while transitioning between fundamentally different body positions. A well-executed combination spin shows versatility and is a required element in competitive programs.',
-  steps:['Enter a camel spin on your left foot with arms extended.','While spinning, slowly lower from the camel position into a sit spin.','Hold the sit spin for 2-3 rotations.','Rise up into an upright scratch spin position.','Pull your arms in tightly for maximum speed.','Exit by checking the rotation with arms extended.'],
-  mistakes:['Losing speed during transitions between positions.','Traveling across the ice during position changes.','Rushing through positions instead of holding each one clearly.'],
-  videos:['7F9SaSoQJDQ','2Zy_NU95V3Y','Eq1zC0t1SKA']
-},
-'double-salchow':{
-  explanation:'The double Salchow requires two full rotations (720 degrees) in the air from a backward inside edge takeoff. It is typically the first double jump a skater learns because the Salchow entry is the most natural. Success demands significantly more power, tighter air position, and faster rotation than the single version.',
-  steps:['Enter from a strong forward inside 3-turn or Mohawk onto a deep back inside edge.','Bend your skating knee deeply — more than for a single.','Swing your free leg powerfully around and upward.','Pull your arms in immediately as you leave the ice.','Hold a tight crossed-arm position for two full rotations.','Land on your right foot on a backward outside edge with arms checked.'],
-  mistakes:['Not pulling into a tight air position fast enough — you will under-rotate.','Opening up the arms and free leg too early.','Not bending the takeoff knee enough to generate height.'],
-  videos:['y42ZA1Q1KmU','0YAC_2zJ0Cg','5cDGEfO7Nzs']
-},
-'double-toe-loop':{
-  explanation:'The double toe loop requires two full rotations with a toe pick assist from a backward outside edge. After the double Salchow, this is usually the next double jump learned. It is particularly important because toe loops are the primary jump used in combinations, so a double toe loop unlocks powerful jump combinations.',
-  steps:['Approach from backward crossovers with strong speed.','Glide backward on your right foot on a back outside edge.','Reach back and plant your left toe pick firmly and deeply.','Push off powerfully, springing upward.','Pull into a tight air position immediately for two rotations.','Land on your right foot on a backward outside edge.'],
-  mistakes:['Not planting the toe pick deep enough — you need a strong anchor.','Leaning too far forward at takeoff.','Under-rotating because of insufficient jump height.'],
-  videos:['vZE0C0riWrk','vS_W7EsenSE','vuOyIZd4ub8']
-},
-'double-loop-flip-lutz':{
-  explanation:'Double loop, double flip, and double Lutz are the advanced double jumps. Each requires two full rotations with progressively more difficult takeoff mechanics. The double loop demands pure edge power, the double flip adds counter-rotation from a toe pick on an inside edge, and the double Lutz requires counter-rotation from an outside edge — making it the hardest double jump.',
-  steps:['Master the single version of each jump first with consistent landing.','Increase your single jump height until you have air time to spare.','Practice pulling into a tight air position faster from each takeoff.','Attempt the double with enough speed and spring for two rotations.','Focus on one jump at a time until each is consistent.','Land each cleanly on a backward outside edge with good flow.'],
-  mistakes:['Attempting doubles before singles are consistent and effortless.','Not generating enough height — doubles need significantly more air time.','Cheating rotation by pre-rotating on the ice before takeoff.'],
-  videos:['KujZRuhuqhU','roPXwrICIEA','nvRcR23nz2s']
-},
-'brackets':{
-  explanation:'A bracket turn is a one-foot turn similar to a 3-turn but with the turn going against the natural curve — making it significantly harder. Where a 3-turn turns into the circle, a bracket turns away from it. The tracing on the ice looks like a bracket symbol }. Brackets require excellent edge control and strong rotational checking.',
-  steps:['Glide forward on a strong outside or inside edge on a clear curve.','Hold your arms and shoulders firmly in position along the curve.','Initiate the turn by rotating your shoulders against the direction of the curve.','Allow the turn to happen on the blade — do not force it with your toe pick.','After the turn, you should be on the opposite edge traveling backward.','Check the rotation firmly to prevent over-rotation.'],
-  mistakes:['Turning into the circle instead of against it — that is a 3-turn, not a bracket.','Not having enough edge depth going into the turn.','Failing to check the rotation, causing the turn to become a full spin.'],
-  videos:['xPqP2LQxwmg','CJ5m19UuZSs','iPMvnw1bpaA']
-},
-'counters-rockers':{
-  explanation:'Counters and rockers are advanced one-foot turns that change direction without changing edge. A counter turns against the curve (like a bracket) but stays on the same edge. A rocker turns with the curve (like a 3-turn) but also stays on the same edge. These turns are required for high-level Moves in the Field and are components of advanced footwork sequences.',
-  steps:['Build strong one-foot edge control on both inside and outside edges.','For a counter: glide on an edge and turn against the curve while maintaining the same edge.','For a rocker: glide on an edge and turn with the curve while maintaining the same edge.','The key is controlling the rotation so precisely that the edge does not change.','Practice each type on all four edges (FO, FI, BO, BI).','Use strong arm and shoulder positions to control the turn.'],
-  mistakes:['Changing the edge during the turn — the edge must stay the same.','Confusing counters with brackets or rockers with 3-turns.','Not having sufficient edge depth and speed before attempting the turn.'],
-  videos:['iPMvnw1bpaA','qy8uL8KuReA','YLBXvXbpogk']
-},
-'twizzles':{
-  explanation:'Twizzles are traveling multi-rotational turns on one foot. Unlike a spin which stays in one spot, a twizzle moves across the ice while rotating. Think of it as a rapidly spinning one-foot glide. Twizzles are a signature element of ice dance and are also used in singles skating footwork sequences.',
-  steps:['Glide on one foot with good speed and edge control.','Begin rotating by pulling your arms in close.','Maintain your glide direction while spinning on one foot.','Keep your free foot close to your skating ankle.','Complete multiple rotations while traveling forward.','Exit by extending your arms and checking the rotation.'],
-  mistakes:['Stopping your forward momentum — you must keep traveling while rotating.','Touching the free foot down between rotations.','Losing your balance axis and wobbling during the turns.'],
-  videos:['TvqVaTh9IpM','57e3vAkCxHk','6yygtvAYZZI']
-},
-'biellmann-spin':{
-  explanation:'The Biellmann spin is one of the most iconic and visually spectacular figure skating spins. Named after Denise Biellmann, you spin on one foot while pulling your free blade above and behind your head with both hands. It requires extreme flexibility in the back and hips, plus strong one-foot spinning ability. This is considered a master-level spin element.',
-  steps:['Enter a strong one-foot spin on your left foot.','Establish a fast, centered rotation.','Reach behind you with your right hand and grab your right blade.','Bring your left hand to assist in pulling the blade upward.','Pull the blade up and over your head while maintaining the spin.','Hold the extended Biellmann position for several rotations before releasing.'],
-  mistakes:['Attempting this without sufficient back and hip flexibility — you risk injury.','Losing your spin center when reaching for the blade.','Pulling the blade up too quickly before the spin is fully centered.'],
-  videos:['QE-JdhHSh04','3DYRwRooQ_w','rpVaN7zep8o']
-}
+'forward-skating':{explanation:'Forward skating is the natural evolution from marching. Instead of lifting your feet straight up and down, you push off to the side using your blade edges and glide between pushes. This is real skating \u2014 alternating pushes and glides to travel across the ice with efficiency and increasing speed.',steps:['Start in a basic stance: knees bent, arms out, feet shoulder-width apart.','Turn your right foot slightly outward.','Push off the inside edge of your right blade diagonally to the side.','Shift your weight onto your left foot and glide forward.','Bring the right foot back alongside the left.','Repeat on the other side: push left, glide on right.'],mistakes:['Pushing straight back (like running) instead of pushing to the side.','Not fully transferring your weight to the gliding foot.','Keeping your pushing foot on the ice too long after the push.'],videos:['8vaZXbHHQxM','rv-mHUQG6lg','-7QqRz2EZAM']},
+'fwd-one-foot-glide':{explanation:'The forward one-foot glide challenges you to balance on a single blade while moving. This is a huge milestone because nearly every advanced skill \u2014 edges, turns, jumps, spins \u2014 requires solid one-foot balance. You will practice on both feet since the skill requires equal comfort on each side.',steps:['Build forward speed with a few strong pushes.','Glide on two feet in a stable position.','Slowly shift all your weight onto one foot.','Lift the free foot just slightly off the ice (one to two inches).','Hold the glide for as long as possible with your knee bent.','Set the free foot down gently and try the other side.'],mistakes:['Lifting the free foot too high, which shifts your center of gravity.','Locking the skating knee \u2014 keep it soft and bent.','Looking down instead of keeping your eyes forward.'],videos:['iU5cVON1n2g','hKnyLPAgBPQ','eKCmxOisO78']},
+'forward-slalom':{explanation:'Forward slalom involves wiggling both feet side-to-side in parallel while moving forward, like a skier doing slalom turns. Both feet stay on the ice and move together. This teaches you edge control and body rotation while building a fun, flowing rhythm across the ice.',steps:['Build moderate forward speed.','Keep both feet parallel, about hip-width apart.','Turn both feet slightly to the right, pressing your left edges.','Immediately turn both feet slightly to the left, pressing your right edges.','Continue alternating in a smooth, rhythmic S-pattern.','Use your hips and knees to guide the direction, not your upper body.'],mistakes:['Moving only your feet without engaging your knees and hips.','Making the S-curves too large \u2014 start small and controlled.','Leaning your upper body side-to-side \u2014 keep it centered and quiet.'],videos:['Q6pW8m7qJhA','Dvjqhv8R2-A','oB87kcZk7zI']},
+'backward-skating':{explanation:'Moving backward on ice is intimidating at first but essential for nearly all intermediate and advanced skills. Backward skating starts with small steps and builds to smooth glides. The key is learning to look over your shoulder periodically for safety while keeping your weight slightly toward the balls of your feet.',steps:['Stand with your back to the direction you want to travel, knees bent.','Hold your arms out to the sides for balance.','Turn your toes slightly inward.','Push gently with one foot, pressing the inside edge backward.','Shift your weight to the other foot and repeat.','Keep your head up and check over your shoulder regularly.'],mistakes:['Leaning too far back \u2014 keep your weight centered to slightly forward.','Looking down at the ice instead of checking over your shoulder.','Taking large steps instead of small, controlled pushes.'],videos:['dZsfWfYxqzw','xUc0_3ab4uc','cyQZ8bauDvY']},
+'backward-swizzles':{explanation:'Backward swizzles are the reverse of forward swizzles \u2014 your toes push outward and your heels pull back together, creating a lemon shape traveling backward. This is typically the most comfortable way for beginners to build backward speed and gets your body used to moving in reverse.',steps:['Stand with feet together, toes turned slightly inward, knees bent.','Push your toes outward, letting your feet separate.','When feet are wider than shoulder-width, begin pulling heels together.','Squeeze your inner thighs to bring your feet back to the start.','Repeat immediately for continuous backward movement.','Keep your arms out and your back straight \u2014 do not look down.'],mistakes:['Pushing with your heels instead of your toes.','Not bending your knees deeply enough to engage the edges.','Arching your back instead of keeping your core engaged.'],videos:['LUKEQIw1SVk','dZsfWfYxqzw','r8VG-3tFBho']},
+'two-foot-turn':{explanation:'The two-foot turn is your first rotational move \u2014 you rotate 180 degrees on the spot from forward to backward while both feet stay on the ice. It teaches you to manage the transition between forward and backward skating and introduces you to the concept of checking (using your shoulders and arms to control rotation).',steps:['Glide forward on two feet, knees bent.','Extend your arms out to the sides.','Begin rotating your shoulders and head in the direction you want to turn.','Allow your hips and feet to follow your upper body.','Keep both feet on the ice throughout the 180-degree rotation.','Finish facing backward with knees still bent and arms out.'],mistakes:['Lifting a foot off the ice during the turn \u2014 keep both blades down.','Not committing to the rotation \u2014 hesitation causes you to get stuck halfway.','Snapping the turn too fast instead of using a smooth, controlled rotation.'],videos:['BCCXsY1RX0E','z8NdzDnCsx4','a_Y3UOIDCrY']},
+'forward-stroking':{explanation:'Forward stroking is the refined version of forward skating. Each stroke consists of a powerful push from the full blade edge followed by an extended one-foot glide. Stroking develops proper technique: full knee bend on the push, extension through the ankle, and a long, balanced glide on the skating foot. This is the foundation of elegant, efficient skating.',steps:['Start with feet together, knees deeply bent.','Push off the inside edge of your right foot using the full blade.','Extend your pushing leg fully behind you, toe pointed.','Glide on your left foot with a deep knee bend.','Bring the right foot back next to the left smoothly.','Repeat on the other side with equal power and extension.'],mistakes:['Not fully extending the pushing leg \u2014 you lose power and look choppy.','Rising up between strokes instead of maintaining a consistent knee bend.','Pumping your arms \u2014 keep your upper body quiet and still.'],videos:['-7QqRz2EZAM','8vaZXbHHQxM','NF_Zmii6cNA']},
+'forward-pumps':{explanation:'Forward pumps generate speed on a circle using edge pressure rather than stroking. Your inside foot stays on the ice tracing the circle while your outside leg does a push-and-recover motion. This is your introduction to skating on curves and crossovers will build directly on this skill.',steps:['Skate onto a face-off circle or mark a curved path.','Place your inside foot on the circle, knee bent, on an inside edge.','Push your outside foot away from the circle using the inside edge.','Let the outside foot extend, then bring it back next to the inside foot.','Repeat the pump to build speed around the circle.','Practice in both directions \u2014 clockwise and counterclockwise.'],mistakes:['Not committing your weight to the inside foot \u2014 you drift off the circle.','Pushing straight back instead of outward away from the curve.','Leaning your upper body into the circle too much.'],videos:['ssk15saJpOg','et5Jt1PMAk8','189APBtIi9Q']},
+'moving-two-foot-turn':{explanation:'The moving two-foot turn is the traveling version of the stationary two-foot turn. You execute a 180-degree rotation from forward to backward while gliding along a curve. This builds on your earlier two-foot turn and introduces the concept of turning with momentum \u2014 essential for more advanced one-foot turns like 3-turns.',steps:['Skate forward on a gentle curve with moderate speed.','Bend your knees and extend your arms for balance.','Begin rotating your shoulders in the direction of the curve.','Let your hips and feet follow, keeping both blades on the ice.','Complete the 180-degree turn and continue gliding backward on the curve.','Check your rotation by holding your arms in the backward position.'],mistakes:['Turning on a straight line instead of on a curve.','Losing too much speed during the turn \u2014 maintain your momentum.','Not checking (stopping the rotation) after completing the turn.'],videos:['Rp1YaU1lun0','BCCXsY1RX0E','z8NdzDnCsx4']},
+'back-two-foot-glide':{explanation:'The backward two-foot glide is the backward equivalent of the forward two-foot glide. After building some backward momentum, you let both blades coast backward. This forces you to trust your backward balance and develop comfort moving in a direction you cannot see. Regular shoulder checks are essential.',steps:['Build backward speed using backward swizzles or pushes.','Bring both feet parallel, about hip-width apart.','Bend your knees and shift your weight slightly toward the balls of your feet.','Let yourself glide backward with arms extended for balance.','Look over one shoulder to check behind you periodically.','Hold the glide as long as possible before needing another push.'],mistakes:['Leaning backward \u2014 keep your weight centered or slightly forward.','Not checking behind you, which is unsafe.','Tensing up \u2014 stay relaxed in your knees and ankles.'],videos:['Vc3g6xoCX_s','SlrZ_IYfAMo','dZsfWfYxqzw']},
+'forward-chasses':{explanation:'Forward chass\u00e9s (pronounced sha-SAY) are a step-together-step pattern performed on a circle. They are the precursor to crossovers. You step your outside foot next to your inside foot and then extend the inside foot back to its leading position. This teaches weight transfer and balance on curves.',steps:['Skate forward on a circle, inside foot leading.','Pick up your outside foot and place it next to your inside foot on the circle.','Shift your weight to the outside foot momentarily.','Step your inside foot forward to resume the lead position on the circle.','Repeat this step-together-step rhythm around the circle.','Practice on circles in both directions.'],mistakes:['Stepping too far ahead or behind instead of right next to the other foot.','Not maintaining the curve \u2014 you drift off the circle.','Forgetting to bend your knees during each step.'],videos:['5SsqBDjdnS0','tlpu9-LjV-o','1BqJUai_g5k']},
+'back-snowplow-stop':{explanation:'The backward snowplow stop mirrors the forward version but while moving backward. You push your heels outward and press the inside edges of your blades into the ice. This is critical for safety \u2014 you need to be able to stop going backward before attempting any backward skating at speed.',steps:['Build moderate backward speed.','Start with feet parallel, knees bent.','Push both heels outward, turning your toes inward (pigeon-toed).','Press the inside edges of your blades firmly into the ice.','Increase the pressure gradually until you come to a complete stop.','Keep your weight centered and arms out for balance.'],mistakes:['Not pressing hard enough \u2014 you barely slow down.','Bending at the waist instead of the knees during the stop.','Only using one foot, which makes you spin instead of stop.'],videos:['0qYMeMdojAE','H-l83LNv8j8','RWxD3CJhtNY']},
+'fwd-outside-edge':{explanation:'Forward outside edges are glides on one foot where your body leans to the outside of the curve you are tracing. "Outside" means you are on the edge of the blade that faces away from your body. Outside edges are the foundation for outside 3-turns, crossovers, many jumps, and all Moves in the Field patterns.',steps:['Push onto your right foot and glide on the outside (right) edge.','Lean your entire body slightly to the right \u2014 not just your ankle.','Your free (left) foot should be held slightly behind or beside you.','Trace a smooth curve arcing to the right.','Hold the edge for as long as possible, aiming for a full half-circle.','Repeat on the left foot, curving to the left.'],mistakes:['Leaning only with your ankle instead of your whole body.','Letting the free leg swing around, which disturbs your balance.','Not committing to the curve \u2014 flat edges produce wobbly lines.'],videos:['dJwWAA8gFSU','FxNdhpldt2w','gK8mOMAgY-w']},
+'fwd-inside-edge':{explanation:'Forward inside edges are the counterpart to outside edges. You glide on one foot leaning toward the inside of the curve, on the edge of the blade closest to your body. Inside edges are critical for inside 3-turns, Mohawk turns, Salchow jumps, and most transitional footwork sequences.',steps:['Push onto your right foot and glide on the inside (left-leaning) edge.','Lean your body slightly to the left, into the curve.','Hold your free foot slightly in front or beside you.','Trace a smooth curve arcing to the left on your right foot.','Hold the edge as long as possible, building confidence.','Repeat on the left foot, curving to the right.'],mistakes:['Dropping your free hip \u2014 keep both hips level.','Using your toe pick to steer instead of your edge lean.','Gripping the ice with your toes instead of pressing through the ball of your foot.'],videos:['WeL4Q7RAW7Y','FxNdhpldt2w','dJwWAA8gFSU']},
+'fwd-crossovers':{explanation:'Forward crossovers are the primary way to build speed and navigate curves on the ice. The outside foot crosses over the inside foot on each step, with both feet pushing to generate power. This is one of the most-used skills in all of skating \u2014 you will use crossovers in every session for the rest of your skating life.',steps:['Skate forward on a counterclockwise circle, left foot on the inside.','Push with the inside (left) edge of your right foot.','Cross your right foot over your left, placing it on the inside of the circle.','Push with the outside edge of your left foot (the "underpush").','Bring your left foot back to the inside position.','Repeat with rhythm: cross, push, recover, cross, push, recover.'],mistakes:['Only stepping over without pushing \u2014 you need power from both feet.','Not bending your knees enough, which makes the crossover stiff and small.','Leaning your upper body too far into the circle instead of staying upright.'],videos:['kiixg2aczH4','pgwVCAiRrDk','UjnDyMkZSrU']},
+'back-one-foot-glide':{explanation:'The backward one-foot glide is one of the most challenging balance skills for developing skaters. You must maintain a steady backward glide on a single blade while resisting the urge to put your other foot down. This builds the balance foundation for back edges, back crossovers, and all backward turns.',steps:['Build backward speed using backward crossovers or swizzles.','Glide on two feet in a backward position.','Slowly shift all your weight onto one foot.','Lift the free foot just one to two inches off the ice.','Keep your skating knee bent and your core tight.','Hold for as long as possible, then try the other foot.'],mistakes:['Leaning backward \u2014 keep weight centered or slightly forward on the blade.','Lifting the free foot too high, disturbing your balance.','Tensing your ankle \u2014 let it stay relaxed and flexible.'],videos:['nZ1W6rGNhh0','8qebXzQnpFQ','eKCmxOisO78']},
+'back-pumps':{explanation:'Backward pumps are the backward equivalent of forward pumps. You generate speed on a circle by pushing the outside leg outward and recovering it while the inside foot holds the curve. This skill builds the muscle memory and edge control needed for backward crossovers.',steps:['Stand on a circle facing backward, inside foot on the circle.','Push your outside foot away from the circle using its inside edge.','Let the outside foot extend out, then pull it back next to the inside foot.','Keep your inside foot steady on the circle throughout.','Repeat the pump motion to build speed around the circle.','Practice both clockwise and counterclockwise.'],mistakes:['Leaning too far backward instead of staying centered.','Not pushing outward enough \u2014 the push should be away from the curve.','Lifting your inside foot off the ice during the pump.'],videos:['b3L1eDOXsbw','et5Jt1PMAk8','J6I_IN65_tM']},
+'hockey-stop':{explanation:'The hockey stop is a quick, aggressive stop where you turn both feet perpendicular to your direction of travel and skid to a halt. It is faster and more dramatic than a snowplow stop and works at higher speeds. Mastering the hockey stop gives you confidence to skate faster because you know you can stop at any time.',steps:['Build moderate to high forward speed.','Keep your knees deeply bent and your weight centered.','Quickly rotate your hips and both feet 90 degrees to one side.','Press hard into the ice with both inside edges simultaneously.','Lean slightly away from the direction of the skid for balance.','Come to a complete stop \u2014 you should see a spray of ice shavings.'],mistakes:['Not committing to the rotation \u2014 a half-turn just makes you spin.','Leaning forward during the stop, which sends you over the toe picks.','Only practicing one side \u2014 train both left and right hockey stops.'],videos:['nIfU38nAYYk','Y_xjJJ47cfc','d4T7wQ05FDE']},
+'back-outside-edge':{explanation:'Backward outside edges are glides on one foot while traveling backward, leaning to the outside of the curve. These edges are critical for back crossovers, back outside 3-turns, and jump landings (nearly every jump lands on a back outside edge). Mastering this edge is essential for advanced skating.',steps:['Build backward speed from backward crossovers.','Push onto your right foot on a backward outside edge.','Lean your whole body slightly to the right.','Hold your free foot slightly in front of you.','Trace a curve arcing to the right as seen from above.','Hold the edge for a full half-circle, then try the left foot.'],mistakes:['Looking down at the ice instead of over your shoulder.','Rotating your body too far into the circle \u2014 hold your check.','Sitting back on your heel instead of staying centered on the blade.'],videos:['OQkMH_YFZDI','rxe1nvHbK1I','dJwWAA8gFSU']},
+'back-inside-edge':{explanation:'Backward inside edges are backward glides on the edge of the blade closest to your body. You lean into the curve while traveling backward. These edges are crucial for back inside 3-turns, Salchow jump takeoffs, and many footwork sequences.',steps:['Build backward speed from crossovers or pushes.','Push onto your right foot on a backward inside edge.','Lean your body slightly to the left, into the curve.','Hold your free foot slightly in front of or beside you.','Trace a curve arcing to the left while on your right foot.','Hold the edge, then repeat on the left foot.'],mistakes:['Not committing to the lean \u2014 flat edges make wobbly curves.','Bending at the waist instead of keeping your body aligned.','Swinging your free leg around, which disrupts your edge.'],videos:['OQkMH_YFZDI','716HD-YEKXI','XYRyOJRXr74']},
+'back-crossovers':{explanation:'Backward crossovers are the backward version of forward crossovers and are essential for building speed and navigating curves while skating backward. They are also used as entries for many jumps and spins. The inside foot crosses behind the outside foot while both feet push to generate power.',steps:['Skate backward on a counterclockwise circle.','Push with the outside edge of your right (outside) foot.','Cross your left (inside) foot behind your right.','Push with the inside edge of your right foot from underneath.','Bring your right foot back to the outside position.','Repeat with rhythm: cross behind, push, recover.'],mistakes:['Crossing in front instead of behind \u2014 the inside foot goes behind.','Not using the underpush from the outside foot, losing power.','Standing too upright \u2014 deep knee bend is essential.'],videos:['9mhnUmSCTUY','3iOqaiKEv6k','L3-iqj4E-i4']},
+'fwd-outside-3-turn':{explanation:'The forward outside 3-turn is your first one-foot turn. Starting on a forward outside edge, you rotate 180 degrees and finish on a backward inside edge, all on one foot. The turn traces a "3" shape on the ice, hence the name. This turn is a prerequisite for waltz jumps and many other advanced elements.',steps:['Glide forward on your right foot on an outside edge, tracing a curve to the right.','Extend your arms: left arm forward, right arm back, along the curve.','Begin rotating your shoulders and left arm toward the center of the circle.','Allow your hips to follow \u2014 the turn will happen naturally at the top of the curve.','Keep your knee bent throughout \u2014 do not straighten up.','After the turn, you should be on a backward inside edge. Check the rotation by holding your right arm forward.'],mistakes:['Forcing the turn with your toe pick instead of letting the edge and rotation create it.','Straightening your skating knee at the moment of the turn.','Not checking after the turn \u2014 you will keep spinning uncontrollably.'],videos:['njqJC85X8U0','L5tFYHHDkTc','R4FEwcD8kSY']},
+'swing-rolls':{explanation:'Swing rolls combine edge skating with a flowing free-leg swing. You glide forward on an edge while swinging your free leg from behind you to in front, creating a beautiful, continuous pattern. Swing rolls develop balance, edge quality, and the free-leg control needed for jumps and spirals.',steps:['Push onto your right foot on a forward outside edge.','Start with your free (left) leg extended behind you.','Smoothly swing your left leg forward past your skating foot.','As your free leg reaches the front, hold the position briefly.','Step onto the left foot and push onto a left forward outside edge.','Swing your right leg forward and repeat the pattern.'],mistakes:['Swinging the free leg too forcefully, which pulls you off balance.','Not keeping the skating knee bent throughout the swing.','Letting the free foot touch the ice during the swing.'],videos:['Q7nfJLtDgR8','AlGACvBIKNQ','Z3G3ayYfc6g']},
+'beg-two-foot-spin':{explanation:'The two-foot spin is your introduction to the world of spinning. You rotate on two feet in a small circle, learning to find and stay on a fixed axis. The goal is controlled, continuous rotation without traveling across the ice. This builds the balance and comfort with spinning needed for all advanced spins.',steps:['Stand with feet shoulder-width apart, knees bent.','Begin a slow counterclockwise rotation using your arms.','Pull your arms in close to your body to speed up (angular momentum).','Keep both feet flat on the ice with equal weight distribution.','Spot a fixed point and let it blur \u2014 do not try to track it.','To stop, extend your arms outward to slow the rotation.'],mistakes:['Traveling across the ice instead of spinning in one spot.','Leaning too far to one side and falling off your axis.','Keeping your arms extended the entire time \u2014 pull them in to spin.'],videos:['sxY4yGAAgEM','1Wb9CyUWjrM','ZWmNKqOEmGA']},
+'fwd-inside-3-turn':{explanation:'The forward inside 3-turn is the companion to the forward outside 3-turn. You start on a forward inside edge and rotate to a backward outside edge, all on one foot. Inside 3-turns are crucial for entering Salchow jumps and are a key component of footwork sequences. Many skaters find inside 3-turns harder than outside 3-turns initially.',steps:['Glide forward on your left foot on an inside edge, tracing a curve to the right.','Hold your right arm forward and left arm back along the curve.','Begin rotating your right arm and shoulder toward the center of the circle.','Let your hips follow \u2014 the turn happens at the top of the curve.','Keep your knee bent and maintain pressure on the inside edge.','After the turn, you are on a backward outside edge. Check the rotation by holding your left arm forward.'],mistakes:['Stepping onto two feet instead of completing the turn on one foot.','Turning too early before establishing a clear inside edge.','Not checking the rotation after the turn \u2014 you will over-rotate.'],videos:['Pf84NCH6u2E','lw07ZD2STJw','jONxtshKl54']},
+'change-of-edge':{explanation:'Change of edge is the ability to smoothly transition from an outside edge to an inside edge (or vice versa) on one foot while gliding. This creates an S-shaped curve on the ice and is a fundamental skill for Moves in the Field patterns. It teaches you how to shift your body weight subtly to change your blade angle.',steps:['Push onto your right foot on a forward outside edge, curving right.','Gradually shift your weight from the outside to the inside of your blade.','You should feel your body lean transition from right to left.','The curve will change direction \u2014 you are now on a forward inside edge.','Hold the new edge for an equal distance as the first edge.','Repeat on the other foot.'],mistakes:['Making a sudden, jerky switch instead of a gradual, smooth transition.','Using your free leg to force the change instead of your body weight.','Not maintaining your knee bend during the transition.'],videos:['CW59EFo5mu0','HCG_v59_8IQ','qrD1zPD-YpM']},
+'t-stop':{explanation:'The T-stop is an elegant stopping technique where you drag one foot behind the other in a T-shape, using friction to slow down. It is quieter and more controlled than a hockey stop and is commonly used in figure skating. The trailing foot presses its inside edge into the ice while the front foot glides straight.',steps:['Glide forward on your left foot with a straight line of travel.','Rotate your right foot 90 degrees so it is perpendicular to your left.','Place the inside edge of your right blade on the ice behind your left foot.','Press gently at first, increasing pressure to slow down.','Keep your weight primarily on the front (left) gliding foot.','Come to a smooth, controlled stop.'],mistakes:['Putting too much weight on the trailing foot and tripping backward.','Not rotating the trailing foot a full 90 degrees \u2014 partial angles are unstable.','Scraping with the toe pick instead of the blade edge.'],videos:['K1Kf0DOrb0I','aG2X6zxLgfE','6c-YKaKmkms']},
+'lunge':{explanation:'The lunge is a dramatic skating move where you glide on one deeply bent leg while your other leg trails behind you with the blade dragging on the ice. It looks impressive and builds the leg strength and balance needed for advanced moves. The lunge is also a required element in some figure skating programs.',steps:['Build moderate forward speed.','Shift all your weight onto your front (left) foot.','Bend your left knee deeply into a deep squat.','Extend your right leg straight behind you.','Let the top of your right blade or the tongue of the boot drag on the ice.','Hold the lunge as long as possible, keeping your chest upright.'],mistakes:['Not bending the front leg deep enough \u2014 you need a very deep knee bend.','Leaning your chest forward instead of keeping it upright.','Dragging the toe pick aggressively, which catches and trips you.'],videos:['FMWNmLUwrWU','QoL2aAbRjxw','Jr8kZAtWW_A']},
+'one-foot-spin':{explanation:'The one-foot spin (scratch spin) is the foundation of all figure skating spins. You spin on one foot with your free leg and arms pulled in tight to maximize rotation speed. A well-centered one-foot spin can achieve remarkable speed and is a satisfying skill to master. This leads to sit spins, camel spins, and all combination spins.',steps:['Enter from a backward crossover into a forward inside edge.','Step forward onto your left foot and push into the spin.','Start with arms and free leg extended to the side.','Gradually pull your arms and free leg in close to your body.','Cross your free foot in front of your ankle for a tight spinning position.','To exit, extend your arms and check to stop the rotation.'],mistakes:['Traveling across the ice \u2014 you should spin on one spot.','Pulling in too fast before finding your center, which throws you off.','Bending at the waist instead of staying upright.'],videos:['uD4IVjZQ35Q','zyat2c-5MXw','oT4wvPTVrTQ']},
+'mohawk-turn':{explanation:'The Mohawk turn is a two-foot turn where you step from forward on one foot to backward on the other foot in a heel-to-heel transfer. Unlike a 3-turn which is on one foot, the Mohawk involves changing feet. There are inside and outside Mohawks. This turn is essential for ice dance, footwork sequences, and as an entry into jumps.',steps:['Glide forward on your right foot on an inside edge.','Rotate your left foot 180 degrees so the heel of your left foot meets the heel of your right.','Step onto your left foot on a backward inside edge.','Shift your weight completely to the left foot.','Lift your right foot off the ice and hold the backward glide.','Check the rotation by holding your arms and looking over your shoulder.'],mistakes:['Not turning the stepping foot a full 180 degrees.','Placing the feet too far apart during the step \u2014 heels should be close together.','Not fully transferring weight, resulting in a hesitant, two-footed slide.'],videos:['MJkc9ONmxVY','HRyuif5OU74','8MrF6AxeN1w']},
+'waltz-jump':{explanation:'The waltz jump is your first real jump in figure skating. It is a half-rotation (180-degree) jump: you take off forward from an outside edge and land backward on the other foot. Despite being the simplest jump, it teaches you every fundamental jumping mechanic \u2014 takeoff edge, spring, air position, and landing on a back outside edge.',steps:['Glide forward on your left foot on a forward outside edge.','Swing your right leg forward and upward as you spring off your left toe.','Jump into the air, rotating 180 degrees counterclockwise.','Bring your arms in briefly at the peak of the jump.','Land on your right foot on a backward outside edge.','Extend your left leg behind you and hold the landing with arms checked.'],mistakes:['Not swinging the free leg hard enough \u2014 the leg swing generates height.','Looking down during the jump instead of forward and up.','Landing on two feet instead of committing to a one-foot landing.'],videos:['lajRteZxQxU','hNfNFJ_86Ro','6_kN32PMNCo']},
+'bunny-hop':{explanation:'The bunny hop is a simple, non-rotational hop on the ice that builds jumping confidence. You push off your toe pick, jump over it, and land on the other foot. There is no rotation involved. It teaches you to spring off the ice, get airtime, and land on one foot \u2014 all fundamental mechanics for every real figure skating jump.',steps:['Glide forward on your left foot with moderate speed.','Reach forward with your right toe pick and tap it into the ice.','Push off the right toe pick, springing upward.','Jump forward, keeping your body upright and arms extended.','Land on your right foot on a flat blade.','Immediately glide forward and repeat if desired.'],mistakes:['Not reaching far enough forward with the toe pick.','Jumping too far forward instead of upward \u2014 height is more important.','Landing on two feet instead of the right foot alone.'],videos:['N5mM_i6SoSA','d8rMlxbSbOk','u2EY1zaODYo']},
+'forward-spiral':{explanation:'The forward spiral is a beautiful skating element where you glide forward on one foot with your free leg raised high behind you, creating an arabesque shape. The goal is to hold the free leg above hip level while maintaining strong edge quality and speed. Flexibility and balance work together in this element.',steps:['Build strong forward speed.','Glide on your left foot on a forward outside or inside edge.','Gradually lift your right leg behind you.','Raise the free leg as high as flexibility allows \u2014 ideally above hip height.','Extend your arms gracefully for balance and presentation.','Hold the spiral position for as long as possible.'],mistakes:['Dropping the free leg below hip level \u2014 always aim higher.','Bending at the waist too much, which lowers the free leg.','Losing speed \u2014 enter with plenty of momentum.'],videos:['pJh-NE4IfQg','hNJxPMIBQpo','SoIscpHVVhw']},
+'salchow-jump':{explanation:'The Salchow is typically the first full-rotation (360-degree) jump a skater learns. Named after Ulrich Salchow, it takes off from a backward inside edge. The entry is usually from a 3-turn or Mohawk, and the free leg swings around to initiate rotation. The Salchow is an edge jump \u2014 no toe pick assist.',steps:['Enter from a left forward inside 3-turn or Mohawk onto a back inside edge.','Glide backward on your left foot on a back inside edge.','Bend your skating knee deeply and load the edge.','Swing your right leg around and upward as you spring off the left foot.','Pull your arms in for a tight rotation in the air.','Land on your right foot on a backward outside edge with arms checked.'],mistakes:['Not loading (bending into) the takeoff edge deeply enough.','Swinging the free leg too wide instead of upward.','Pre-rotating on the ice before actually leaving the surface.'],videos:['HtaJjqL64lE','mdDdGzol20w','9q0G0EEtDP4']},
+'toe-loop-jump':{explanation:'The toe loop is often the first toe-assisted jump a skater learns and is one of the easier full-rotation jumps. You take off from a backward outside edge with a toe pick assist from the other foot. Toe loops are extremely important because they are the most common jump used in combinations (after a landing, you can immediately go into a toe loop).',steps:['Approach from backward crossovers on a counterclockwise circle.','Glide backward on your right foot on a back outside edge.','Reach back with your left toe pick and plant it firmly in the ice.','Push off the left toe pick while springing upward off the right foot.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],mistakes:['Reaching too far back with the toe pick, losing your balance.','Not using enough toe pick force \u2014 you need a firm plant.','Swinging the upper body instead of rotating as a unit.'],videos:['6a3URzAHPGQ','wXBMwM3IGXE','tyPGU28q5Zc']},
+'backspin':{explanation:'The backspin is a spin rotating in the opposite direction of your normal spin (clockwise for most skaters). You spin on your right foot instead of your left. The backspin is essential for combination spins and is a required element in many programs. It is also the landing position for many jumps, so a strong backspin builds overall spinning confidence.',steps:['Enter from a backward outside edge or a wind-up position.','Step onto your right foot and push into a clockwise rotation.','Start with arms and free leg extended.','Gradually pull your arms in to increase speed.','Keep your weight centered on the ball of your right foot.','Exit by extending your arms and stepping out of the spin.'],mistakes:['Trying to spin on the wrong part of the blade \u2014 stay on the ball of the foot.','Not centering before pulling in, causing you to travel.','Leaning too far to one side and losing the spin axis.'],videos:['6sd_I_S2IY0','VFuidrhcqFk','RNwUp7oxJkI']},
+'loop-jump':{explanation:'The loop jump is a full-rotation edge jump that takes off and lands on the same foot (right) on a back outside edge. There is no toe pick assist and no free leg swing \u2014 the rotation comes entirely from your body position and edge pressure. The loop jump is challenging because the takeoff feels unusual at first.',steps:['Approach from backward crossovers on a counterclockwise circle.','Glide backward on your right foot on a strong back outside edge.','Cross your left foot in front of your right ankle.','Bend your right knee deeply, loading the edge.','Spring upward from the right foot, pulling arms in tightly.','Rotate 360 degrees and land on your right foot on a back outside edge.'],mistakes:['Not crossing the free foot tightly enough at takeoff.','Leaning too far into the circle at takeoff.','Kicking the free leg during takeoff instead of holding it crossed.'],videos:['StACSROyvo8','8qsW31N5K8A','W9pMB9p7ODY']},
+'flip-jump':{explanation:'The flip jump is a toe-assisted jump that takes off from a backward inside edge. The key difference from a Lutz is the entry edge: the flip uses an inside edge. Entry is typically from a forward inside 3-turn. The free leg reaches back to plant the toe pick while the skating foot maintains the inside edge.',steps:['Enter from a right forward inside 3-turn onto a left back inside edge.','Glide backward on your left foot on a back inside edge.','Reach back with your right toe pick and plant it firmly.','Push off the toe pick while springing upward.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],mistakes:['Changing to an outside edge before takeoff (that would make it a Lutz).','Not reaching straight back with the toe pick \u2014 reaching to the side twists the jump.','Over-rotating the upper body before the toe pick is planted.'],videos:['UAMOQ5TrhOM','sKc7D8Ks7w4','OcfCr1wu4nU']},
+'sit-spin':{explanation:'The sit spin is performed in a deep squat position on one foot. The skating hip drops below knee level while spinning. It demands tremendous leg strength, balance, and the ability to maintain rotation speed while in a low position. Variations include the cannonball, pancake, and broken-leg sit spin.',steps:['Enter the spin the same way as a one-foot spin \u2014 inside edge, step forward.','Begin spinning on your left foot with arms extended.','Slowly bend your skating knee and lower into a squat.','Extend your free (right) leg forward, parallel to the ice.','Pull your arms in to maintain speed while in the sit position.','Rise up to exit and check the rotation.'],mistakes:['Not getting low enough \u2014 your hip must be below your knee level.','Losing speed as you sit down because you are lowering too quickly.','The free leg dropping down instead of staying parallel to the ice.'],videos:['IvI3Up4MaiI','VaW60XAsV5Q','2UcxRurhb5E']},
+'camel-spin':{explanation:'The camel spin is one of the most visually striking basic spins. You spin on one foot with your body horizontal, free leg extended behind you at or above hip level, forming a T-shape. It requires good flexibility, strong core control, and the ability to maintain a fixed spin axis while your mass is distributed horizontally.',steps:['Enter from a forward inside edge, stepping onto your left foot.','Push into the spin and establish rotation.','Lean your upper body forward while lifting your right leg behind you.','Create a flat T-shape: torso and free leg parallel to the ice.','Hold your arms in a graceful position.','To exit, bring the free leg down and check the rotation.'],mistakes:['Not lifting the free leg high enough \u2014 it must be at hip level or above.','Bending at the waist too sharply instead of keeping the back flat.','Dropping the head down instead of keeping it in line with the spine.'],videos:['PCROWY0l3v8','Ga2tYqTFdxg','OO2xE9MJEZo']},
+'lutz-jump':{explanation:'The Lutz jump is one of the most difficult single jumps because it requires a counter-rotated takeoff. You approach on a long backward outside edge curving in one direction, then rotate in the opposite direction for the jump. The counter-rotation makes the Lutz technically demanding but also one of the most valuable jumps in competition scoring.',steps:['Skate backward on a long, straight-ish line on your left back outside edge.','Hold the outside edge firmly \u2014 do not let it change to an inside edge.','Reach back with your right toe pick and plant it firmly in the ice.','Spring upward against the natural curve of the edge.','Rotate 360 degrees in the air in a tight position.','Land on your right foot on a backward outside edge.'],mistakes:['Changing to an inside edge before takeoff \u2014 this is a "flutz" (really a flip).','Not holding the backward glide long enough before the toe pick plant.','Telegraphing the jump by winding up the upper body too much.'],videos:['X3ivH8XllpI','Dti3fNip9sM','ibnro4l6DNM']},
+'axel':{explanation:'The Axel is the most difficult single jump and the only jump that takes off going forward. It requires 1.5 rotations in the air (compared to one rotation for all other single jumps). The forward takeoff from an outside edge combined with the extra half-rotation makes the Axel a major milestone. Landing a clean single Axel is a proud achievement for any skater.',steps:['Approach from backward crossovers, then step forward onto your left outside edge.','Ride the forward outside edge on a strong curve.','Drive your right knee and arms upward powerfully.','Spring off the left foot, rotating 1.5 times counterclockwise.','Pull into a tight air position with arms close to your body.','Land on your right foot on a backward outside edge with arms checked.'],mistakes:['Not driving the knee and arms upward with enough force \u2014 the Axel needs height.','Wrapping the free leg around instead of driving it straight up.','Opening up too early in the air, causing under-rotation.'],videos:['F8D1OEiHvpE','cF66y390JFI','0wBeLFPwitw']},
+'flying-camel':{explanation:'The flying camel combines a jump entry with a camel spin. You jump into the air, achieve a camel (horizontal) position mid-flight, and land into a camel spin. It is a dramatic element that demonstrates both jumping ability and spinning control. This is one of the first "flying" spins most skaters learn.',steps:['Build speed from backward crossovers.','Step forward onto your left foot on an inside edge.','Spring upward, kicking your right leg forward and up.','In the air, extend into a camel position \u2014 body and free leg horizontal.','Land on your left foot and continue directly into a camel spin.','Hold the camel spin position for several rotations before exiting.'],mistakes:['Not getting enough height on the jump to establish the camel position.','Landing too hard and losing the spin \u2014 the landing must be controlled.','Bending the free leg in the air instead of keeping it extended.'],videos:['Z5aYvq_3xi8','G34Pl-f_HAk','dTWndXzMKgE']},
+'combination-spin':{explanation:'A combination spin changes positions (such as camel to sit to upright) without stopping the rotation. The skater must maintain speed and centering while transitioning between fundamentally different body positions. A well-executed combination spin shows versatility and is a required element in competitive programs.',steps:['Enter a camel spin on your left foot with arms extended.','While spinning, slowly lower from the camel position into a sit spin.','Hold the sit spin for 2-3 rotations.','Rise up into an upright scratch spin position.','Pull your arms in tightly for maximum speed.','Exit by checking the rotation with arms extended.'],mistakes:['Losing speed during transitions between positions.','Traveling across the ice during position changes.','Rushing through positions instead of holding each one clearly.'],videos:['7F9SaSoQJDQ','2Zy_NU95V3Y','Eq1zC0t1SKA']},
+'double-salchow':{explanation:'The double Salchow requires two full rotations (720 degrees) in the air from a backward inside edge takeoff. It is typically the first double jump a skater learns because the Salchow entry is the most natural. Success demands significantly more power, tighter air position, and faster rotation than the single version.',steps:['Enter from a strong forward inside 3-turn or Mohawk onto a deep back inside edge.','Bend your skating knee deeply \u2014 more than for a single.','Swing your free leg powerfully around and upward.','Pull your arms in immediately as you leave the ice.','Hold a tight crossed-arm position for two full rotations.','Land on your right foot on a backward outside edge with arms checked.'],mistakes:['Not pulling into a tight air position fast enough \u2014 you will under-rotate.','Opening up the arms and free leg too early.','Not bending the takeoff knee enough to generate height.'],videos:['y42ZA1Q1KmU','0YAC_2zJ0Cg','5cDGEfO7Nzs']},
+'double-toe-loop':{explanation:'The double toe loop requires two full rotations with a toe pick assist from a backward outside edge. After the double Salchow, this is usually the next double jump learned. It is particularly important because toe loops are the primary jump used in combinations, so a double toe loop unlocks powerful jump combinations.',steps:['Approach from backward crossovers with strong speed.','Glide backward on your right foot on a back outside edge.','Reach back and plant your left toe pick firmly and deeply.','Push off powerfully, springing upward.','Pull into a tight air position immediately for two rotations.','Land on your right foot on a backward outside edge.'],mistakes:['Not planting the toe pick deep enough \u2014 you need a strong anchor.','Leaning too far forward at takeoff.','Under-rotating because of insufficient jump height.'],videos:['vZE0C0riWrk','vS_W7EsenSE','vuOyIZd4ub8']},
+'double-loop-flip-lutz':{explanation:'Double loop, double flip, and double Lutz are the advanced double jumps. Each requires two full rotations with progressively more difficult takeoff mechanics. The double loop demands pure edge power, the double flip adds counter-rotation from a toe pick on an inside edge, and the double Lutz requires counter-rotation from an outside edge \u2014 making it the hardest double jump.',steps:['Master the single version of each jump first with consistent landing.','Increase your single jump height until you have air time to spare.','Practice pulling into a tight air position faster from each takeoff.','Attempt the double with enough speed and spring for two rotations.','Focus on one jump at a time until each is consistent.','Land each cleanly on a backward outside edge with good flow.'],mistakes:['Attempting doubles before singles are consistent and effortless.','Not generating enough height \u2014 doubles need significantly more air time.','Cheating rotation by pre-rotating on the ice before takeoff.'],videos:['KujZRuhuqhU','roPXwrICIEA','nvRcR23nz2s']},
+'brackets':{explanation:'A bracket turn is a one-foot turn similar to a 3-turn but with the turn going against the natural curve \u2014 making it significantly harder. Where a 3-turn turns into the circle, a bracket turns away from it. The tracing on the ice looks like a bracket symbol }. Brackets require excellent edge control and strong rotational checking.',steps:['Glide forward on a strong outside or inside edge on a clear curve.','Hold your arms and shoulders firmly in position along the curve.','Initiate the turn by rotating your shoulders against the direction of the curve.','Allow the turn to happen on the blade \u2014 do not force it with your toe pick.','After the turn, you should be on the opposite edge traveling backward.','Check the rotation firmly to prevent over-rotation.'],mistakes:['Turning into the circle instead of against it \u2014 that is a 3-turn, not a bracket.','Not having enough edge depth going into the turn.','Failing to check the rotation, causing the turn to become a full spin.'],videos:['xPqP2LQxwmg','CJ5m19UuZSs','iPMvnw1bpaA']},
+'counters-rockers':{explanation:'Counters and rockers are advanced one-foot turns that change direction without changing edge. A counter turns against the curve (like a bracket) but stays on the same edge. A rocker turns with the curve (like a 3-turn) but also stays on the same edge. These turns are required for high-level Moves in the Field and are components of advanced footwork sequences.',steps:['Build strong one-foot edge control on both inside and outside edges.','For a counter: glide on an edge and turn against the curve while maintaining the same edge.','For a rocker: glide on an edge and turn with the curve while maintaining the same edge.','The key is controlling the rotation so precisely that the edge does not change.','Practice each type on all four edges (FO, FI, BO, BI).','Use strong arm and shoulder positions to control the turn.'],mistakes:['Changing the edge during the turn \u2014 the edge must stay the same.','Confusing counters with brackets or rockers with 3-turns.','Not having sufficient edge depth and speed before attempting the turn.'],videos:['iPMvnw1bpaA','qy8uL8KuReA','YLBXvXbpogk']},
+'twizzles':{explanation:'Twizzles are traveling multi-rotational turns on one foot. Unlike a spin which stays in one spot, a twizzle moves across the ice while rotating. Think of it as a rapidly spinning one-foot glide. Twizzles are a signature element of ice dance and are also used in singles skating footwork sequences.',steps:['Glide on one foot with good speed and edge control.','Begin rotating by pulling your arms in close.','Maintain your glide direction while spinning on one foot.','Keep your free foot close to your skating ankle.','Complete multiple rotations while traveling forward.','Exit by extending your arms and checking the rotation.'],mistakes:['Stopping your forward momentum \u2014 you must keep traveling while rotating.','Touching the free foot down between rotations.','Losing your balance axis and wobbling during the turns.'],videos:['TvqVaTh9IpM','57e3vAkCxHk','6yygtvAYZZI']},
+'biellmann-spin':{explanation:'The Biellmann spin is one of the most iconic and visually spectacular figure skating spins. Named after Denise Biellmann, you spin on one foot while pulling your free blade above and behind your head with both hands. It requires extreme flexibility in the back and hips, plus strong one-foot spinning ability. This is considered a master-level spin element.',steps:['Enter a strong one-foot spin on your left foot.','Establish a fast, centered rotation.','Reach behind you with your right hand and grab your right blade.','Bring your left hand to assist in pulling the blade upward.','Pull the blade up and over your head while maintaining the spin.','Hold the extended Biellmann position for several rotations before releasing.'],mistakes:['Attempting this without sufficient back and hip flexibility \u2014 you risk injury.','Losing your spin center when reaching for the blade.','Pulling the blade up too quickly before the spin is fully centered.'],videos:['QE-JdhHSh04','3DYRwRooQ_w','rpVaN7zep8o']}
 };
 
 /* =============== STATE =============== */
@@ -1440,23 +1334,16 @@ function makeProgBtn(skillId,side){
 }
 
 function openCard(skillId,itemEl){
-  // Close if same skill
   if(activeCardId===skillId){closeCard();return}
-
   const skill=SMAP[skillId];
   if(!skill)return;
   const grid=itemEl.closest('.skills-grid');
   if(!grid)return;
-
-  // Remove old card
   closeCard(true);
-
-  // Build card
   cardEl=document.createElement('div');
   cardEl.className='skill-detail-card';
   const unlocked=isUnlocked(skillId);
   const prereqNames=skill.pr.map(pid=>SMAP[pid]?.n||pid).join(', ');
-
   let controlsHTML='';
   if(!unlocked){
     controlsHTML=`<div class="sdc-locked">Complete prerequisites to unlock</div>`;
@@ -1465,7 +1352,6 @@ function openCard(skillId,itemEl){
   }else{
     controlsHTML=makeProgBtn(skillId,null);
   }
-
   cardEl.innerHTML=`
     <div class="sdc-arrow"></div>
     <div class="sdc-header"><span class="sdc-name">${skill.n}</span><span class="sdc-phase">${skill.p}</span>${SKILL_CONTENT[skillId]?`<button class="sdc-learn-more" data-id="${skillId}">Learn More &rsaquo;</button>`:''}</div>
@@ -1473,12 +1359,8 @@ function openCard(skillId,itemEl){
     <div class="sdc-controls">${controlsHTML}</div>
     <div class="sdc-prereq">${prereqNames?'Requires: '+prereqNames:''}</div>
   `;
-
-  // Append to phase section (outside grid-wrap so overflow:hidden doesn't clip)
   const sec=grid.closest('.phase-section');
   sec.appendChild(cardEl);
-
-  // Position card below the clicked skill's row
   requestAnimationFrame(()=>{
     const secRect=sec.getBoundingClientRect();
     const items=[...grid.querySelectorAll(':scope > .skill-item')];
@@ -1492,16 +1374,12 @@ function openCard(skillId,itemEl){
     }
     const top=maxBottom-secRect.top+6;
     cardEl.style.top=top+'px';
-
-    // Position arrow to point at the selected skill
     const itemRect=itemEl.getBoundingClientRect();
     const cardRect=cardEl.getBoundingClientRect();
     const arrowLeft=itemRect.left+itemRect.width/2-cardRect.left;
     cardEl.querySelector('.sdc-arrow').style.left=arrowLeft+'px';
     cardEl.classList.add('open');
     _pushModal('card');
-
-    // Scroll card into view with extra padding at the bottom
     setTimeout(()=>{
       const cr=cardEl.getBoundingClientRect();
       const vp=window.innerHeight;
@@ -1513,13 +1391,9 @@ function openCard(skillId,itemEl){
       }
     },80);
   });
-
-  // Mark selected
   document.querySelectorAll('.skill-item.selected').forEach(i=>i.classList.remove('selected'));
   itemEl.classList.add('selected');
   activeCardId=skillId;
-
-  // Attach button handlers
   attachCardBtns(skillId);
 }
 
@@ -1561,7 +1435,6 @@ function refreshCard(skillId,animSide){
   }
   const ctrl=cardEl.querySelector('.sdc-controls');
   if(ctrl)ctrl.innerHTML=controlsHTML;
-  // Animate the clicked button
   cardEl.querySelectorAll('.prog-btn').forEach(b=>{
     const s=b.dataset.side||null;
     if(s===animSide){
@@ -1603,15 +1476,12 @@ function openLearnMore(skillId){
   const skill=SMAP[skillId];
   const content=SKILL_CONTENT[skillId];
   if(!skill||!content)return;
-
   const modal=document.getElementById('lm-modal');
   const overlay=document.getElementById('lm-overlay');
-
   const stepsHTML=content.steps.map(s=>`<li><span>${s}</span></li>`).join('');
   const mistakesHTML=content.mistakes.map(m=>`<li><span class="lm-mistake-dot"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>${m}</span></li>`).join('');
   const moreVideosHTML=content.videos.length>1
     ?content.videos.slice(1).map(v=>makeYtEmbed(v)).join(''):'';
-
   modal.innerHTML=`
     <div class="lm-header">
       <button class="lm-back" id="lm-back-btn">
@@ -1628,7 +1498,6 @@ function openLearnMore(skillId){
         </div>
         <div class="lm-text">${content.explanation}</div>
       </div>
-
       <div class="lm-section">
         <div class="lm-section-title">
           <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
@@ -1636,7 +1505,6 @@ function openLearnMore(skillId){
         </div>
         <ol class="lm-steps">${stepsHTML}</ol>
       </div>
-
       <div class="lm-section">
         <div class="lm-section-title">
           <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -1644,7 +1512,6 @@ function openLearnMore(skillId){
         </div>
         <ul class="lm-mistakes">${mistakesHTML}</ul>
       </div>
-
       <div class="lm-section">
         <div class="lm-section-title">
           <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
@@ -1664,16 +1531,13 @@ function openLearnMore(skillId){
       </div>
     </div>
   `;
-
   overlay.classList.add('open');
   modal.classList.add('open');
   modal.scrollTop=0;
   document.body.style.overflow='hidden';
   _pushModal('learnMore');
-
   document.getElementById('lm-back-btn').addEventListener('click',()=>closeLearnMore());
   overlay.addEventListener('click',()=>closeLearnMore());
-
   modal.querySelectorAll('.lm-yt-container').forEach(c=>{
     c.addEventListener('click',function(e){
       e.stopPropagation();
@@ -1681,7 +1545,6 @@ function openLearnMore(skillId){
       this.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     },{once:true});
   });
-
   const acc=document.getElementById('lm-more-videos');
   if(acc){
     acc.querySelector('.lm-accordion-hdr').addEventListener('click',()=>{
@@ -1710,50 +1573,40 @@ function build(){
     const sec=document.createElement('section');
     sec.className='phase-section';
     sec.dataset.phase=phase;
-
     const hdr=document.createElement('div');
     hdr.className='phase-hdr';
     const prog=getPhaseProgress(phase);
     hdr.innerHTML=`<h2>${phase}</h2><span class="phase-prog"><span class="pp-text">${prog.done}/${prog.total}</span><span class="phase-bar"></span><svg class="phase-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>`;
     hdr.addEventListener('click',()=>{closeCard(true);sec.classList.toggle('collapsed')});
     sec.appendChild(hdr);
-
     const grid=document.createElement('div');
     grid.className='skills-grid';
     skills.forEach(s=>{
       const item=document.createElement('div');
       item.className='skill-item';
       item.dataset.id=s.id;
-
       const circle=document.createElement('div');
       circle.className='skill-circle'+(s.lr?' has-lr':'');
       circle.dataset.id=s.id;
-
       {
         const bf=document.createElement('div');
         bf.className='bg-full'+(s.lr?' bg-lr':'');bf.dataset.lv='0';
         circle.appendChild(bf);
       }
-
       const ico=document.createElement('div');
       ico.className='skill-icon';
       const mp=spritePos(s.id);
       ico.style.webkitMaskPosition=mp;
       ico.style.maskPosition=mp;
       circle.appendChild(ico);
-
       item.appendChild(circle);
-
       const nm=document.createElement('div');
       nm.className='skill-name';nm.textContent=s.n;
       item.appendChild(nm);
-
-      // Click entire item to open detail card
       item.addEventListener('click',e=>{
         e.stopPropagation();
         openCard(s.id,item);
       });
-
       grid.appendChild(item);
     });
     const wrap=document.createElement('div');
@@ -1773,9 +1626,7 @@ function updateAll(){
     const s=SMAP[id];if(!s)return;
     const circle=item.querySelector('.skill-circle');
     const unlocked=isUnlocked(id);
-
     circle.classList.toggle('locked',!unlocked);
-
     const bf=item.querySelector('.bg-full');
     if(s.lr){
       const ll=unlocked?getLevel(id,'L'):-1;
@@ -1788,7 +1639,6 @@ function updateAll(){
       bf.dataset.lv=lv;
     }
   });
-
   PHASES.forEach(phase=>{
     const sec=document.querySelector(`.phase-section[data-phase="${phase}"]`);
     if(!sec)return;
@@ -1797,7 +1647,6 @@ function updateAll(){
     const bar=sec.querySelector('.phase-bar');
     if(txt)txt.textContent=`${prog.done}/${prog.total}`;
     if(bar){
-      // Count skills at each level
       const skills=SKILLS.filter(s=>s.p===phase);
       let total=0;const counts=[0,0,0,0,0];
       skills.forEach(s=>{
@@ -1810,7 +1659,6 @@ function updateAll(){
           counts[isUnlocked(s.id)?getLevel(s.id):0]++;
         }
       });
-      // Build gradient: purple(4), blue(3), green(2), yellow(1), gray(0)
       const segs=[
         {c:counts[4],color:'var(--purple)'},
         {c:counts[3],color:'var(--blue)'},
@@ -1972,7 +1820,6 @@ function renderCalBlock(startDate,endDate,totals,today,wrapW){
 
 function renderHistory(){
   const list=document.getElementById('history-list');if(!list)return;
-  // Precompute ice time on blades for each sharpening
   const shSorted=[...sharpenings.map((sh,i)=>({...sh,_i:i}))].sort((a,b)=>{
     const dc=a.date.localeCompare(b.date);if(dc!==0)return dc;
     return(a.time||'00:00').localeCompare(b.time||'00:00');
